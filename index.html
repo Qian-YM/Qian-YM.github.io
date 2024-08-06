@@ -69,132 +69,6 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-demo" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2024/08/06/demo/" class="article-date">
-  <time class="dt-published" datetime="2024-08-06T05:15:40.000Z" itemprop="datePublished">2024-08-06</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2024/08/06/demo/">demo</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>d顶顶顶顶顶顶顶顶顶vv</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2024/08/06/demo/" data-id="clzhyy9kd0001wcwgcsd4cpn9" data-title="demo" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-4内核笔记" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2024/08/06/4%E5%86%85%E6%A0%B8%E7%AC%94%E8%AE%B0/" class="article-date">
-  <time class="dt-published" datetime="2024-08-06T01:41:21.208Z" itemprop="datePublished">2024-08-06</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="教程"><a href="#教程" class="headerlink" title="教程"></a>教程</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://arttnba3.cn/2021/03/03/PWN-0X00-LINUX-KERNEL-PWN-PART-I/#0x0A-Kernel-tricks</span><br></pre></td></tr></table></figure>
-
-<p><a target="_blank" rel="noopener" href="https://arttnba3.cn/2021/03/03/PWN-0X00-LINUX-KERNEL-PWN-PART-I/#0x0A-Kernel-tricks">https://arttnba3.cn/2021/03/03/PWN-0X00-LINUX-KERNEL-PWN-PART-I/#0x0A-Kernel-tricks</a></p>
-<h1 id="基本工具-基础知识"><a href="#基本工具-基础知识" class="headerlink" title="基本工具&amp;&amp;基础知识"></a>基本工具&amp;&amp;基础知识</h1><p><a href="./kernel/%E5%86%85%E6%A0%B8%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB.md">内核知识体系</a></p>
-<p><a href="./kernel/modules.md">常用模板+命令</a></p>
-<p>Linux源码阅读</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://elixir.bootlin.com/linux/latest/source</span><br></pre></td></tr></table></figure>
-
-<p>内核数据结构：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://zhuanlan.zhihu.com/p/383004241</span><br></pre></td></tr></table></figure>
-
-<p><img src="C:/Users/钱一铭/AppData/Roaming/Typora/typora-user-images/1720432204842.png" alt="1720432204842"></p>
-<h1 id="内核栈"><a href="#内核栈" class="headerlink" title="内核栈"></a>内核栈</h1><p>0x01 basic_rop</p>
-<p>0x02 ret2usr</p>
-<p>0x03  ret2dir    <a href="./kernel/kgadget/kgadget.md">kgadget</a></p>
-<p>0x05 条件竞争 <a href="./kernel/0CTF2018-baby/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89.md">0ctf-final-baby</a></p>
-<h1 id="内核堆"><a href="#内核堆" class="headerlink" title="内核堆"></a>内核堆</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://arttnba3.cn/2023/02/24/OS-0X04-LINUX-KERNEL-MEMORY-6.2-PART-III/#%E4%BA%8C%E3%80%81kmem-cache%EF%BC%9A%E7%89%B9%E5%AE%9A%E5%A4%A7%E5%B0%8F-amp-%E7%94%A8%E9%80%94%E5%AF%B9%E8%B1%A1%EF%BC%88%E5%A0%86%E5%9D%97%EF%BC%89%E7%9A%84%E5%86%85%E5%AD%98%E6%B1%A0</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://blog.wohin.me/posts/pawnyable-0202/</span><br></pre></td></tr></table></figure>
-
-<p>0x04 UAF+tty结构体 <a href="./kernel/babydriver/babydriver.md">babydriver</a></p>
-<p>0x06 堆喷射 <a href="./kernel/Digging-into-Kernel-3/Digging-into-Kernel-3.md">Digging-into-Kernel-3</a></p>
-<p>0x07 任意地址分配   <a href="./kernel/kernel_for_player/kernel_for_player.md">kernel_for_player</a></p>
-<p>0x08 堆溢出 <a href="./kernel/Kqueue/kqueue.md">kqueue</a></p>
-<p>0x09 cross-cache overflow <a href="./kernel/cache-of-castaways/cache_cross.md">cache_cross</a></p>
-<p>0x0A 页级UAF<a href="./kernel/D3CTF2023_d3kcache-main/D3CTF2023_d3kcache-main/d3kcache.md">d3kcache</a></p>
-<h1 id="题目复现"><a href="#题目复现" class="headerlink" title="题目复现"></a>题目复现</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/smallkirby/kernelpwn</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><a href="./kernel/core/core.md">TPCTF</a></p>
-<p><a href="./kernel/kernel-test/kernel_test.md">kernel_test</a>   最简单的栈溢出、ret2usr</p>
-<p><a href="./kernel/notebook/notebook.md">2021qwb-notebook</a> ioctl未上锁导致条件竞争</p>
-<p><a href="./kernel/kpid/note.md">L3HCTF-kpid</a> </p>
-<p><a href="./kernel/d3kheap/d3kheap.md">d3kheap</a> 0x400无cg隔离的double_free</p>
-<p><a href="./kernel/das/note.md">DASKERNEL</a>  无cg隔离，ioctl未上锁漏洞，userfaultfd+seq_operations</p>
-<p><a href="./kernel/n1ker/note.md">buu-n1ker</a> 无cg隔离，ioctl未上锁（没用到），堆溢出，pipe_buffer劫持控制流</p>
-<p><a href="./kernel/kerpwn/kerpwn.md">2021西湖论剑kerpwn</a></p>
-<p><a href="./kernel/netlink/%E7%9F%A9%E9%98%B5%E6%9D%AF.md">netlink</a> kmalloc-512，cg隔离，UAF+edit前8字节；</p>
-<p><a href="./kernel/kernote/kernote.md">kernote</a> 无cg隔离，0x20 UAF+8字节写，ldt_struct 喷射泄露地址，seq_operations劫持控制流+ret2dir；</p>
-<p><a href="./kernel/cactus/cactus.md">cactus</a> 无cg隔离，0x400 ioctl未上锁导致两次UAF，多线程使用内核密钥泄露数据，pipe_buffer劫持控制流，外加通过page_strcut地址推算可用内核地址；</p>
-<h1 id="内核结构体-手法总结"><a href="#内核结构体-手法总结" class="headerlink" title="内核结构体&amp;&amp;手法总结"></a>内核结构体&amp;&amp;手法总结</h1><p><a href="./kernel/core/%E5%86%85%E6%A0%B8%E5%AF%86%E9%92%A5%E7%AE%A1%E7%90%86.md">内核密钥管理</a> &#x3D;&#x3D;GFP_KERNEL&#x3D;&#x3D; | __GFP_HARDWALL | __GFP_NOWARN &#x3D;&#x3D;任意大小&#x3D;&#x3D;，可以泄露地址，但是不能任意写（每次update会重新分配空间|故无法构造重叠后写）、不能劫持控制流（函数指针是临时分配的）；<strong>一定要注意buflen大于等于密钥长度才能成功读取</strong>；<strong>内核密钥不能跨线程使用</strong>；内核密钥的<strong>个数限制or总字节数限制</strong>；</p>
-<p><a href="./kernel%5CD3CTF2023_d3kcache-main%5CD3CTF2023_d3kcache-main/d3kcache.md">pipe_buffer基础</a> pipe_buffer 来自&#x3D;&#x3D;kmalloc-cg&#x3D;&#x3D;， &#x3D;&#x3D;GFP_KERNEL_ACCOUNT&#x3D;&#x3D;，&#x3D;&#x3D;任意大小&#x3D;&#x3D;，任意地址读写，伪造ops可以劫持控制流；<strong>构造页级UAF不要跨进程-&gt;释放不了</strong></p>
-<p><a href="./kernel%5CD3CTF2023_d3kcache-main%5CD3CTF2023_d3kcache-main/pipe_buffer.md">pipe_buffer调试</a></p>
-<p><a href="./kernel/tty.md">tty结构体</a> 结构体大小为0x2e0、&#x3D;&#x3D;kmalloc-1k&#x3D;&#x3D;、 &#x3D;&#x3D;GFP_KERNEL_ACCOUNT&#x3D;&#x3D;</p>
-<p><a href="./kernel/seq_file.md">seq文件</a> &#x3D;&#x3D;kmalloc-32&#x3D;&#x3D;,      &#x3D;&#x3D;GFP_KERNEL_ACCOUNT&#x3D;&#x3D;，劫持控制流</p>
-<p><a href="./kernel/tty.md">work_for_cpu_fn</a></p>
-<p><a href="./kernel/tty.md">pt_regs</a>  用于向内核态栈上残留数据、栈迁移；</p>
-<p><a href="./kernel/shm.md">shm_file_data</a> &#x3D;&#x3D;kamlloc-32&#x3D;&#x3D;， &#x3D;&#x3D;GFP_KERNEL&#x3D;&#x3D;， 泄露内核text地址、线性映射区地址；</p>
-<p><a href="./kernel/USMA.md">USMA</a></p>
-<p><a href="./kernel/FGKASLR.md">FGKASLR</a></p>
-<p><a href="./kernel/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89.md">userfaultfd</a>   条件竞争增大命中概率100%命中；在新版本内核中失效；</p>
-<p><a href="./kernel/msg.md">msg_msg</a>   &#x3D;&#x3D;GFP_KERNEL_ACCOUNT&#x3D;&#x3D;, &#x3D;&#x3D;大于44字节任意大小&#x3D;&#x3D;，非常适合UAF写，读之后会释放（COPY不会），用辅助页可以减少误伤；<strong>一个队列发送多个消息和辅助消息灵活运用</strong></p>
-<p><a href="./kernel/kernote/kernote.md">ldt_struct</a> &#x3D;&#x3D;GFP_KERNEL&#x3D;&#x3D;,  &#x3D;&#x3D;0x20&#x3D;&#x3D;, 可以利用UAF任意地址读，配合fork更加稳定，配合条件竞争或许可以任意地址写；</p>
-<h1 id="CVE"><a href="#CVE" class="headerlink" title="CVE"></a>CVE</h1><p>环境搭建：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://cloud.tencent.com/developer/news/1044276</span><br></pre></td></tr></table></figure>
-
-<p><a href="./kernel/cve%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA.md">环境搭建</a></p>
-<p><a href="./kernel/cve/dirty-pipe.md">dirty-pipe</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2024/08/06/4%E5%86%85%E6%A0%B8%E7%AC%94%E8%AE%B0/" data-id="clzhyy9ka0000wcwg4yao3m7q" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
     <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2024/08/06/hello-world/" class="article-date">
@@ -234,7 +108,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/08/06/hello-world/" data-id="clzhyy9kj0002wcwg636wfl89" data-title="Hello World" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/08/06/hello-world/" data-id="clzhz1a9x0000mgwgbg6m45kz" data-title="Hello World" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -275,14 +149,6 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
-        
-          <li>
-            <a href="/2024/08/06/demo/">demo</a>
-          </li>
-        
-          <li>
-            <a href="/2024/08/06/4%E5%86%85%E6%A0%B8%E7%AC%94%E8%AE%B0/">(no title)</a>
-          </li>
         
           <li>
             <a href="/2024/08/06/hello-world/">Hello World</a>
