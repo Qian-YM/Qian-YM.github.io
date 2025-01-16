@@ -4,15 +4,13 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="md5, Hexo">
-    <meta name="description" content="md5简介md5就是信息摘要、有损压缩；
-具体算法
-因为md5是超损压缩，不可逆的，所以只有撞击；
-例题1比较算法如下，先在v10中构造幻数，然后将之前用户输入的v8进行md5加密，随后结果和s1进行比较：
+    <meta name="keywords" content="go语言学习笔记, q1ming">
+    <meta name="description" content="基本语法定义变量：类似于全局变量
 
-md5的幻数示例如下：
+结构体定义：
 
-s1">
+通道（chan）用于在不同的 goroutine 之间传递数据，它类似于一个管道，允许你在一个 goroutine 中发送数据，并在另一个 goroutine 中接收这些数据。
+在每一个A">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -24,7 +22,7 @@ s1">
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>md5 | Hexo</title>
+    <title>go语言学习笔记 | q1ming</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -71,7 +69,7 @@ s1">
                     
                     <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
-                    <span class="logo-span">Hexo</span>
+                    <span class="logo-span">q1ming</span>
                 </a>
             </div>
             
@@ -175,7 +173,7 @@ s1">
         
         <img src="/medias/logo.png" class="logo-img circle responsive-img">
         
-        <div class="logo-name">Hexo</div>
+        <div class="logo-name">q1ming</div>
         <div class="logo-desc">
             
             Never really desperate, only the lost of the soul.
@@ -341,12 +339,12 @@ s1">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">md5</h1>
+                    <h1 class="description center-align post-title">go语言学习笔记</h1>
                 </div>
             </div>
         </div>
@@ -370,8 +368,8 @@ s1">
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Crypto/">
-                                <span class="chip bg-color">Crypto</span>
+                            <a href="/tags/Go/">
+                                <span class="chip bg-color">Go</span>
                             </a>
                         
                     </div>
@@ -386,7 +384,7 @@ s1">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2025-01-15
+                    2025-01-16
                 </div>
                 
 
@@ -410,18 +408,24 @@ s1">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="md5简介"><a href="#md5简介" class="headerlink" title="md5简介"></a>md5简介</h2><p>md5就是信息摘要、有损压缩；</p>
-<h2 id="具体算法"><a href="#具体算法" class="headerlink" title="具体算法"></a>具体算法</h2><p><img src="/images/1733224986037.png" alt="1733224986037"></p>
-<p>因为md5是超损压缩，不可逆的，所以只有撞击；</p>
-<h2 id="例题1"><a href="#例题1" class="headerlink" title="例题1"></a>例题1</h2><p>比较算法如下，先在v10中构造幻数，然后将之前用户输入的v8进行md5加密，随后结果和s1进行比较：</p>
-<p><img src="/images/1733225217261.png" alt="1733225217261"></p>
-<p>md5的幻数示例如下：</p>
-<p><img src="/images/1733225151934.png" alt="1733225151934"></p>
-<p>s1的第三个字节是00，所以只需要比较前两个字符：</p>
-<p><img src="/images/1733225191470.png" alt="1733225191470"></p>
-<p>爆破脚本如下：（同时要注意第一个字符必须是’A’）</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> hashlib<br><span class="hljs-keyword">import</span> itertools<br><span class="hljs-keyword">import</span> string<br><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br><br><span class="hljs-comment"># 目标 MD5 哈希值</span><br>target_hash = <span class="hljs-string">&#x27;1d6c00&#x27;</span><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">strcmp</span>(<span class="hljs-params">str1:<span class="hljs-built_in">str</span>, str2:<span class="hljs-built_in">str</span></span>): <span class="hljs-comment"># str1::target, str2::hashed</span><br>    length = <span class="hljs-built_in">len</span>(str1)<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(length):<br>        <span class="hljs-keyword">if</span> str1[i] != str2[i]:<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span><br><br><span class="hljs-comment"># 扩展字符集：包括小写字母、大写字母、数字、符号和空格</span><br>charset = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation + <span class="hljs-string">&#x27; &#x27;</span><br><br><span class="hljs-comment"># 生成所有可能的字符组合</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">brute_force</span>(<span class="hljs-params">target_hash</span>):<br>    <span class="hljs-keyword">for</span> length <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">6</span>):  <span class="hljs-comment"># 尝试长度为1到5的字符串</span><br>        <span class="hljs-keyword">for</span> guess <span class="hljs-keyword">in</span> itertools.product(charset, repeat=length):<br>            guess_str = <span class="hljs-string">&#x27;&#x27;</span>.join(guess)<br>            hashed = hashlib.md5(guess_str.encode()).hexdigest()<br>            <span class="hljs-keyword">if</span> strcmp(target_hash, hashed):<br>                <span class="hljs-built_in">print</span>(hashed, guess_str)<br>                <span class="hljs-comment">#return guess_str</span><br>            <br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span><br><br>result = brute_force(target_hash)<br><span class="hljs-keyword">if</span> result:<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;破解成功: <span class="hljs-subst">&#123;result&#125;</span>&#x27;</span>)<br><span class="hljs-keyword">else</span>:<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;未找到匹配&#x27;</span>)<br><br></code></pre></td></tr></table></figure>
+                <h2 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h2><p>定义变量：类似于全局变量</p>
+<p><img src="/go.assets/1736948256264.png"></p>
+<p>结构体定义：</p>
+<p><img src="/go.assets/1736948315120.png"></p>
+<p>通道（<code>chan</code>）用于在不同的 goroutine 之间传递数据，它类似于一个管道，允许你在一个 goroutine 中发送数据，并在另一个 goroutine 中接收这些数据。</p>
+<p>在每一个Arch结构体中有一个bool类型的通道；</p>
+<p><strong>interface（接口）：</strong></p>
+<p>接口定义了某些行为，但没有实现细节。其他类型（如结构体）可以实现这些方法，从而实现这个接口。</p>
+<p><strong>map（映射）：</strong></p>
+<p><img src="/go.assets/1736948715966.png"></p>
+<p>linux是go中的一个类型实例；</p>
+<h2 id="flag包"><a href="#flag包" class="headerlink" title="flag包"></a>flag包</h2><p>Go 语言中的 <code>flag</code> 包用于 <strong>命令行标志（flag）解析</strong>。它允许你定义命令行参数，并通过命令行传递给程序，然后在程序中读取这些参数的值。</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">&quot;flag&quot;</span><br>    <span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-comment">// 定义一个名为 &quot;name&quot; 的字符串标志，默认值为 &quot;World&quot;</span><br>    name := flag.String(<span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-string">&quot;World&quot;</span>, <span class="hljs-string">&quot;Specify the name&quot;</span>)<br><br>    <span class="hljs-comment">// 解析命令行参数</span><br>    flag.Parse()<br><br>    <span class="hljs-comment">// 使用标志值</span><br>    fmt.Printf(<span class="hljs-string">&quot;Hello, %s!\n&quot;</span>, *name)<br>&#125;<br><br></code></pre></td></tr></table></figure>
 
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">go run main.go -name=Go<br><br></code></pre></td></tr></table></figure>
+
+<p>上述例子表示，如果命令行里不传递name这个参数，那么打印出来的就是World，传递了参数那就是Go；</p>
+<p>flag.Parse()用于解析命令行参数；</p>
 
                 
             </div>
@@ -438,7 +442,7 @@ s1">
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="/about" rel="external nofollow noreferrer">John Doe</a>
+                    <a href="/about" rel="external nofollow noreferrer">q1ming</a>
                 </span>
             </div>
             <div class="reprint__type">
@@ -448,7 +452,7 @@ s1">
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2025/01/15/md5/">http://example.com/2025/01/15/md5/</a>
+                    <a href="http://example.com/2025/01/16/go/">http://example.com/2025/01/16/go/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -461,7 +465,7 @@ s1">
                     All articles in this blog are used except for special statements
                     <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
                     reprint policy. If reproduced, please indicate source
-                    <a href="/about" target="_blank">John Doe</a>
+                    <a href="/about" target="_blank">q1ming</a>
                     !
                 </span>
             </div>
@@ -486,8 +490,8 @@ s1">
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Crypto/">
-                                    <span class="chip bg-color">Crypto</span>
+                                <a href="/tags/Go/">
+                                    <span class="chip bg-color">Go</span>
                                 </a>
                             
                         </div>
@@ -570,13 +574,13 @@ s1">
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2025/01/15/base64/">
+                <a href="/2025/01/16/house_of_apple2/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="base64">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="house_of_apple2">
                         
-                        <span class="card-title">base64</span>
+                        <span class="card-title">house_of_apple2</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -587,12 +591,12 @@ s1">
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2025-01-15
+                            <i class="far fa-clock fa-fw icon-date"></i>2025-01-16
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            John Doe
+                            q1ming
                             
                         </span>
                     </div>
@@ -600,8 +604,8 @@ s1">
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Crypto/">
-                        <span class="chip bg-color">Crypto</span>
+                    <a href="/tags/Heap/">
+                        <span class="chip bg-color">Heap</span>
                     </a>
                     
                 </div>
@@ -615,13 +619,13 @@ s1">
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2025/01/15/%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91JIT/">
+                <a href="/2025/01/16/glibc-2.39-house_of_apple2/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="西湖论剑2021JIT">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="glibc-2.39:house_of_apple2">
                         
-                        <span class="card-title">西湖论剑2021JIT</span>
+                        <span class="card-title">glibc-2.39:house_of_apple2</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -632,12 +636,12 @@ s1">
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-15
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-16
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            John Doe
+                            q1ming
                             
                         </span>
                     </div>
@@ -649,8 +653,8 @@ s1">
                         <span class="chip bg-color">CTF</span>
                     </a>
                     
-                    <a href="/tags/VM/">
-                        <span class="chip bg-color">VM</span>
+                    <a href="/tags/Heap/">
+                        <span class="chip bg-color">Heap</span>
                     </a>
                     
                 </div>
@@ -841,7 +845,7 @@ s1">
             
                 <span id="year">2019-2025</span>
             
-            <a href="/about" target="_blank">John Doe</a>
+            <a href="/about" target="_blank">q1ming</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
             |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
             

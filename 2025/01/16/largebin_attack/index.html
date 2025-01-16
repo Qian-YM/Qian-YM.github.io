@@ -4,13 +4,14 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="go语言学习笔记, Hexo">
-    <meta name="description" content="基本语法定义变量：类似于全局变量
+    <meta name="keywords" content="largebin-attack, q1ming">
+    <meta name="description" content="总结速递
 
-结构体定义：
+注意：
 
-通道（chan）用于在不同的 goroutine 之间传递数据，它类似于一个管道，允许你在一个 goroutine 中发送数据，并在另一个 goroutine 中接收这些数据。
-在每一个A">
+0x4c0和0x4b0不在一个组内！！！
+
+largebin结构分析largebin 共占用 bins 数组中的64个bin，且分为6个组，每个组的公差不一样；可以理解为这64个large bin个管一个范围，但范围的">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -22,7 +23,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>go语言学习笔记 | Hexo</title>
+    <title>largebin-attack | q1ming</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -69,7 +70,7 @@
                     
                     <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
-                    <span class="logo-span">Hexo</span>
+                    <span class="logo-span">q1ming</span>
                 </a>
             </div>
             
@@ -173,7 +174,7 @@
         
         <img src="/medias/logo.png" class="logo-img circle responsive-img">
         
-        <div class="logo-name">Hexo</div>
+        <div class="logo-name">q1ming</div>
         <div class="logo-desc">
             
             Never really desperate, only the lost of the soul.
@@ -339,12 +340,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">go语言学习笔记</h1>
+                    <h1 class="description center-align post-title">largebin-attack</h1>
                 </div>
             </div>
         </div>
@@ -368,8 +369,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Go/">
-                                <span class="chip bg-color">Go</span>
+                            <a href="/tags/Heap/">
+                                <span class="chip bg-color">Heap</span>
                             </a>
                         
                     </div>
@@ -384,7 +385,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2025-01-15
+                    2025-01-16
                 </div>
                 
 
@@ -408,24 +409,32 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h2><p>定义变量：类似于全局变量</p>
-<p><img src="/go.assets/1736948256264.png" alt="1736948256264"></p>
-<p>结构体定义：</p>
-<p><img src="/go.assets/1736948315120.png" alt="1736948315120"></p>
-<p>通道（<code>chan</code>）用于在不同的 goroutine 之间传递数据，它类似于一个管道，允许你在一个 goroutine 中发送数据，并在另一个 goroutine 中接收这些数据。</p>
-<p>在每一个Arch结构体中有一个bool类型的通道；</p>
-<p><strong>interface（接口）：</strong></p>
-<p>接口定义了某些行为，但没有实现细节。其他类型（如结构体）可以实现这些方法，从而实现这个接口。</p>
-<p><strong>map（映射）：</strong></p>
-<p><img src="/go.assets/1736948715966.png" alt="1736948715966"></p>
-<p>linux是go中的一个类型实例；</p>
-<h2 id="flag包"><a href="#flag包" class="headerlink" title="flag包"></a>flag包</h2><p>Go 语言中的 <code>flag</code> 包用于 <strong>命令行标志（flag）解析</strong>。它允许你定义命令行参数，并通过命令行传递给程序，然后在程序中读取这些参数的值。</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">&quot;flag&quot;</span><br>    <span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-comment">// 定义一个名为 &quot;name&quot; 的字符串标志，默认值为 &quot;World&quot;</span><br>    name := flag.String(<span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-string">&quot;World&quot;</span>, <span class="hljs-string">&quot;Specify the name&quot;</span>)<br><br>    <span class="hljs-comment">// 解析命令行参数</span><br>    flag.Parse()<br><br>    <span class="hljs-comment">// 使用标志值</span><br>    fmt.Printf(<span class="hljs-string">&quot;Hello, %s!\n&quot;</span>, *name)<br>&#125;<br><br></code></pre></td></tr></table></figure>
+                <h2 id="总结速递"><a href="#总结速递" class="headerlink" title="总结速递"></a>总结速递</h2><p><img src="/images/1736688060736.png"></p>
+<p><img src="/images/1736688152999.png"></p>
+<p>注意：</p>
+<ol>
+<li>0x4c0和0x4b0不在一个组内！！！</li>
+</ol>
+<h2 id="largebin结构分析"><a href="#largebin结构分析" class="headerlink" title="largebin结构分析"></a>largebin结构分析</h2><p>largebin 共占用 bins 数组中的64个bin，且分为6个组，每个组的公差不一样；可以理解为这64个large bin个管一个范围，但范围的大小不尽相同。</p>
+<h3 id="fd-bk"><a href="#fd-bk" class="headerlink" title="fd-bk"></a>fd-bk</h3><p>在一开始我们可以先理解largebin只使用了fd&#x2F;bk构成双向链表，其中表头结构也同时具备fd和bk两个域，然后和chunk们一起构成双向循环链表，其中chunk在双链表中的位置是先取决于大小、后取决于进来的时间的：</p>
+<p><img src="/images/largebin1.png">                       </p>
+<h3 id="fd-bk-nextsize"><a href="#fd-bk-nextsize" class="headerlink" title="fd&#x2F;bk_nextsize"></a>fd&#x2F;bk_nextsize</h3><p>我们可以将fd&#x2F;bk_nextsize这两个域理解为加快查找速率而添加进去的（这是由于在fd&#x2F;bk组成的双链表中相同的siz恶的chunk放在一起，逐个遍历浪费大量时间）；所以就建立了另外一个largebin头不参与其中的双向循环链表，其中从每一组相同size的chunk中选择出一个作为代表（也就是最早进来的那个），让它们构成一个双向循环链表，加快查找速率。</p>
+<p><img src="/images/largebin2.png"></p>
+<h2 id="源代码分析"><a href="#源代码分析" class="headerlink" title="源代码分析"></a>源代码分析</h2><p><img src="/images/largebin3.png"></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c">victim_index = largebin_index(size);<br>bck = bin_at(av, victim_index);<span class="hljs-comment">//bck得到对应largebin的头部</span><br>fwd = bck -&gt; fd;<span class="hljs-comment">//fd得到最后一个chunk地址（也是最大的一个）</span><br><span class="hljs-keyword">if</span>(fwd != bck)&#123;<span class="hljs-comment">//这个判断相当于检查双链表是否为空</span><br>	size |= PREV_INUSE;<br>	assert(chunk_main_arena(bck -&gt; bk)); <span class="hljs-comment">//这里提一下，这是我们house_of_apple2遇到_exit触发malloc_assert用的</span><br>	<span class="hljs-keyword">if</span>((<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span>(size) &lt; (<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span>)chunksize_nomask(fwd)))&#123;<br>        <span class="hljs-comment">//这里是最终要攻击的地方</span><br>		fwd = bck;<span class="hljs-comment">//新chunk小于最大的chunk</span><br>		bck = bck -&gt; bk;<br>		victim -&gt; fd_nextsize = fwd -&gt; fd;<br>		victim -&gt; bk_nextsize = fwd -&gt; fd -&gt; bk_nextsize;<br>		fwd -&gt; fd -&gt; bk_nextsize = fwd -&gt; fd -&gt; bk_nextsize -&gt; fd_nextsize = victim;<br>	&#125; <br>	<span class="hljs-keyword">else</span>&#123;<span class="hljs-comment">//新chunk大于等于最大的chunk</span><br>		assert(chunk_main_arena(fwd));<br>		<span class="hljs-keyword">while</span>((<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span>)(size) &lt; chunksize_nomask(fwd))&#123;<br>			fwd = fwd -&gt; fd;<span class="hljs-comment">//从后往前（从大向小）找首个小于等于victim的chunk</span><br>			assert(chunk_main_arena(fwd));<br>		&#125; <br>		<span class="hljs-keyword">if</span>((<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span>)size == (<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span>)chunksize_numask(fwd))&#123;<br>			fwd = fwd -&gt; fd;<span class="hljs-comment">//恰好相等的情况后移一个，保证fwd严格小于victim，此时也说明victim不用管nextsize</span><br>		&#125;<br>		<span class="hljs-keyword">else</span>&#123;<span class="hljs-comment">//victim严格最大</span><br>			victim -&gt; fd_nextsize = fwd;<br>            victim -&gt; bk_nextsize = fwd -&gt; bk_nextsize;<br>            fwd -&gt; bk_nextsize = victim;<br>            victim -&gt; bk_nextsize -&gt; fd_nextsize = victim; <br>		&#125;<br>		bck = fwd -&gt; bk;<span class="hljs-built_in">free</span><br>	&#125;<br>&#125;<br><span class="hljs-keyword">else</span> victim -&gt; fd_nextsize = victim -&gt; bk_nextsize = victim;<br>	<br><br></code></pre></td></tr></table></figure>
 
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">go run main.go -name=Go<br><br></code></pre></td></tr></table></figure>
+<h2 id="攻击方法"><a href="#攻击方法" class="headerlink" title="攻击方法"></a>攻击方法</h2><figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#效果：任意地址写堆地址</span><br><span class="hljs-comment">#将一个较大的chunk先放入到largebin中，修改其bk_nextsize为target-0x20，然后将一个较小的chunk送入该largebin（通常是从unsortedbin中送），此时target就会被写入较小chunk的prevsize域的地址；</span><br><span class="hljs-comment">#其中事先放入largebin中的较大chunk的fd_nextsize不会被用到可以为0；</span><br><span class="hljs-comment">#同样，其fd、bk也可以为0；（原因后续更新）</span><br><br><span class="hljs-comment">#总的来说，就是新的chunk要更小！！！</span><br></code></pre></td></tr></table></figure>
 
-<p>上述例子表示，如果命令行里不传递name这个参数，那么打印出来的就是World，传递了参数那就是Go；</p>
-<p>flag.Parse()用于解析命令行参数；</p>
+
+
+
+
+<p>关于一个报错：</p>
+<p>这是由于我们用了下边那个分支造成的、会有一个完整性检查</p>
+<p><img src="/images/1701098764473.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs assembly"><br>  <br>   0x00007ffff7e61f93 &lt;+2611&gt;:	movups XMMWORD PTR [rdx+0x20],xmm0<br>   0x00007ffff7e61f97 &lt;+2615&gt;:	cmp    QWORD PTR [rax+0x20],rsi<br>   ;这里的rax是fwd-&gt;bk_nextsize、rsi是fwd, 即检查fwd-&gt;bk_nextsize-&gt;fd_nextsize == fwd；<br>   0x00007ffff7e61f9b &lt;+2619&gt;:	<br>   0x00007ffff7e61fa1 &lt;+2625&gt;:	mov    QWORD PTR [rsi+0x28],rdx<br>   0x00007ffff7e61fa5 &lt;+2629&gt;:	mov    rax,QWORD PTR [rdx+0x28]<br>   0x00007ffff7e61fa9 &lt;+2633&gt;:	mov    rdi,rsi<br>   0x00007ffff7e61fac &lt;+2636&gt;:	mov    QWORD PTR [rax+0x20],rdx<br>   0x00007ffff7e61fb0 &lt;+2640&gt;:	mov    r9,QWORD PTR [rdi+0x18]<br>   0x00007ffff7e61fb4 &lt;+2644&gt;:	cmp    QWORD PTR [r9+0x10],rdi<br>   0x00007ffff7e61fb8 &lt;+2648&gt;:	je     0x7ffff7e61bb7 &lt;_int_malloc+1623&gt;<br>   0x00007ffff7e61fbe &lt;+2654&gt;:	lea    rdi,[rip+0x105bcb]        # 0x7ffff7f67b90<br>   0x00007ffff7e61fc5 &lt;+2661&gt;:	call   0x7ffff7e5ea60 &lt;malloc_printerr&gt;<br>   0x00007ffff7e61fca &lt;+2666&gt;:	nop    WORD PTR [rax+rax*1+0x0]<br>   0x00007ffff7e61fd0 &lt;+2672&gt;:	mov    eax,edi<br>   0x00007ffff7e61fd2 &lt;+2674&gt;:	shl    eax,0x6<br>   0x00007ffff7e61fd5 &lt;+2677&gt;:	add    eax,0xc<br>   0x00007ffff7e61fd8 &lt;+2680&gt;:	lea    rdx,[rbp+rax*8-0x10]<br>   0x00007ffff7e61fdd &lt;+2685&gt;:	mov    eax,0x1<br>   0x00007ffff7e61fe2 &lt;+2690&gt;:	jmp    0x7ffff7e61cdc &lt;_int_malloc+1916&gt;<br>   0x00007ffff7e61fe7 &lt;+2695&gt;:	mov    rdi,QWORD PTR [rsi+0x10]<br>   0x00007ffff7e61feb &lt;+2699&gt;:	jmp    0x7ffff7e61fb0 &lt;_int_malloc+2640&gt;<br>   0x00007ffff7e61fed &lt;+2701&gt;:	mov    r13,rbx<br>   0x00007ffff7e61ff0 &lt;+2704&gt;:	shr    r13,0x6<br>   0x00007ffff7e61ff4 &lt;+2708&gt;:	cmp    rbx,0xc3f<br>   0x00007ffff7e61ffb &lt;+2715&gt;:	ja     0x7ffff7e620e8 &lt;_int_malloc+2952&gt;<br>   0x00007ffff7e62001 &lt;+2721&gt;:	lea    eax,[r13+0x30]<br>   0x00007ffff7e62005 &lt;+2725&gt;:	mov    DWORD PTR [rsp+0x8],eax<br>   0x00007ffff7e62009 &lt;+2729&gt;:	jmp    0x7ffff7e617de &lt;_int_malloc+638&gt;<br>   0x00007ffff7e6200e &lt;+2734&gt;:	mov    r14,QWORD PTR [r13+0x8]<br>   0x00007ffff7e62012 &lt;+2738&gt;:	mov    r12,r8<br>   0x00007ffff7e62015 &lt;+2741&gt;:	and    r14,0xfffffffffffffff8<br>   0x00007ffff7e62019 &lt;+2745&gt;:	cmp    r14,rbx<br>   0x00007ffff7e6201c &lt;+2748&gt;:	jb     0x7ffff7e623df &lt;_int_malloc+3711&gt;<br>   0x00007ffff7e62022 &lt;+2754&gt;:	mov    rcx,r14<br>   0x00007ffff7e62025 &lt;+2757&gt;:	mov    rdi,r13<br>   0x00007ffff7e62028 &lt;+2760&gt;:	sub    rcx,rbx<br>   0x00007ffff7e6202b &lt;+2763&gt;:	mov    QWORD PTR [rsp],rcx<br>   0x00007ffff7e6202f &lt;+2767&gt;:	call   0x7ffff7e5f270 &lt;unlink_chunk&gt;<br>   0x00007ffff7e62034 &lt;+2772&gt;:	mov    rcx,QWORD PTR [rsp]<br>   0x00007ffff7e62038 &lt;+2776&gt;:	cmp    rcx,0x1f<br>   0x00007ffff7e6203c &lt;+2780&gt;:	jbe    0x7ffff7e6212e &lt;_int_malloc+3022&gt;<br>   0x00007ffff7e62042 &lt;+2786&gt;:	mov    rax,QWORD PTR [rbp+0x70]<br>   0x00007ffff7e62046 &lt;+2790&gt;:	movq   xmm4,r15<br>   0x00007ffff7e6204b &lt;+2795&gt;:	lea    rdx,[r13+rbx*1+0x0]<br>   0x00007ffff7e62050 &lt;+2800&gt;:	movq   xmm0,rax<br>   0x00007ffff7e62055 &lt;+2805&gt;:	punpcklqdq xmm0,xmm4<br>   0x00007ffff7e62059 &lt;+2809&gt;:	cmp    QWORD PTR [rax+0x18],r15<br>   0x00007ffff7e6205d &lt;+2813&gt;:	jne    0x7ffff7e621f2 &lt;_int_malloc+3218&gt;<br>   0x00007ffff7e62063 &lt;+2819&gt;:	movups XMMWORD PTR [rdx+0x10],xmm0<br>   0x00007ffff7e62067 &lt;+2823&gt;:	mov    QWORD PTR [rbp+0x70],rdx<br>   0x00007ffff7e6206b &lt;+2827&gt;:	mov    QWORD PTR [rax+0x18],rdx<br>   0x00007ffff7e6206f &lt;+2831&gt;:	cmp    rbx,0x3ff<br>   0x00007ffff7e62076 &lt;+2838&gt;:	ja     0x7ffff7e6207c &lt;_int_malloc+2844&gt;<br>   0x00007ffff7e62078 &lt;+2840&gt;:	mov    QWORD PTR [rbp+0x68],rdx<br>   0x00007ffff7e6207c &lt;+2844&gt;:	cmp    rcx,0x3ff<br>   0x00007ffff7e62083 &lt;+2851&gt;:	jbe    0x7ffff7e6208d &lt;_int_malloc+2861&gt;<br>   0x00007ffff7e62085 &lt;+2853&gt;:	pxor   xmm0,xmm0<br>   0x00007ffff7e62089 &lt;+2857&gt;:	movups XMMWORD PTR [rdx+0x20],xmm0<br>   0x00007ffff7e6208d &lt;+2861&gt;:	lea    rax,[rip+0x13cbec]        # 0x7ffff7f9ec80 &lt;main_arena&gt;<br>   0x00007ffff7e62094 &lt;+2868&gt;:	cmp    rbp,rax<br>   0x00007ffff7e62097 &lt;+2871&gt;:	setne  al<br>   0x00007ffff7e6209a &lt;+2874&gt;:	movzx  eax,al<br>   0x00007ffff7e6209d &lt;+2877&gt;:	shl    rax,0x2<br>   0x00007ffff7e620a1 &lt;+2881&gt;:	or     rax,rbx<br>   0x00007ffff7e620a4 &lt;+2884&gt;:	or     rax,0x1<br>   0x00007ffff7e620a8 &lt;+2888&gt;:	mov    QWORD PTR [r13+0x8],rax<br>   0x00007ffff7e620ac &lt;+2892&gt;:	mov    rax,rcx<br>   0x00007ffff7e620af &lt;+2895&gt;:	or     rax,0x1<br>   0x00007ffff7e620b3 &lt;+2899&gt;:	mov    QWORD PTR [rdx+0x8],rax<br>   0x00007ffff7e620b7 &lt;+2903&gt;:	mov    QWORD PTR [r13+r14*1+0x0],rcx<br>   0x00007ffff7e620bc &lt;+2908&gt;:	mov    eax,DWORD PTR [rip+0x1433fa]        # 0x7ffff7fa54bc &lt;perturb_byte&gt;<br>   0x00007ffff7e620c2 &lt;+2914&gt;:	lea    rcx,[r13+0x10]<br>   0x00007ffff7e620c6 &lt;+2918&gt;:	test   eax,eax<br>   0x00007ffff7e620c8 &lt;+2920&gt;:	je     0x7ffff7e61a22 &lt;_int_malloc+1218&gt;<br>   0x00007ffff7e620ce &lt;+2926&gt;:	xor    al,0xff<br>   0x00007ffff7e620d0 &lt;+2928&gt;:	mov    rdi,rcx<br>   0x00007ffff7e620d3 &lt;+2931&gt;:	mov    rdx,r12<br>   0x00007ffff7e620d6 &lt;+2934&gt;:	mov    esi,eax<br>   0x00007ffff7e620d8 &lt;+2936&gt;:	call   0x7ffff7df1310 &lt;*ABS*+0x9bb40@plt&gt;<br>   0x00007ffff7e620dd &lt;+2941&gt;:	mov    rcx,rax<br>   0x00007ffff7e620e0 &lt;+2944&gt;:	jmp    0x7ffff7e61a22 &lt;_int_malloc+1218&gt;<br>   0x00007ffff7e620e5 &lt;+2949&gt;:	nop    DWORD PTR [rax]<br>   0x00007ffff7e620e8 &lt;+2952&gt;:	mov    r13,rbx<br>   0x00007ffff7e620eb &lt;+2955&gt;:	shr    r13,0x9<br>   0x00007ffff7e620ef &lt;+2959&gt;:	cmp    rbx,0x29ff<br>   0x00007ffff7e620f6 &lt;+2966&gt;:	ja     0x7ffff7e62105 &lt;_int_malloc+2981&gt;<br>   0x00007ffff7e620f8 &lt;+2968&gt;:	lea    eax,[r13+0x5b]<br>   0x00007ffff7e620fc &lt;+2972&gt;:	mov    DWORD PTR [rsp+0x8],eax<br>   0x00007ffff7e62100 &lt;+2976&gt;:	jmp    0x7ffff7e617de &lt;_int_malloc+638&gt;<br>   0x00007ffff7e62105 &lt;+2981&gt;:	mov    r13,rbx<br>   0x00007ffff7e62108 &lt;+2984&gt;:	shr    r13,0xc<br>   0x00007ffff7e6210c &lt;+2988&gt;:	cmp    rbx,0xafff<br>   0x00007ffff7e62113 &lt;+2995&gt;:	ja     0x7ffff7e62179 &lt;_int_malloc+3097&gt;<br>   0x00007ffff7e62115 &lt;+2997&gt;:	lea    eax,[r13+0x6e]<br>   0x00007ffff7e62119 &lt;+3001&gt;:	mov    DWORD PTR [rsp+0x8],eax<br>   0x00007ffff7e6211d &lt;+3005&gt;:	jmp    0x7ffff7e617de &lt;_int_malloc+638&gt;<br>   0x00007ffff7e62122 &lt;+3010&gt;:	lea    rdi,[rip+0x1001ab]        # 0x7ffff7f622d4<br>   0x00007ffff7e62129 &lt;+3017&gt;:	call   0x7ffff7e5ea60 &lt;malloc_printerr&gt;<br>   0x00007ffff7e6212e &lt;+3022&gt;:	lea    rax,[rip+0x13cb4b]        # 0x7ffff7f9ec80 &lt;main_arena&gt;<br>   0x00007ffff7e62135 &lt;+3029&gt;:	or     QWORD PTR [r13+r14*1+0x8],0x1<br>   0x00007ffff7e6213b &lt;+3035&gt;:	cmp    rbp,rax<br>   0x00007ffff7e6213e &lt;+3038&gt;:	je     0x7ffff7e620bc &lt;_int_malloc+2908&gt;<br>   0x00007ffff7e62144 &lt;+3044&gt;:	or     QWORD PTR [r13+0x8],0x4<br>   0x00007ffff7e62149 &lt;+3049&gt;:	jmp    0x7ffff7e620bc &lt;_int_malloc+2908&gt;<br>=&gt; 0x00007ffff7e6214e &lt;+3054&gt;:	lea    rdi,[rip+0x1059fb]        # 0x7ffff7f67b50<br>   0x00007ffff7e62155 &lt;+3061&gt;:	call   0x7ffff7e5ea60 &lt;malloc_printerr&gt;<br>   0x00007ffff7e6215a &lt;+3066&gt;:	lea    rcx,[rip+0x105f4f]        # 0x7ffff7f680b0 &lt;__PRETTY_FUNCTION__.7&gt;<br>   0x00007ffff7e62161 &lt;+3073&gt;:	mov    edx,0x10b4<br>   0x00007ffff7e62166 &lt;+3078&gt;:	lea    rsi,[rip+0x100007]        # 0x7ffff7f62174<br>   0x00007ffff7e6216d &lt;+3085&gt;:	lea    rdi,[rip+0x100157]        # 0x7ffff7f622cb<br>   0x00007ffff7e62174 &lt;+3092&gt;:	call   0x7ffff7e001a0 &lt;__libc_assert_fail&gt;<br>   0x00007ffff7e62179 &lt;+3097&gt;:	mov    r13,rbx<br>   0x00007ffff7e6217c &lt;+3100&gt;:	shr    r13,0xf<br>   0x00007ffff7e62180 &lt;+3104&gt;:	cmp    rbx,0x27fff<br>   0x00007ffff7e62187 &lt;+3111&gt;:	ja     0x7ffff7e621c6 &lt;_int_malloc+3174&gt;<br>   0x00007ffff7e62189 &lt;+3113&gt;:	lea    eax,[r13+0x77]<br>   0x00007ffff7e6218d &lt;+3117&gt;:	mov    DWORD PTR [rsp+0x8],eax<br>   0x00007ffff7e62191 &lt;+3121&gt;:	jmp    0x7ffff7e617de &lt;_int_malloc+638&gt;<br>   0x00007ffff7e62196 &lt;+3126&gt;:	lea    r10,[r11+0x10]<br>   0x00007ffff7e6219a &lt;+3130&gt;:	mov    rax,QWORD PTR fs:[r14]<br>   0x00007ffff7e6219e &lt;+3134&gt;:	mov    rcx,QWORD PTR [rax+r10*8]<br>   0x00007ffff7e621a2 &lt;+3138&gt;:	test   cl,0xf<br>   0x00007ffff7e621a5 &lt;+3141&gt;:	jne    0x7ffff7e621e6 &lt;_int_malloc+3206&gt;<br>   0x00007ffff7e621a7 &lt;+3143&gt;:	mov    rdx,rcx<br>   0x00007ffff7e621aa &lt;+3146&gt;:	shr    rdx,0xc<br>   0x00007ffff7e621ae &lt;+3150&gt;:	xor    rdx,QWORD PTR [rcx]<br>   0x00007ffff7e621b1 &lt;+3153&gt;:	mov    QWORD PTR [rax+r10*8],rdx<br>   0x00007ffff7e621b5 &lt;+3157&gt;:	sub    WORD PTR [rax+r11*2],0x1<br>   0x00007ffff7e621bb &lt;+3163&gt;:	xor    eax,eax<br>   0x00007ffff7e621bd &lt;+3165&gt;:	mov    QWORD PTR [rcx+0x8],rax<br>   0x00007ffff7e621c1 &lt;+3169&gt;:	jmp    0x7ffff7e61a22 &lt;_int_malloc+1218&gt;<br>   0x00007ffff7e621c6 &lt;+3174&gt;:	mov    r13,rbx<br>   0x00007ffff7e621c9 &lt;+3177&gt;:	mov    eax,0x2<br>   0x00007ffff7e621ce &lt;+3182&gt;:	shr    r13,0x12<br>   0x00007ffff7e621d2 &lt;+3186&gt;:	cmp    r13,rax<br>   0x00007ffff7e621d5 &lt;+3189&gt;:	cmova  r13,rax<br>   0x00007ffff7e621d9 &lt;+3193&gt;:	lea    eax,[r13+0x7c]<br>   0x00007ffff7e621dd &lt;+3197&gt;:	mov    DWORD PTR [rsp+0x8],eax<br>   0x00007ffff7e621e1 &lt;+3201&gt;:	jmp    0x7ffff7e617de &lt;_int_malloc+638&gt;<br>   0x00007ffff7e621e6 &lt;+3206&gt;:	lea    rdi,[rip+0x1059db]        # 0x7ffff7f67bc8<br>   0x00007ffff7e621ed &lt;+3213&gt;:	call   0x7ffff7e5ea60 &lt;malloc_printerr&gt;<br>   0x00007ffff7e621f2 &lt;+3218&gt;:	lea    rdi,[rip+0x105a57]        # 0x7ffff7f67c50<br>   0x00007ffff7e621f9 &lt;+3225&gt;:	call   0x7ffff7e5ea60 &lt;malloc_printerr&gt;<br>   0x00007ffff7e621fe &lt;+3230&gt;:	mov    r13,QWORD PTR [rdx+0x28]<br>   0x00007ffff7e62202 &lt;+3234&gt;:	mov    r12,r8<br>   0x00007ffff7e62205 &lt;+3237&gt;:	jmp    0x7ffff7e6220b &lt;_int_malloc+3243&gt;<br>   0x00007ffff7e62207 &lt;+3239&gt;:	mov    r13,QWORD PTR [r13+0x28]<br>   0x00007ffff7e6220b &lt;+3243&gt;:	mov    rdx,QWORD PTR [r13+0x8]<br>   0x00007ffff7e6220f &lt;+3247&gt;:	mov    r14,rdx<br>   0x00007ffff7e62212 &lt;+3250&gt;:	and    r14,0xfffffffffffffff8<br>   0x00007ffff7e62216 &lt;+3254&gt;:	cmp    r14,rbx<br>   0x00007ffff7e62219 &lt;+3257&gt;:	jb     0x7ffff7e62207 &lt;_int_malloc+3239&gt;<br>   0x00007ffff7e6221b &lt;+3259&gt;:	cmp    QWORD PTR [rax+0x8],r13<br>   0x00007ffff7e6221f &lt;+3263&gt;:	je     0x7ffff7e6222d &lt;_int_malloc+3277&gt;<br>   0x00007ffff7e62221 &lt;+3265&gt;:	mov    rax,QWORD PTR [r13+0x10]<br>   0x00007ffff7e62225 &lt;+3269&gt;:	cmp    rdx,QWORD PTR [rax+0x8]<br>   0x00007ffff7e62229 &lt;+3273&gt;:	cmove  r13,rax<br>   0x00007ffff7e6222d &lt;+3277&gt;:	mov    rcx,r14<br>   0x00007ffff7e62230 &lt;+3280&gt;:	mov    rdi,r13<br>   0x00007ffff7e62233 &lt;+3283&gt;:	sub    rcx,rbx<br>   0x00007ffff7e62236 &lt;+3286&gt;:	mov    QWORD PTR [rsp],rcx<br>   0x00007ffff7e6223a &lt;+3290&gt;:	call   0x7ffff7e5f270 &lt;unlink_chunk&gt;<br>   0x00007ffff7e6223f &lt;+3295&gt;:	mov    rcx,QWORD PTR [rsp]<br>   0x00007ffff7e62243 &lt;+3299&gt;:	cmp    rcx,0x1f<br>   0x00007ffff7e62247 &lt;+3303&gt;:	jbe    0x7ffff7e6240a &lt;_int_malloc+3754&gt;<br>   0x00007ffff7e6224d &lt;+3309&gt;:	mov    rax,QWORD PTR [rbp+0x70]<br>   0x00007ffff7e62251 &lt;+3313&gt;:	movq   xmm3,r15<br>   0x00007ffff7e62256 &lt;+3318&gt;:	lea    rdx,[r13+rbx*1+0x0]<br>   0x00007ffff7e6225b &lt;+3323&gt;:	movq   xmm0,rax<br>   0x00007ffff7e62260 &lt;+3328&gt;:	punpcklqdq xmm0,xmm3<br>   0x00007ffff7e62264 &lt;+3332&gt;:	cmp    QWORD PTR [rax+0x18],r15<br>   0x00007ffff7e62268 &lt;+3336&gt;:	jne    0x7ffff7e623fe &lt;_int_malloc+3742&gt;<br>   0x00007ffff7e6226e &lt;+3342&gt;:	movups XMMWORD PTR [rdx+0x10],xmm0<br>   0x00007ffff7e62272 &lt;+3346&gt;:	mov    QWORD PTR [rbp+0x70],rdx<br>   0x00007ffff7e62276 &lt;+3350&gt;:	mov    QWORD PTR [rax+0x18],rdx<br>   0x00007ffff7e6227a &lt;+3354&gt;:	cmp    rcx,0x3ff<br>   0x00007ffff7e62281 &lt;+3361&gt;:	jbe    0x7ffff7e6228b &lt;_int_malloc+3371&gt;<br>   0x00007ffff7e62283 &lt;+3363&gt;:	pxor   xmm0,xmm0<br>   0x00007ffff7e62287 &lt;+3367&gt;:	movups XMMWORD PTR [rdx+0x20],xmm0<br>   0x00007ffff7e6228b &lt;+3371&gt;:	lea    rax,[rip+0x13c9ee]        # 0x7ffff7f9ec80 &lt;main_arena&gt;<br>   0x00007ffff7e62292 &lt;+3378&gt;:	cmp    rbp,rax<br>   0x00007ffff7e62295 &lt;+3381&gt;:	setne  al<br>   0x00007ffff7e62298 &lt;+3384&gt;:	movzx  eax,al<br>   0x00007ffff7e6229b &lt;+3387&gt;:	shl    rax,0x2<br>   0x00007ffff7e6229f &lt;+3391&gt;:	or     rax,rbx<br>   0x00007ffff7e622a2 &lt;+3394&gt;:	or     rax,0x1<br>   0x00007ffff7e622a6 &lt;+3398&gt;:	mov    QWORD PTR [r13+0x8],rax<br>   0x00007ffff7e622aa &lt;+3402&gt;:	mov    rax,rcx<br>   0x00007ffff7e622ad &lt;+3405&gt;:	or     rax,0x1<br>   0x00007ffff7e622b1 &lt;+3409&gt;:	mov    QWORD PTR [rdx+0x8],rax<br>   0x00007ffff7e622b5 &lt;+3413&gt;:	mov    QWORD PTR [r13+r14*1+0x0],rcx<br>   0x00007ffff7e622ba &lt;+3418&gt;:	lea    rcx,[r13+0x10]<br>   0x00007ffff7e622be &lt;+3422&gt;:	mov    rdi,rcx<br>   0x00007ffff7e622c1 &lt;+3425&gt;:	mov    rsi,r12<br>   0x00007ffff7e622c4 &lt;+3428&gt;:	mov    QWORD PTR [rsp],rcx<br>   0x00007ffff7e622c8 &lt;+3432&gt;:	call   0x7ffff7e5eba0 &lt;alloc_perturb&gt;<br>   0x00007ffff7e622cd &lt;+3437&gt;:	mov    rcx,QWORD PTR [rsp]<br>   0x00007ffff7e622d1 &lt;+3441&gt;:	jmp    0x7ffff7e61a22 &lt;_int_malloc+1218&gt;<br>   0x00007ffff7e622d6 &lt;+3446&gt;:	lea    rdi,[rdx+rbx*1]<br>   0x00007ffff7e622da &lt;+3450&gt;:	sub    rax,rbx<br>   0x00007ffff7e622dd &lt;+3453&gt;:	mov    r12,r8<br>   0x00007ffff7e622e0 &lt;+3456&gt;:	movq   xmm0,rdi<br>   0x00007ffff7e622e5 &lt;+3461&gt;:	mov    QWORD PTR [rbp+0x78],rdi<br>   0x00007ffff7e622e9 &lt;+3465&gt;:	punpcklqdq xmm0,xmm0<br>   0x00007ffff7e622ed &lt;+3469&gt;:	movups XMMWORD PTR [rbp+0x68],xmm0<br>   0x00007ffff7e622f1 &lt;+3473&gt;:	movq   xmm0,r15<br>   0x00007ffff7e622f6 &lt;+3478&gt;:	punpcklqdq xmm0,xmm0<br>   0x00007ffff7e622fa &lt;+3482&gt;:	movups XMMWORD PTR [rdi+0x10],xmm0<br>   0x00007ffff7e622fe &lt;+3486&gt;:	cmp    rax,0x3ff<br>   0x00007ffff7e62304 &lt;+3492&gt;:	jbe    0x7ffff7e6230e &lt;_int_malloc+3502&gt;<br>   0x00007ffff7e62306 &lt;+3494&gt;:	pxor   xmm0,xmm0<br>   0x00007ffff7e6230a &lt;+3498&gt;:	movups XMMWORD PTR [rdi+0x20],xmm0<br>   0x00007ffff7e6230e &lt;+3502&gt;:	lea    rcx,[rip+0x13c96b]        # 0x7ffff7f9ec80 &lt;main_arena&gt;<br>   0x00007ffff7e62315 &lt;+3509&gt;:	cmp    rbp,rcx<br>   0x00007ffff7e62318 &lt;+3512&gt;:	setne  cl<br>   0x00007ffff7e6231b &lt;+3515&gt;:	movzx  ecx,cl<br>   0x00007ffff7e6231e &lt;+3518&gt;:	shl    rcx,0x2<br>   0x00007ffff7e62322 &lt;+3522&gt;:	or     rcx,rbx<br>   0x00007ffff7e62325 &lt;+3525&gt;:	or     rcx,0x1<br>   0x00007ffff7e62329 &lt;+3529&gt;:	mov    QWORD PTR [rdx+0x8],rcx<br>   0x00007ffff7e6232d &lt;+3533&gt;:	mov    rcx,rax<br>   0x00007ffff7e62330 &lt;+3536&gt;:	or     rcx,0x1<br>   0x00007ffff7e62334 &lt;+3540&gt;:	mov    QWORD PTR [rdi+0x8],rcx<br>   0x00007ffff7e62338 &lt;+3544&gt;:	lea    rcx,[rdx+0x10]<br>   0x00007ffff7e6233c &lt;+3548&gt;:	mov    QWORD PTR [rsi],rax<br>   0x00007ffff7e6233f &lt;+3551&gt;:	jmp    0x7ffff7e622be &lt;_int_malloc+3422&gt;<br>   0x00007ffff7e62344 &lt;+3556&gt;:	lea    rcx,[rip+0x105d65]        # 0x7ffff7f680b0 &lt;__PRETTY_FUNCTION__.7&gt;<br>   0x00007ffff7e6234b &lt;+3563&gt;:	mov    edx,0x1013<br>   0x00007ffff7e62350 &lt;+3568&gt;:	lea    rsi,[rip+0xffe1d]        # 0x7ffff7f62174<br>   0x00007ffff7e62357 &lt;+3575&gt;:	lea    rdi,[rip+0xfff56]        # 0x7ffff7f622b4<br>   0x00007ffff7e6235e &lt;+3582&gt;:	call   0x7ffff7e001a0 &lt;__libc_assert_fail&gt;<br>   0x00007ffff7e62363 &lt;+3587&gt;:	lea    rdx,[rip+0x13c916]        # 0x7ffff7f9ec80 &lt;main_arena&gt;<br>   0x00007ffff7e6236a &lt;+3594&gt;:	lea    rsi,[rcx+rbx*1]<br>   0x00007ffff7e6236e &lt;+3598&gt;:	mov    r12,r8<br>   0x00007ffff7e62371 &lt;+3601&gt;:	cmp    rbp,rdx<br>   0x00007ffff7e62374 &lt;+3604&gt;:	mov    QWORD PTR [rbp+0x60],rsi<br>   0x00007ffff7e62378 &lt;+3608&gt;:	setne  dl<br>   0x00007ffff7e6237b &lt;+3611&gt;:	sub    rax,rbx<br>   0x00007ffff7e6237e &lt;+3614&gt;:	add    rcx,0x10<br>   0x00007ffff7e62382 &lt;+3618&gt;:	movzx  edx,dl<br>   0x00007ffff7e62385 &lt;+3621&gt;:	or     rax,0x1<br>   0x00007ffff7e62389 &lt;+3625&gt;:	shl    rdx,0x2<br>   0x00007ffff7e6238d &lt;+3629&gt;:	or     rdx,rbx<br>   0x00007ffff7e62390 &lt;+3632&gt;:	or     rdx,0x1<br>   0x00007ffff7e62394 &lt;+3636&gt;:	mov    QWORD PTR [rcx-0x8],rdx<br>   0x00007ffff7e62398 &lt;+3640&gt;:	mov    QWORD PTR [rsi+0x8],rax<br>   0x00007ffff7e6239c &lt;+3644&gt;:	jmp    0x7ffff7e622be &lt;_int_malloc+3422&gt;<br>   0x00007ffff7e623a1 &lt;+3649&gt;:	mov    rsi,rbp<br>   0x00007ffff7e623a4 &lt;+3652&gt;:	mov    rdi,rbx<br>   0x00007ffff7e623a7 &lt;+3655&gt;:	mov    r12,r8<br>   0x00007ffff7e623aa &lt;+3658&gt;:	call   0x7ffff7e60d20 &lt;sysmalloc&gt;<br>   0x00007ffff7e623af &lt;+3663&gt;:	mov    rcx,rax<br>   0x00007ffff7e623b2 &lt;+3666&gt;:	test   rax,rax<br>   0x00007ffff7e623b5 &lt;+3669&gt;:	jne    0x7ffff7e622be &lt;_int_malloc+3422&gt;<br>   0x00007ffff7e623bb &lt;+3675&gt;:	jmp    0x7ffff7e61a22 &lt;_int_malloc+1218&gt;<br>   0x00007ffff7e623c0 &lt;+3680&gt;:	lea    rcx,[rip+0x105ce9]        # 0x7ffff7f680b0 &lt;__PRETTY_FUNCTION__.7&gt;<br>   0x00007ffff7e623c7 &lt;+3687&gt;:	mov    edx,0x100f<br>   0x00007ffff7e623cc &lt;+3692&gt;:	lea    rsi,[rip+0xffda1]        # 0x7ffff7f62174<br>   0x00007ffff7e623d3 &lt;+3699&gt;:	lea    rdi,[rip+0xffeda]        # 0x7ffff7f622b4<br>   0x00007ffff7e623da &lt;+3706&gt;:	call   0x7ffff7e001a0 &lt;__libc_assert_fail&gt;<br>   0x00007ffff7e623df &lt;+3711&gt;:	lea    rcx,[rip+0x105cca]        # 0x7ffff7f680b0 &lt;__PRETTY_FUNCTION__.7&gt;<br>   0x00007ffff7e623e6 &lt;+3718&gt;:	mov    edx,0x10c7<br>   0x00007ffff7e623eb &lt;+3723&gt;:	lea    rsi,[rip+0xffd82]        # 0x7ffff7f62174<br>   0x00007ffff7e623f2 &lt;+3730&gt;:	lea    rdi,[rip+0x105827]        # 0x7ffff7f67c20<br>   0x00007ffff7e623f9 &lt;+3737&gt;:	call   0x7ffff7e001a0 &lt;__libc_assert_fail&gt;<br>   0x00007ffff7e623fe &lt;+3742&gt;:	lea    rdi,[rip+0x1057f3]        # 0x7ffff7f67bf8<br>   0x00007ffff7e62405 &lt;+3749&gt;:	call   0x7ffff7e5ea60 &lt;malloc_printerr&gt;<br>   0x00007ffff7e6240a &lt;+3754&gt;:	lea    rax,[rip+0x13c86f]        # 0x7ffff7f9ec80 &lt;main_arena&gt;<br>   0x00007ffff7e62411 &lt;+3761&gt;:	or     QWORD PTR [r13+r14*1+0x8],0x1<br>   0x00007ffff7e62417 &lt;+3767&gt;:	cmp    rbp,rax<br>   0x00007ffff7e6241a &lt;+3770&gt;:	je     0x7ffff7e622ba &lt;_int_malloc+3418&gt;<br>   0x00007ffff7e62420 &lt;+3776&gt;:	or     QWORD PTR [r13+0x8],0x4<br>   0x00007ffff7e62425 &lt;+3781&gt;:	jmp    0x7ffff7e622ba &lt;_int_malloc+3418&gt;<br>   0x00007ffff7e6242a &lt;+3786&gt;:	lea    rcx,[rip+0x105c7f]        # 0x7ffff7f680b0 &lt;__PRETTY_FUNCTION__.7&gt;<br>   0x00007ffff7e62431 &lt;+3793&gt;:	mov    edx,0x1002<br>   0x00007ffff7e62436 &lt;+3798&gt;:	lea    rsi,[rip+0xffd37]        # 0x7ffff7f62174<br>   0x00007ffff7e6243d &lt;+3805&gt;:	lea    rdi,[rip+0xffe55]        # 0x7ffff7f62299<br>   0x00007ffff7e62444 &lt;+3812&gt;:	call   0x7ffff7e001a0 &lt;__libc_assert_fail&gt;<br>End of assembler dump.<br><br></code></pre></td></tr></table></figure>
+
+<p>1. </p>
 
                 
             </div>
@@ -442,7 +451,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="/about" rel="external nofollow noreferrer">John Doe</a>
+                    <a href="/about" rel="external nofollow noreferrer">q1ming</a>
                 </span>
             </div>
             <div class="reprint__type">
@@ -452,7 +461,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2025/01/15/go/">http://example.com/2025/01/15/go/</a>
+                    <a href="http://example.com/2025/01/16/largebin_attack/">http://example.com/2025/01/16/largebin_attack/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -465,7 +474,7 @@
                     All articles in this blog are used except for special statements
                     <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
                     reprint policy. If reproduced, please indicate source
-                    <a href="/about" target="_blank">John Doe</a>
+                    <a href="/about" target="_blank">q1ming</a>
                     !
                 </span>
             </div>
@@ -490,8 +499,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Go/">
-                                    <span class="chip bg-color">Go</span>
+                                <a href="/tags/Heap/">
+                                    <span class="chip bg-color">Heap</span>
                                 </a>
                             
                         </div>
@@ -574,13 +583,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2025/01/16/GitHub/">
+                <a href="/2025/01/16/md5/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="Github笔记">
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="md5">
                         
-                        <span class="card-title">Github笔记</span>
+                        <span class="card-title">md5</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -596,7 +605,7 @@
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            John Doe
+                            q1ming
                             
                         </span>
                     </div>
@@ -604,8 +613,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/github/">
-                        <span class="chip bg-color">github</span>
+                    <a href="/tags/Crypto/">
+                        <span class="chip bg-color">Crypto</span>
                     </a>
                     
                 </div>
@@ -619,13 +628,13 @@
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2025/01/15/%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81ker/">
+                <a href="/2025/01/16/house_of_husk/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="强网拟态ker">
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="house_of_husk">
                         
-                        <span class="card-title">强网拟态ker</span>
+                        <span class="card-title">house_of_husk</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -636,12 +645,12 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-15
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-16
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            John Doe
+                            q1ming
                             
                         </span>
                     </div>
@@ -649,12 +658,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/kernel/">
-                        <span class="chip bg-color">kernel</span>
-                    </a>
-                    
-                    <a href="/tags/CTF/">
-                        <span class="chip bg-color">CTF</span>
+                    <a href="/tags/Heap/">
+                        <span class="chip bg-color">Heap</span>
                     </a>
                     
                 </div>
@@ -845,7 +850,7 @@
             
                 <span id="year">2019-2025</span>
             
-            <a href="/about" target="_blank">John Doe</a>
+            <a href="/about" target="_blank">q1ming</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
             |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
             

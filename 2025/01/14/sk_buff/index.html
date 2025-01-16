@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="eBPF与sk_buff, Hexo">
+    <meta name="keywords" content="eBPF与sk_buff, q1ming">
     <meta name="description" content="sk_buff
 func#0 @00: R1&amp;#x3D;ctx(id&amp;#x3D;0,off&amp;#x3D;0,imm&amp;#x3D;0) R10&amp;#x3D;fp00: (bf) r7 &amp;#x3D; r11: R1&amp;#x3D;ctx(id&amp;#x3D;">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,7 +18,7 @@ func#0 @00: R1&amp;#x3D;ctx(id&amp;#x3D;0,off&amp;#x3D;0,imm&amp;#x3D;0) R10&amp
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>eBPF与sk_buff | Hexo</title>
+    <title>eBPF与sk_buff | q1ming</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -65,7 +65,7 @@ func#0 @00: R1&amp;#x3D;ctx(id&amp;#x3D;0,off&amp;#x3D;0,imm&amp;#x3D;0) R10&amp
                     
                     <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
-                    <span class="logo-span">Hexo</span>
+                    <span class="logo-span">q1ming</span>
                 </a>
             </div>
             
@@ -169,7 +169,7 @@ func#0 @00: R1&amp;#x3D;ctx(id&amp;#x3D;0,off&amp;#x3D;0,imm&amp;#x3D;0) R10&amp
         
         <img src="/medias/logo.png" class="logo-img circle responsive-img">
         
-        <div class="logo-name">Hexo</div>
+        <div class="logo-name">q1ming</div>
         <div class="logo-desc">
             
             Never really desperate, only the lost of the soul.
@@ -425,25 +425,28 @@ func#0 @00: R1&amp;#x3D;ctx(id&amp;#x3D;0,off&amp;#x3D;0,imm&amp;#x3D;0) R10&amp
 <li><p>如果r4超过to的缓冲区长度：</p>
 <p> BPF_MOV64_IMM(BPF_REG_4, 0x20000),  &#x2F;&#x2F;缓冲区长度只有0x2000</p>
 <p> 会在verifier报错：</p>
-<p> <img src="/images/1734339238278.png" alt="1734339238278"></p>
 </li>
+</ol>
+<p><img src="/images/1734339238278.png"></p>
+<ol start="2">
 <li><p>如果r4仅仅超过了write的长度（sk_buff中数据的长度）：</p>
 <p> BPF_MOV64_IMM(BPF_REG_4, 0x800), &#x2F;&#x2F;只write了0x100个字节</p>
 <p> 则会在运行时返回一个错误值：</p>
-<p> <img src="/images/1734339332623.png" alt="1734339332623"></p>
-</li>
-<li><p>完全正确时，返回值是0：</p>
-<p> <img src="/images/1734339395501.png" alt="1734339395501"></p>
 </li>
 </ol>
+<p><img src="/images/1734339332623.png"></p>
+<ol start="3">
+<li>完全正确时，返回值是0：</li>
+</ol>
+<p><img src="/images/1734339395501.png"></p>
 <h2 id="堆栈"><a href="#堆栈" class="headerlink" title="堆栈"></a>堆栈</h2><p>r10寄存器是只读寄存器；</p>
 <p>堆栈指针确实不支持SUB指令，只能用ADD指令加一个负数来实现；</p>
 <p>在ebpf程序一开始，r10寄存器存放的栈地址的最大值，任何栈指针的增减不能大于这个地址；</p>
-<p><img src="/images/1734347303437.png" alt="1734347303437"></p>
+<p><img src="/images/1734347303437.png"></p>
 <p>fp-16存放一个指针，然后开辟32字节空间，这个时候如果load34字节的sk_buff中的数据：</p>
-<p><img src="/images/1734347343038.png" alt="1734347343038"></p>
+<p><img src="/images/1734347343038.png"></p>
 <p>则会得到如下报错：</p>
-<p><img src="/images/1734347360849.png" alt="1734347360849"></p>
+<p><img src="/images/1734347360849.png"></p>
 <p>但是如果不存放那个指针就不会出错；</p>
 <p>但是如果在这个fp-16的位置存放一个普通的标量数字，则可以被sk_buff覆盖；栈上的指针有着相应的标记？后续可以读取并使用？</p>
 <p>这里还需要注意堆栈的一个好处，map的空间是用户可读的，所以正常情况下是不能存入指针类型的数据的，但是堆栈却没有这个问题；</p>
@@ -470,7 +473,7 @@ func#0 @00: R1&amp;#x3D;ctx(id&amp;#x3D;0,off&amp;#x3D;0,imm&amp;#x3D;0) R10&amp
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="/about" rel="external nofollow noreferrer">John Doe</a>
+                    <a href="/about" rel="external nofollow noreferrer">q1ming</a>
                 </span>
             </div>
             <div class="reprint__type">
@@ -493,7 +496,7 @@ func#0 @00: R1&amp;#x3D;ctx(id&amp;#x3D;0,off&amp;#x3D;0,imm&amp;#x3D;0) R10&amp
                     All articles in this blog are used except for special statements
                     <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
                     reprint policy. If reproduced, please indicate source
-                    <a href="/about" target="_blank">John Doe</a>
+                    <a href="/about" target="_blank">q1ming</a>
                     !
                 </span>
             </div>
@@ -628,7 +631,7 @@ func#0 @00: R1&amp;#x3D;ctx(id&amp;#x3D;0,off&amp;#x3D;0,imm&amp;#x3D;0) R10&amp
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            John Doe
+                            q1ming
                             
                         </span>
                     </div>
@@ -673,7 +676,7 @@ func#0 @00: R1&amp;#x3D;ctx(id&amp;#x3D;0,off&amp;#x3D;0,imm&amp;#x3D;0) R10&amp
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            John Doe
+                            q1ming
                             
                         </span>
                     </div>
@@ -877,7 +880,7 @@ func#0 @00: R1&amp;#x3D;ctx(id&amp;#x3D;0,off&amp;#x3D;0,imm&amp;#x3D;0) R10&amp
             
                 <span id="year">2019-2025</span>
             
-            <a href="/about" target="_blank">John Doe</a>
+            <a href="/about" target="_blank">q1ming</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
             |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
             

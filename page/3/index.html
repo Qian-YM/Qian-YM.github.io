@@ -4,8 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Hexo">
-    <meta name="description" content="Hexo">
+    <meta name="keywords" content="q1ming">
+    <meta name="description" content="q1ming">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +17,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Hexo</title>
+    <title>q1ming</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -60,7 +60,7 @@
                     
                     <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
-                    <span class="logo-span">Hexo</span>
+                    <span class="logo-span">q1ming</span>
                 </a>
             </div>
             
@@ -164,7 +164,7 @@
         
         <img src="/medias/logo.png" class="logo-img circle responsive-img">
         
-        <div class="logo-name">Hexo</div>
+        <div class="logo-name">q1ming</div>
         <div class="logo-desc">
             
             Never really desperate, only the lost of the soul.
@@ -396,25 +396,26 @@
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2025/01/14/SU_JIT/">
+                    <a href="/2025/01/14/SU_text/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="SUctf-JIT16">
+                            <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="SUctf-Text">
                             
-                            <span class="card-title">SUctf-JIT16</span>
+                            <span class="card-title">SUctf-Text</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                逆向分析寄存器 : ax, bx, cx, dx
-opcode：
-mov指令opcode &#x3D;&#x3D; 0x00:
-​	mov reg1, reg2
-opcode &#x3D;&#x3D; 0x01:
-​	mov    ax, 
+                                check
+
+
+逆向分析opcode:
+byte0: 
+1:菜单堆：
+add_note ： p8(1) + p8(0x10) + p8(idx) + p32(size)free_note : p8(1) + p8(0x11) + p8(id
                             
                         </div>
                         <div class="publish-info">
@@ -424,7 +425,7 @@ opcode &#x3D;&#x3D; 0x01:
                             <span class="publish-author">
                                 
                                 <i class="fas fa-user fa-fw"></i>
-                                John Doe
+                                q1ming
                                 
                             </span>
                         </div>
@@ -437,8 +438,8 @@ opcode &#x3D;&#x3D; 0x01:
                             <span class="chip bg-color">CTF</span>
                         </a>
                         
-                        <a href="/tags/VM/">
-                            <span class="chip bg-color">VM</span>
+                        <a href="/tags/Heap/">
+                            <span class="chip bg-color">Heap</span>
                         </a>
                         
                     </div>
@@ -471,7 +472,7 @@ opcode &#x3D;&#x3D; 0x01:
                             <span class="publish-author">
                                 
                                 <i class="fas fa-user fa-fw"></i>
-                                John Doe
+                                q1ming
                                 
                             </span>
                         </div>
@@ -510,7 +511,7 @@ init#!/bin/sh[ -d /dev ] || mkdir -m 0755 /dev[ -d /sys ] || mkdir /sys[ -d /pro
                             <span class="publish-author">
                                 
                                 <i class="fas fa-user fa-fw"></i>
-                                John Doe
+                                q1ming
                                 
                             </span>
                         </div>
@@ -564,62 +565,7 @@ configCONFIG_DEBUG_INFO #调试符号CONFIG_USER_NS=y   #支持新的namespaceCO
                             <span class="publish-author">
                                 
                                 <i class="fas fa-user fa-fw"></i>
-                                John Doe
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/kernel/">
-                            <span class="chip bg-color">kernel</span>
-                        </a>
-                        
-                        <a href="/tags/CVE/">
-                            <span class="chip bg-color">CVE</span>
-                        </a>
-                        
-                        <a href="/tags/eBPF/">
-                            <span class="chip bg-color">eBPF</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2025/01/14/cve-2022-23222/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="CVE-2022-23222">
-                            
-                            <span class="card-title">CVE-2022-23222</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                环境搭建同cve-202-27194
-分析指针类型在include&#x2F;linux&#x2F;bpf.h文件中定义了所有的寄存器类型：
-enum bpf_reg_type &#123;	NOT_INIT = 0,		 /* nothi
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-14
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                John Doe
+                                q1ming
                                 
                             </span>
                         </div>
@@ -676,7 +622,62 @@ CONFIG_BPF_SYSCALL=yCONFIG_BPFILTER=yCONFIG_NET_CLS_BPF=yCONFIG_NET_ACT_BPF=yCON
                             <span class="publish-author">
                                 
                                 <i class="fas fa-user fa-fw"></i>
-                                John Doe
+                                q1ming
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/kernel/">
+                            <span class="chip bg-color">kernel</span>
+                        </a>
+                        
+                        <a href="/tags/CVE/">
+                            <span class="chip bg-color">CVE</span>
+                        </a>
+                        
+                        <a href="/tags/eBPF/">
+                            <span class="chip bg-color">eBPF</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2025/01/14/cve-2022-23222/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="CVE-2022-23222">
+                            
+                            <span class="card-title">CVE-2022-23222</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                环境搭建同cve-202-27194
+分析指针类型在include&#x2F;linux&#x2F;bpf.h文件中定义了所有的寄存器类型：
+enum bpf_reg_type &#123;	NOT_INIT = 0,		 /* nothi
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-14
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-user fa-fw"></i>
+                                q1ming
                                 
                             </span>
                         </div>
@@ -738,7 +739,7 @@ cd linux-5.11gi
                             <span class="publish-author">
                                 
                                 <i class="fas fa-user fa-fw"></i>
-                                John Doe
+                                q1ming
                                 
                             </span>
                         </div>
@@ -792,7 +793,7 @@ cd linux-5.11gi
                             <span class="publish-author">
                                 
                                 <i class="fas fa-user fa-fw"></i>
-                                John Doe
+                                q1ming
                                 
                             </span>
                         </div>
@@ -851,7 +852,7 @@ version
                             <span class="publish-author">
                                 
                                 <i class="fas fa-user fa-fw"></i>
-                                John Doe
+                                q1ming
                                 
                             </span>
                         </div>
@@ -902,7 +903,7 @@ version
                             <span class="publish-author">
                                 
                                 <i class="fas fa-user fa-fw"></i>
-                                John Doe
+                                q1ming
                                 
                             </span>
                         </div>
@@ -948,7 +949,7 @@ func#0 @00: R1&#x3D;ctx(id&#x3D;0,off&#x3D;0,imm&#x3D;0) R10&#x3D;fp00: (bf) r7 
                             <span class="publish-author">
                                 
                                 <i class="fas fa-user fa-fw"></i>
-                                John Doe
+                                q1ming
                                 
                             </span>
                         </div>
@@ -1000,7 +1001,7 @@ static int check_subprogs(struct bpf_verifier_e
                             <span class="publish-author">
                                 
                                 <i class="fas fa-user fa-fw"></i>
-                                John Doe
+                                q1ming
                                 
                             </span>
                         </div>
@@ -1119,7 +1120,7 @@ static int check_subprogs(struct bpf_verifier_e
             
                 <span id="year">2019-2025</span>
             
-            <a href="/about" target="_blank">John Doe</a>
+            <a href="/about" target="_blank">q1ming</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
             |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
             

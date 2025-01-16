@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="house_of_husk, Hexo">
+    <meta name="keywords" content="house_of_husk, q1ming">
     <meta name="description" content="基本原理glibc源代码阅读：
 https://codebrowser.dev/glibc/glibc
 printf函数阅读路径：
@@ -20,7 +20,7 @@ https://codebrowser.dev/glibc/glibc/stdio-common/print">
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>house_of_husk | Hexo</title>
+    <title>house_of_husk | q1ming</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -67,7 +67,7 @@ https://codebrowser.dev/glibc/glibc/stdio-common/print">
                     
                     <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
-                    <span class="logo-span">Hexo</span>
+                    <span class="logo-span">q1ming</span>
                 </a>
             </div>
             
@@ -171,7 +171,7 @@ https://codebrowser.dev/glibc/glibc/stdio-common/print">
         
         <img src="/medias/logo.png" class="logo-img circle responsive-img">
         
-        <div class="logo-name">Hexo</div>
+        <div class="logo-name">q1ming</div>
         <div class="logo-desc">
             
             Never really desperate, only the lost of the soul.
@@ -382,7 +382,7 @@ https://codebrowser.dev/glibc/glibc/stdio-common/print">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2025-01-15
+                    2025-01-16
                 </div>
                 
 
@@ -412,8 +412,8 @@ https://codebrowser.dev/glibc/glibc/stdio-common/print">
 <p><a target="_blank" rel="noopener" href="https://codebrowser.dev/glibc/glibc/stdio-common/printf.c.html">https://codebrowser.dev/glibc/glibc/stdio-common/printf.c.html</a></p>
 <p>最终经过一顿搜索找到了这个位置定义了相关函数：</p>
 <p><a target="_blank" rel="noopener" href="https://codebrowser.dev/glibc/glibc/stdio-common/reg-printf.c.html#27">https://codebrowser.dev/glibc/glibc/stdio-common/reg-printf.c.html#27</a></p>
-<p><img src="/images/1709724813272.png" alt="1709724813272"></p>
-<p><img src="/images/1709724839222.png" alt="1709724839222"></p>
+<p><img src="/images/1709724813272.png"></p>
+<p><img src="/images/1709724839222.png"></p>
 <p>从上图中可以看出<code>__register_printf_function</code>函数是对<code>__register_printf_specifier</code>函数的一个封装；</p>
 <p><code>__register_prntf_specifier</code>源代码如下：</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c">__register_printf_specifier (<span class="hljs-type">int</span> spec, printf_function converter,<br>			     printf_arginfo_size_function arginfo)<br>&#123;<br>  <span class="hljs-keyword">if</span> (spec &lt; <span class="hljs-number">0</span> || spec &gt; (<span class="hljs-type">int</span>) UCHAR_MAX)<br>    &#123;<br>      __set_errno (EINVAL);<br>      <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>    &#125;<br>  <span class="hljs-type">int</span> result = <span class="hljs-number">0</span>;<br>  __libc_lock_lock (lock);<br>  <span class="hljs-keyword">if</span> (__printf_function_table == <span class="hljs-literal">NULL</span>)<br>    &#123;<br>      __printf_arginfo_table = (printf_arginfo_size_function **)<br>	<span class="hljs-built_in">calloc</span> (UCHAR_MAX + <span class="hljs-number">1</span>, <span class="hljs-keyword">sizeof</span> (<span class="hljs-type">void</span> *) * <span class="hljs-number">2</span>);<br>      <span class="hljs-keyword">if</span> (__printf_arginfo_table == <span class="hljs-literal">NULL</span>)<br>	&#123;<br>	  result = <span class="hljs-number">-1</span>;<br>	  <span class="hljs-keyword">goto</span> out;<br>	&#125;<br>      __printf_function_table = (printf_function **)<br>	(__printf_arginfo_table + UCHAR_MAX + <span class="hljs-number">1</span>);<br>    &#125;<br>  __printf_function_table[spec] = converter;<br>  __printf_arginfo_table[spec] = arginfo;<br> out:<br>  __libc_lock_unlock (lock);<br>  <span class="hljs-keyword">return</span> result;<br>&#125;<br></code></pre></td></tr></table></figure>
@@ -422,29 +422,29 @@ https://codebrowser.dev/glibc/glibc/stdio-common/print">
 <p>首先是给<code>__printf_function_table</code>分配空间，根据calloc的函数原型，我们可以知道其分配了0x100 * 2个指针的空间；然后将前0x100个指针给了<code>__printf_arginfo_table</code>, 后0x100个指针的空间给了<code>__printf_function_table</code>;</p>
 <p>然后对应字符的空间分别赋值，值为传递进来的converter和arginfo；</p>
 <p>下面关注printf的执行过程，在printf中调用了<code>__vfprintf_internal</code>：</p>
-<p><img src="/images/1709726405742.png" alt="1709726405742"></p>
+<p><img src="/images/1709726405742.png"></p>
 <p>在<code>__vfprintf_internal</code>中调用了<code>printf_positional</code>:</p>
-<p><img src="/images/1709726631051.png" alt="1709726631051"></p>
+<p><img src="/images/1709726631051.png"></p>
 <p>在<code>printf_positional</code>中有如下调用：</p>
-<p><img src="/images/1709726894106.png" alt="1709726894106"></p>
+<p><img src="/images/1709726894106.png"></p>
 <p>在<code>printf_positional</code>中调用了<code>__parse_one_specmb</code>函数：</p>
-<p><img src="/images/1709728086222.png" alt="1709728086222"></p>
+<p><img src="/images/1709728086222.png"></p>
 <p>在<code>__parse_one_specmb</code>中也有对函数表的调用：</p>
-<p><img src="/images/1709728006704.png" alt="1709728006704"></p>
+<p><img src="/images/1709728006704.png"></p>
 <h2 id="调用条件探索"><a href="#调用条件探索" class="headerlink" title="调用条件探索"></a>调用条件探索</h2><p>首先笔者对调用链的触发条件进行盲测：</p>
 <p>笔者使用的格式化字符串是：</p>
 <p>&#x2F;* ‘hello%w’ *&#x2F;</p>
 <p>可以成功得到以下调链：</p>
-<p><img src="/images/1709730641985.png" alt="1709730641985"></p>
+<p><img src="/images/1709730641985.png"></p>
 <p>源代码分析得到如下流程：</p>
-<p><img src="/images/1709783237674.png" alt="1709783237674"></p>
+<p><img src="/images/1709783237674.png"></p>
 <p>在<code>__parse_one_specmb</code>的过程大致如下：</p>
-<p><img src="/images/1709783345154.png" alt="1709783345154"></p>
+<p><img src="/images/1709783345154.png"></p>
 <p>最终到达目标地址：</p>
-<p><img src="/images/1709731699958.png" alt="1709731699958"></p>
+<p><img src="/images/1709731699958.png"></p>
 <p>因此我们只需要利用堆漏洞，使得<code>__printf_function__table</code>和<code>__printf_arginfo_table</code>不为NULL，且<code>__printf_arginfo_table</code>中对应的函数指针不为空，即可实现控制流的劫持；</p>
 <p>可见劫持控制流成功：</p>
-<p><img src="/images/1709732568893.png" alt="1709732568893"></p>
+<p><img src="/images/1709732568893.png"></p>
 <p>demo如下：</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span>&#123;<br>    <span class="hljs-type">size_t</span> libc_base = &amp;<span class="hljs-built_in">printf</span> - <span class="hljs-number">0x0606f0</span>;<br>    <span class="hljs-type">size_t</span> __printf_function_table = libc_base + <span class="hljs-number">0x21c9c8</span>;<br>    <span class="hljs-type">size_t</span> __printf_arginfo_table = libc_base + <span class="hljs-number">0x21b8b0</span>;<br>    *(<span class="hljs-type">void</span> **)__printf_function_table = <span class="hljs-built_in">malloc</span>(<span class="hljs-number">0x400</span>);<br>    *(<span class="hljs-type">void</span> **)__printf_arginfo_table = <span class="hljs-built_in">malloc</span>(<span class="hljs-number">0x400</span>);<br>    <span class="hljs-built_in">memset</span>(*(<span class="hljs-type">void</span> **)__printf_arginfo_table+<span class="hljs-number">0x77</span>*<span class="hljs-number">8</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-number">8</span>);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Hello%w&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
 
@@ -468,11 +468,11 @@ https://codebrowser.dev/glibc/glibc/stdio-common/print">
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">https://codebrowser.dev/glibc/glibc/malloc/malloc.c.html<br></code></pre></td></tr></table></figure>
 
 <p>通过逆向汇编代码看出来<code>__malloc_assert</code> 是无条件调用<code>__fxprintf</code>的：</p>
-<p><img src="/images/1709783114589.png" alt="1709783114589"></p>
+<p><img src="/images/1709783114589.png"></p>
 <p>下面是fxprintf到do_positional的过程：</p>
-<p><img src="/images/1709782316761.png" alt="1709782316761"></p>
+<p><img src="/images/1709782316761.png"></p>
 <p>利用<code>__malloc_assert</code>触发成功：</p>
-<p><img src="/images/1709781505216.png" alt="1709781505216"></p>
+<p><img src="/images/1709781505216.png"></p>
 <p>demo如下：</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span>&#123;<br>    <span class="hljs-type">size_t</span> libc_base = &amp;<span class="hljs-built_in">printf</span> - <span class="hljs-number">0x0606f0</span>;<br>    <span class="hljs-type">size_t</span> __printf_function_table = libc_base + <span class="hljs-number">0x21c9c8</span>;<br>    <span class="hljs-type">size_t</span> __printf_arginfo_table = libc_base + <span class="hljs-number">0x21b8b0</span>;<br>    *(<span class="hljs-type">void</span> **)__printf_function_table = <span class="hljs-built_in">malloc</span>(<span class="hljs-number">0x400</span>);<br>    *(<span class="hljs-type">void</span> **)__printf_arginfo_table = <span class="hljs-built_in">malloc</span>(<span class="hljs-number">0x400</span>);<br>    <span class="hljs-built_in">memset</span>(*(<span class="hljs-type">void</span> **)__printf_arginfo_table, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-number">0x400</span>);<br>    <span class="hljs-type">char</span> *a = <span class="hljs-built_in">malloc</span>(<span class="hljs-number">0x40</span>);<br>    a[<span class="hljs-number">0x48</span>] = <span class="hljs-string">&quot;\x55&quot;</span>;<br>    a[<span class="hljs-number">0x49</span>] = <span class="hljs-string">&#x27;\x00&#x27;</span>;<br>    a[<span class="hljs-number">0x4a</span>] = <span class="hljs-string">&#x27;\x00&#x27;</span>;<br>    <span class="hljs-built_in">malloc</span>(<span class="hljs-number">0x60</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
 
@@ -492,12 +492,12 @@ https://codebrowser.dev/glibc/glibc/stdio-common/print">
 <li>其他任意地址写；</li>
 </ol>
 <h2 id="定位"><a href="#定位" class="headerlink" title="定位"></a>定位</h2><p>函数：register_printf_function</p>
-<p><img src="/images/1736608229936.png" alt="1736608229936"></p>
+<p><img src="/images/1736608229936.png"></p>
 <p>在IDA中能找到：</p>
-<p><img src="/images/1736608333978.png" alt="1736608333978"></p>
+<p><img src="/images/1736608333978.png"></p>
 <h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><p><a href="../heap/SUtext/note.md">SUtext</a></p>
-<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><h3 id="calloc函数原型"><a href="#calloc函数原型" class="headerlink" title="calloc函数原型"></a>calloc函数原型</h3><p><img src="/images/1709725223666.png" alt="1709725223666"></p>
-<p><img src="/images/1709725232175.png" alt="1709725232175"></p>
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><h3 id="calloc函数原型"><a href="#calloc函数原型" class="headerlink" title="calloc函数原型"></a>calloc函数原型</h3><p><img src="/images/1709725223666.png"></p>
+<p><img src="/images/1709725232175.png"></p>
 <h3 id="printf-positional源代码："><a href="#printf-positional源代码：" class="headerlink" title="printf_positional源代码："></a><code>printf_positional</code>源代码：</h3><figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-type">static</span> <span class="hljs-type">int</span><br><span class="hljs-title function_">printf_positional</span> <span class="hljs-params">(FILE *s, <span class="hljs-type">const</span> CHAR_T *format, <span class="hljs-type">int</span> readonly_format,</span><br><span class="hljs-params">		   va_list ap, va_list *ap_savep, <span class="hljs-type">int</span> done, <span class="hljs-type">int</span> nspecs_done,</span><br><span class="hljs-params">		   <span class="hljs-type">const</span> UCHAR_T *lead_str_end,</span><br><span class="hljs-params">		   CHAR_T *work_buffer, <span class="hljs-type">int</span> save_errno,</span><br><span class="hljs-params">		   <span class="hljs-type">const</span> <span class="hljs-type">char</span> *grouping, THOUSANDS_SEP_T thousands_sep,</span><br><span class="hljs-params">		   <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> mode_flags)</span><br>&#123;<br>  <span class="hljs-comment">/* For positional argument handling.  */</span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">scratch_buffer</span> <span class="hljs-title">specsbuf</span>;</span><br>  scratch_buffer_init (&amp;specsbuf);<br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">printf_spec</span> *<span class="hljs-title">specs</span> =</span> specsbuf.data;<br>  <span class="hljs-type">size_t</span> specs_limit = specsbuf.length / <span class="hljs-keyword">sizeof</span> (specs[<span class="hljs-number">0</span>]);<br>  <span class="hljs-comment">/* Used as a backing store for args_value, args_size, args_type</span><br><span class="hljs-comment">     below.  */</span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">scratch_buffer</span> <span class="hljs-title">argsbuf</span>;</span><br>  scratch_buffer_init (&amp;argsbuf);<br>  <span class="hljs-comment">/* Array with information about the needed arguments.  This has to</span><br><span class="hljs-comment">     be dynamically extensible.  */</span><br>  <span class="hljs-type">size_t</span> nspecs = <span class="hljs-number">0</span>;<br>  <span class="hljs-comment">/* The number of arguments the format string requests.  This will</span><br><span class="hljs-comment">     determine the size of the array needed to store the argument</span><br><span class="hljs-comment">     attributes.  */</span><br>  <span class="hljs-type">size_t</span> nargs = <span class="hljs-number">0</span>;<br>  <span class="hljs-comment">/* Positional parameters refer to arguments directly.  This could</span><br><span class="hljs-comment">     also determine the maximum number of arguments.  Track the</span><br><span class="hljs-comment">     maximum number.  */</span><br>  <span class="hljs-type">size_t</span> max_ref_arg = <span class="hljs-number">0</span>;<br>  <span class="hljs-comment">/* Just a counter.  */</span><br>  <span class="hljs-type">size_t</span> cnt;<br>  <span class="hljs-keyword">if</span> (grouping == (<span class="hljs-type">const</span> <span class="hljs-type">char</span> *) <span class="hljs-number">-1</span>)<br>    &#123;<br><span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> COMPILE_WPRINTF</span><br>      thousands_sep = _NL_CURRENT_WORD (LC_NUMERIC,<br>					_NL_NUMERIC_THOUSANDS_SEP_WC);<br><span class="hljs-meta">#<span class="hljs-keyword">else</span></span><br>      thousands_sep = _NL_CURRENT (LC_NUMERIC, THOUSANDS_SEP);<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br>      grouping = _NL_CURRENT (LC_NUMERIC, GROUPING);<br>      <span class="hljs-keyword">if</span> (*grouping == <span class="hljs-string">&#x27;\0&#x27;</span> || *grouping == CHAR_MAX)<br>	grouping = <span class="hljs-literal">NULL</span>;<br>    &#125;<br>  <span class="hljs-keyword">for</span> (<span class="hljs-type">const</span> UCHAR_T *f = lead_str_end; *f != L_(<span class="hljs-string">&#x27;\0&#x27;</span>);<br>       f = specs[nspecs++].next_fmt)<br>    &#123;<br>      <span class="hljs-keyword">if</span> (nspecs == specs_limit)<br>	&#123;<br>	  <span class="hljs-keyword">if</span> (!scratch_buffer_grow_preserve (&amp;specsbuf))<br>	    &#123;<br>	      done = <span class="hljs-number">-1</span>;<br>	      <span class="hljs-keyword">goto</span> all_done;<br>	    &#125;<br>	  specs = specsbuf.data;<br>	  specs_limit = specsbuf.length / <span class="hljs-keyword">sizeof</span> (specs[<span class="hljs-number">0</span>]);<br>	&#125;<br>      <span class="hljs-comment">/* Parse the format specifier.  */</span><br><span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> COMPILE_WPRINTF</span><br>      nargs += __parse_one_specwc (f, nargs, &amp;specs[nspecs], &amp;max_ref_arg);<br><span class="hljs-meta">#<span class="hljs-keyword">else</span></span><br>      nargs += __parse_one_specmb (f, nargs, &amp;specs[nspecs], &amp;max_ref_arg);<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br>    &#125;<br>  <span class="hljs-comment">/* Determine the number of arguments the format string consumes.  */</span><br>  nargs = MAX (nargs, max_ref_arg);<br>  <span class="hljs-class"><span class="hljs-keyword">union</span> <span class="hljs-title">printf_arg</span> *<span class="hljs-title">args_value</span>;</span><br>  <span class="hljs-type">int</span> *args_size;<br>  <span class="hljs-type">int</span> *args_type;<br>  &#123;<br>    <span class="hljs-comment">/* Calculate total size needed to represent a single argument</span><br><span class="hljs-comment">       across all three argument-related arrays.  */</span><br>    <span class="hljs-type">size_t</span> bytes_per_arg<br>      = <span class="hljs-keyword">sizeof</span> (*args_value) + <span class="hljs-keyword">sizeof</span> (*args_size) + <span class="hljs-keyword">sizeof</span> (*args_type);<br>    <span class="hljs-keyword">if</span> (!scratch_buffer_set_array_size (&amp;argsbuf, nargs, bytes_per_arg))<br>      &#123;<br>	done = <span class="hljs-number">-1</span>;<br>	<span class="hljs-keyword">goto</span> all_done;<br>      &#125;<br>    args_value = argsbuf.data;<br>    <span class="hljs-comment">/* Set up the remaining two arrays to each point past the end of</span><br><span class="hljs-comment">       the prior array, since space for all three has been allocated</span><br><span class="hljs-comment">       now.  */</span><br>    args_size = &amp;args_value[nargs].pa_int;<br>    args_type = &amp;args_size[nargs];<br>    <span class="hljs-built_in">memset</span> (args_type, (mode_flags &amp; PRINTF_FORTIFY) != <span class="hljs-number">0</span> ? <span class="hljs-string">&#x27;\xff&#x27;</span> : <span class="hljs-string">&#x27;\0&#x27;</span>,<br>	    nargs * <span class="hljs-keyword">sizeof</span> (*args_type));<br>  &#125;<br>  <span class="hljs-comment">/* XXX Could do sanity check here: If any element in ARGS_TYPE is</span><br><span class="hljs-comment">     still zero after this loop, format is invalid.  For now we</span><br><span class="hljs-comment">     simply use 0 as the value.  */</span><br>  <span class="hljs-comment">/* Fill in the types of all the arguments.  */</span><br>  <span class="hljs-keyword">for</span> (cnt = <span class="hljs-number">0</span>; cnt &lt; nspecs; ++cnt)<br>    &#123;<br>      <span class="hljs-comment">/* If the width is determined by an argument this is an int.  */</span><br>      <span class="hljs-keyword">if</span> (specs[cnt].width_arg != <span class="hljs-number">-1</span>)<br>	args_type[specs[cnt].width_arg] = PA_INT;<br>      <span class="hljs-comment">/* If the precision is determined by an argument this is an int.  */</span><br>      <span class="hljs-keyword">if</span> (specs[cnt].prec_arg != <span class="hljs-number">-1</span>)<br>	args_type[specs[cnt].prec_arg] = PA_INT;<br>      <span class="hljs-keyword">switch</span> (specs[cnt].ndata_args)<br>	&#123;<br>	<span class="hljs-keyword">case</span> <span class="hljs-number">0</span>:		<span class="hljs-comment">/* No arguments.  */</span><br>	  <span class="hljs-keyword">break</span>;<br>	<span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:		<span class="hljs-comment">/* One argument; we already have the</span><br><span class="hljs-comment">			   type and size.  */</span><br>	  args_type[specs[cnt].data_arg] = specs[cnt].data_arg_type;<br>	  args_size[specs[cnt].data_arg] = specs[cnt].size;<br>	  <span class="hljs-keyword">break</span>;<br>	<span class="hljs-keyword">default</span>:<br>	  <span class="hljs-comment">/* We have more than one argument for this format spec.</span><br><span class="hljs-comment">	     We must call the arginfo function again to determine</span><br><span class="hljs-comment">	     all the types.  */</span><br>	  (<span class="hljs-type">void</span>) (*__printf_arginfo_table[specs[cnt].info.spec])<br>	    (&amp;specs[cnt].info,<br>	     specs[cnt].ndata_args, &amp;args_type[specs[cnt].data_arg],<br>	     &amp;args_size[specs[cnt].data_arg]);<br>	  <span class="hljs-keyword">break</span>;<br>	&#125;<br>    &#125;<br>  <span class="hljs-comment">/* Now we know all the types and the order.  Fill in the argument</span><br><span class="hljs-comment">     values.  */</span><br>  <span class="hljs-keyword">for</span> (cnt = <span class="hljs-number">0</span>; cnt &lt; nargs; ++cnt)<br>    <span class="hljs-keyword">switch</span> (args_type[cnt])<br>      &#123;<br><span class="hljs-meta">#<span class="hljs-keyword">define</span> T(tag, mem, type)				\</span><br><span class="hljs-meta">	case tag:					\</span><br><span class="hljs-meta">	  args_value[cnt].mem = va_arg (*ap_savep, type); \</span><br><span class="hljs-meta">	  break</span><br>	T (PA_WCHAR, pa_wchar, <span class="hljs-type">wint_t</span>);<br>      <span class="hljs-keyword">case</span> PA_CHAR:				<span class="hljs-comment">/* Promoted.  */</span><br>      <span class="hljs-keyword">case</span> PA_INT|PA_FLAG_SHORT:		<span class="hljs-comment">/* Promoted.  */</span><br><span class="hljs-meta">#<span class="hljs-keyword">if</span> LONG_MAX == INT_MAX</span><br>      <span class="hljs-keyword">case</span> PA_INT|PA_FLAG_LONG:<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br>	T (PA_INT, pa_int, <span class="hljs-type">int</span>);<br><span class="hljs-meta">#<span class="hljs-keyword">if</span> LONG_MAX == LONG_LONG_MAX</span><br>      <span class="hljs-keyword">case</span> PA_INT|PA_FLAG_LONG:<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br>	T (PA_INT|PA_FLAG_LONG_LONG, pa_long_long_int, <span class="hljs-type">long</span> <span class="hljs-type">long</span> <span class="hljs-type">int</span>);<br><span class="hljs-meta">#<span class="hljs-keyword">if</span> LONG_MAX != INT_MAX &amp;&amp; LONG_MAX != LONG_LONG_MAX</span><br><span class="hljs-meta"># <span class="hljs-keyword">error</span> <span class="hljs-string">&quot;he?&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br>      <span class="hljs-keyword">case</span> PA_FLOAT:				<span class="hljs-comment">/* Promoted.  */</span><br>	T (PA_DOUBLE, pa_double, <span class="hljs-type">double</span>);<br>      <span class="hljs-keyword">case</span> PA_DOUBLE|PA_FLAG_LONG_DOUBLE:<br>	<span class="hljs-keyword">if</span> (__glibc_unlikely ((mode_flags &amp; PRINTF_LDBL_IS_DBL) != <span class="hljs-number">0</span>))<br>	  &#123;<br>	    args_value[cnt].pa_double = va_arg (*ap_savep, <span class="hljs-type">double</span>);<br>	    args_type[cnt] &amp;= ~PA_FLAG_LONG_DOUBLE;<br>	  &#125;<br><span class="hljs-meta">#<span class="hljs-keyword">if</span> __HAVE_FLOAT128_UNLIKE_LDBL</span><br>	<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ((mode_flags &amp; PRINTF_LDBL_USES_FLOAT128) != <span class="hljs-number">0</span>)<br>	  args_value[cnt].pa_float128 = va_arg (*ap_savep, <span class="hljs-type">_Float128</span>);<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br>	<span class="hljs-keyword">else</span><br>	  args_value[cnt].pa_long_double = va_arg (*ap_savep, <span class="hljs-type">long</span> <span class="hljs-type">double</span>);<br>	<span class="hljs-keyword">break</span>;<br>      <span class="hljs-keyword">case</span> PA_STRING:				<span class="hljs-comment">/* All pointers are the same */</span><br>      <span class="hljs-keyword">case</span> PA_WSTRING:			<span class="hljs-comment">/* All pointers are the same */</span><br>	T (PA_POINTER, pa_pointer, <span class="hljs-type">void</span> *);<br><span class="hljs-meta">#<span class="hljs-keyword">undef</span> T</span><br>      <span class="hljs-keyword">default</span>:<br>	<span class="hljs-keyword">if</span> ((args_type[cnt] &amp; PA_FLAG_PTR) != <span class="hljs-number">0</span>)<br>	  args_value[cnt].pa_pointer = va_arg (*ap_savep, <span class="hljs-type">void</span> *);<br>	<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (__glibc_unlikely (__printf_va_arg_table != <span class="hljs-literal">NULL</span>)<br>		 &amp;&amp; __printf_va_arg_table[args_type[cnt] - PA_LAST] != <span class="hljs-literal">NULL</span>)<br>	  &#123;<br>	    args_value[cnt].pa_user = alloca (args_size[cnt]);<br>	    (*__printf_va_arg_table[args_type[cnt] - PA_LAST])<br>	      (args_value[cnt].pa_user, ap_savep);<br>	  &#125;<br>	<span class="hljs-keyword">else</span><br>	  <span class="hljs-built_in">memset</span> (&amp;args_value[cnt], <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span> (args_value[cnt]));<br>	<span class="hljs-keyword">break</span>;<br>      <span class="hljs-keyword">case</span> <span class="hljs-number">-1</span>:<br>	<span class="hljs-comment">/* Error case.  Not all parameters appear in N$ format</span><br><span class="hljs-comment">	   strings.  We have no way to determine their type.  */</span><br>	assert ((mode_flags &amp; PRINTF_FORTIFY) != <span class="hljs-number">0</span>);<br>	__libc_fatal (<span class="hljs-string">&quot;*** invalid %N$ use detected ***\n&quot;</span>);<br>      &#125;<br>  <span class="hljs-comment">/* Now walk through all format specifiers and process them.  */</span><br>  <span class="hljs-keyword">for</span> (; (<span class="hljs-type">size_t</span>) nspecs_done &lt; nspecs; ++nspecs_done)<br>    &#123;<br>      STEP4_TABLE;<br>      <span class="hljs-type">int</span> is_negative;<br>      <span class="hljs-class"><span class="hljs-keyword">union</span></span><br><span class="hljs-class">      &#123;</span><br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> <span class="hljs-type">int</span> longlong;<br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">int</span> word;<br>      &#125; number;<br>      <span class="hljs-type">int</span> base;<br>      CHAR_T *<span class="hljs-built_in">string</span>;		<span class="hljs-comment">/* Pointer to argument string.  */</span><br>      <span class="hljs-comment">/* Fill variables from values in struct.  */</span><br>      <span class="hljs-type">int</span> alt = specs[nspecs_done].info.alt;<br>      <span class="hljs-type">int</span> space = specs[nspecs_done].info.space;<br>      <span class="hljs-type">int</span> left = specs[nspecs_done].info.left;<br>      <span class="hljs-type">int</span> showsign = specs[nspecs_done].info.showsign;<br>      <span class="hljs-type">int</span> group = specs[nspecs_done].info.group;<br>      <span class="hljs-type">int</span> is_long_double __attribute__ ((unused))<br>	= specs[nspecs_done].info.is_long_double;<br>      <span class="hljs-type">int</span> is_short = specs[nspecs_done].info.is_short;<br>      <span class="hljs-type">int</span> is_char = specs[nspecs_done].info.is_char;<br>      <span class="hljs-type">int</span> is_long = specs[nspecs_done].info.is_long;<br>      <span class="hljs-type">int</span> width = specs[nspecs_done].info.width;<br>      <span class="hljs-type">int</span> prec = specs[nspecs_done].info.prec;<br>      <span class="hljs-type">int</span> use_outdigits = specs[nspecs_done].info.i18n;<br>      <span class="hljs-type">char</span> pad = specs[nspecs_done].info.pad;<br>      CHAR_T spec = specs[nspecs_done].info.spec;<br>      CHAR_T *workend = work_buffer + WORK_BUFFER_SIZE;<br>      <span class="hljs-comment">/* Fill in last information.  */</span><br>      <span class="hljs-keyword">if</span> (specs[nspecs_done].width_arg != <span class="hljs-number">-1</span>)<br>	&#123;<br>	  <span class="hljs-comment">/* Extract the field width from an argument.  */</span><br>	  specs[nspecs_done].info.width =<br>	    args_value[specs[nspecs_done].width_arg].pa_int;<br>	  <span class="hljs-keyword">if</span> (specs[nspecs_done].info.width &lt; <span class="hljs-number">0</span>)<br>	    <span class="hljs-comment">/* If the width value is negative left justification is</span><br><span class="hljs-comment">	       selected and the value is taken as being positive.  */</span><br>	    &#123;<br>	      specs[nspecs_done].info.width *= <span class="hljs-number">-1</span>;<br>	      left = specs[nspecs_done].info.left = <span class="hljs-number">1</span>;<br>	    &#125;<br>	  width = specs[nspecs_done].info.width;<br>	&#125;<br>      <span class="hljs-keyword">if</span> (specs[nspecs_done].prec_arg != <span class="hljs-number">-1</span>)<br>	&#123;<br>	  <span class="hljs-comment">/* Extract the precision from an argument.  */</span><br>	  specs[nspecs_done].info.prec =<br>	    args_value[specs[nspecs_done].prec_arg].pa_int;<br>	  <span class="hljs-keyword">if</span> (specs[nspecs_done].info.prec &lt; <span class="hljs-number">0</span>)<br>	    <span class="hljs-comment">/* If the precision is negative the precision is</span><br><span class="hljs-comment">	       omitted.  */</span><br>	    specs[nspecs_done].info.prec = <span class="hljs-number">-1</span>;<br>	  prec = specs[nspecs_done].info.prec;<br>	&#125;<br>      <span class="hljs-comment">/* Process format specifiers.  */</span><br>      <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)<br>	&#123;<br>	  <span class="hljs-keyword">extern</span> printf_function **__printf_function_table;<br>	  <span class="hljs-type">int</span> function_done;<br>	  <span class="hljs-keyword">if</span> (spec &lt;= UCHAR_MAX<br>	      &amp;&amp; __printf_function_table != <span class="hljs-literal">NULL</span><br>	      &amp;&amp; __printf_function_table[(<span class="hljs-type">size_t</span>) spec] != <span class="hljs-literal">NULL</span>)<br>	    &#123;<br>	      <span class="hljs-type">const</span> <span class="hljs-type">void</span> **ptr = alloca (specs[nspecs_done].ndata_args<br>					 * <span class="hljs-keyword">sizeof</span> (<span class="hljs-type">const</span> <span class="hljs-type">void</span> *));<br>	      <span class="hljs-comment">/* Fill in an array of pointers to the argument values.  */</span><br>	      <span class="hljs-keyword">for</span> (<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; specs[nspecs_done].ndata_args;<br>		   ++i)<br>		ptr[i] = &amp;args_value[specs[nspecs_done].data_arg + i];<br>	      <span class="hljs-comment">/* Call the function.  */</span><br>	      function_done = __printf_function_table[(<span class="hljs-type">size_t</span>) spec]<br>		(s, &amp;specs[nspecs_done].info, ptr);<br>	      <span class="hljs-keyword">if</span> (function_done != <span class="hljs-number">-2</span>)<br>		&#123;<br>		  <span class="hljs-comment">/* If an error occurred we don&#x27;t have information</span><br><span class="hljs-comment">		     about # of chars.  */</span><br>		  <span class="hljs-keyword">if</span> (function_done &lt; <span class="hljs-number">0</span>)<br>		    &#123;<br>		      <span class="hljs-comment">/* Function has set errno.  */</span><br>		      done = <span class="hljs-number">-1</span>;<br>		      <span class="hljs-keyword">goto</span> all_done;<br>		    &#125;<br>		  done_add (function_done);<br>		  <span class="hljs-keyword">break</span>;<br>		&#125;<br>	    &#125;<br>	  JUMP (spec, step4_jumps);<br><span class="hljs-meta">#<span class="hljs-keyword">define</span> process_arg_data args_value[specs[nspecs_done].data_arg]</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> process_arg_int() process_arg_data.pa_int</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> process_arg_long_int() process_arg_data.pa_long_int</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> process_arg_long_long_int() process_arg_data.pa_long_long_int</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> process_arg_pointer() process_arg_data.pa_pointer</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> process_arg_string() process_arg_data.pa_string</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> process_arg_unsigned_int() process_arg_data.pa_u_int</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> process_arg_unsigned_long_int() process_arg_data.pa_u_long_int</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> process_arg_unsigned_long_long_int() process_arg_data.pa_u_long_long_int</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> process_arg_wchar_t() process_arg_data.pa_wchar</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> process_arg_wstring() process_arg_data.pa_wstring</span><br>	  process_arg ();<br>	  process_string_arg ();<br><span class="hljs-meta">#<span class="hljs-keyword">undef</span> process_arg_data</span><br><span class="hljs-meta">#<span class="hljs-keyword">undef</span> process_arg_int</span><br><span class="hljs-meta">#<span class="hljs-keyword">undef</span> process_arg_long_int</span><br><span class="hljs-meta">#<span class="hljs-keyword">undef</span> process_arg_long_long_int</span><br><span class="hljs-meta">#<span class="hljs-keyword">undef</span> process_arg_pointer</span><br><span class="hljs-meta">#<span class="hljs-keyword">undef</span> process_arg_string</span><br><span class="hljs-meta">#<span class="hljs-keyword">undef</span> process_arg_unsigned_int</span><br><span class="hljs-meta">#<span class="hljs-keyword">undef</span> process_arg_unsigned_long_int</span><br><span class="hljs-meta">#<span class="hljs-keyword">undef</span> process_arg_unsigned_long_long_int</span><br><span class="hljs-meta">#<span class="hljs-keyword">undef</span> process_arg_wchar_t</span><br><span class="hljs-meta">#<span class="hljs-keyword">undef</span> process_arg_wstring</span><br>	  LABEL (form_float):<br>	  LABEL (form_floathex):<br>	  &#123;<br>	    <span class="hljs-type">const</span> <span class="hljs-type">void</span> *ptr<br>	      = (<span class="hljs-type">const</span> <span class="hljs-type">void</span> *) &amp;args_value[specs[nspecs_done].data_arg];<br>	    <span class="hljs-keyword">if</span> (__glibc_unlikely ((mode_flags &amp; PRINTF_LDBL_IS_DBL) != <span class="hljs-number">0</span>))<br>	      &#123;<br>		specs[nspecs_done].data_arg_type = PA_DOUBLE;<br>		specs[nspecs_done].info.is_long_double = <span class="hljs-number">0</span>;<br>	      &#125;<br>	    SETUP_FLOAT128_INFO (specs[nspecs_done].info);<br>	    <span class="hljs-type">int</span> function_done<br>	      = __printf_fp_spec (s, &amp;specs[nspecs_done].info, &amp;ptr);<br>	    <span class="hljs-keyword">if</span> (function_done &lt; <span class="hljs-number">0</span>)<br>	      &#123;<br>		<span class="hljs-comment">/* Error in print handler; up to handler to set errno.  */</span><br>		done = <span class="hljs-number">-1</span>;<br>		<span class="hljs-keyword">goto</span> all_done;<br>	      &#125;<br>	    done_add (function_done);<br>	  &#125;<br>	  <span class="hljs-keyword">break</span>;<br>	  LABEL (form_unknown):<br>	  &#123;<br>	    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> i;<br>	    <span class="hljs-type">const</span> <span class="hljs-type">void</span> **ptr;<br>	    ptr = alloca (specs[nspecs_done].ndata_args<br>			  * <span class="hljs-keyword">sizeof</span> (<span class="hljs-type">const</span> <span class="hljs-type">void</span> *));<br>	    <span class="hljs-comment">/* Fill in an array of pointers to the argument values.  */</span><br>	    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; specs[nspecs_done].ndata_args; ++i)<br>	      ptr[i] = &amp;args_value[specs[nspecs_done].data_arg + i];<br>	    <span class="hljs-comment">/* Call the function.  */</span><br>	    function_done = printf_unknown (s, &amp;specs[nspecs_done].info,<br>					    ptr);<br>	    <span class="hljs-comment">/* If an error occurred we don&#x27;t have information about #</span><br><span class="hljs-comment">	       of chars.  */</span><br>	    <span class="hljs-keyword">if</span> (function_done &lt; <span class="hljs-number">0</span>)<br>	      &#123;<br>		<span class="hljs-comment">/* Function has set errno.  */</span><br>		done = <span class="hljs-number">-1</span>;<br>		<span class="hljs-keyword">goto</span> all_done;<br>	      &#125;<br>	    done_add (function_done);<br>	  &#125;<br>	  <span class="hljs-keyword">break</span>;<br>	&#125;<br>      <span class="hljs-comment">/* Write the following constant string.  */</span><br>      outstring (specs[nspecs_done].end_of_fmt,<br>		 specs[nspecs_done].next_fmt<br>		 - specs[nspecs_done].end_of_fmt);<br>    &#125;<br> all_done:<br>  scratch_buffer_free (&amp;argsbuf);<br>  scratch_buffer_free (&amp;specsbuf);<br>  <span class="hljs-keyword">return</span> done;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 
@@ -524,7 +524,7 @@ https://codebrowser.dev/glibc/glibc/stdio-common/print">
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="/about" rel="external nofollow noreferrer">John Doe</a>
+                    <a href="/about" rel="external nofollow noreferrer">q1ming</a>
                 </span>
             </div>
             <div class="reprint__type">
@@ -534,7 +534,7 @@ https://codebrowser.dev/glibc/glibc/stdio-common/print">
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2025/01/15/house_of_husk/">http://example.com/2025/01/15/house_of_husk/</a>
+                    <a href="http://example.com/2025/01/16/house_of_husk/">http://example.com/2025/01/16/house_of_husk/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -547,7 +547,7 @@ https://codebrowser.dev/glibc/glibc/stdio-common/print">
                     All articles in this blog are used except for special statements
                     <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
                     reprint policy. If reproduced, please indicate source
-                    <a href="/about" target="_blank">John Doe</a>
+                    <a href="/about" target="_blank">q1ming</a>
                     !
                 </span>
             </div>
@@ -656,13 +656,13 @@ https://codebrowser.dev/glibc/glibc/stdio-common/print">
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2025/01/15/house_of_apple2/">
+                <a href="/2025/01/16/largebin_attack/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="house_of_apple2">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="largebin-attack">
                         
-                        <span class="card-title">house_of_apple2</span>
+                        <span class="card-title">largebin-attack</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -673,12 +673,12 @@ https://codebrowser.dev/glibc/glibc/stdio-common/print">
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2025-01-15
+                            <i class="far fa-clock fa-fw icon-date"></i>2025-01-16
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            John Doe
+                            q1ming
                             
                         </span>
                     </div>
@@ -701,13 +701,13 @@ https://codebrowser.dev/glibc/glibc/stdio-common/print">
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2025/01/15/largebin_attack/">
+                <a href="/2025/01/16/house_of_apple2/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="largebin-attack">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="house_of_apple2">
                         
-                        <span class="card-title">largebin-attack</span>
+                        <span class="card-title">house_of_apple2</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -718,12 +718,12 @@ https://codebrowser.dev/glibc/glibc/stdio-common/print">
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-15
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-16
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            John Doe
+                            q1ming
                             
                         </span>
                     </div>
@@ -923,7 +923,7 @@ https://codebrowser.dev/glibc/glibc/stdio-common/print">
             
                 <span id="year">2019-2025</span>
             
-            <a href="/about" target="_blank">John Doe</a>
+            <a href="/about" target="_blank">q1ming</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
             |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
             

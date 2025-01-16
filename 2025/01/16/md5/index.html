@@ -4,11 +4,15 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="base64, Hexo">
-    <meta name="description" content="模板import base64code = base64.b64decode(b&amp;#x27;aaaaaa&amp;#x27;)
+    <meta name="keywords" content="md5, q1ming">
+    <meta name="description" content="md5简介md5就是信息摘要、有损压缩；
+具体算法
+因为md5是超损压缩，不可逆的，所以只有撞击；
+例题1比较算法如下，先在v10中构造幻数，然后将之前用户输入的v8进行md5加密，随后结果和s1进行比较：
 
-例题qwb-heap2
-&amp;#125;    v14 = v5;    if ( *(_BYTE *)(text + i">
+md5的幻数示例如下：
+
+s1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -20,7 +24,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>base64 | Hexo</title>
+    <title>md5 | q1ming</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -67,7 +71,7 @@
                     
                     <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
-                    <span class="logo-span">Hexo</span>
+                    <span class="logo-span">q1ming</span>
                 </a>
             </div>
             
@@ -171,7 +175,7 @@
         
         <img src="/medias/logo.png" class="logo-img circle responsive-img">
         
-        <div class="logo-name">Hexo</div>
+        <div class="logo-name">q1ming</div>
         <div class="logo-desc">
             
             Never really desperate, only the lost of the soul.
@@ -337,12 +341,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">base64</h1>
+                    <h1 class="description center-align post-title">md5</h1>
                 </div>
             </div>
         </div>
@@ -382,7 +386,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2025-01-15
+                    2025-01-16
                 </div>
                 
 
@@ -406,10 +410,17 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h2><figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> base64<br>code = base64.b64decode(<span class="hljs-string">b&#x27;aaaaaa&#x27;</span>)<br></code></pre></td></tr></table></figure>
-
-<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><p><a href="./qwb-heap2.md">qwb-heap2</a></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c">&#125;<br>    v14 = v5;<br>    <span class="hljs-keyword">if</span> ( *(_BYTE *)(text + idx_add_2) == <span class="hljs-string">&#x27;=&#x27;</span> )<br>    &#123;<br>      idx_add_3 = idx_add_2 + <span class="hljs-number">1</span>;<br>      LODWORD(v7) = <span class="hljs-number">0</span>;<br>    &#125;<br>    <span class="hljs-keyword">else</span><br>    &#123;<br>      v8 = idx_add_2;<br>      idx_add_3 = idx_add_2 + <span class="hljs-number">1</span>;<br>      v7 = <span class="hljs-built_in">strchr</span>(<span class="hljs-string">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=&quot;</span>, *(<span class="hljs-type">char</span> *)(text + v8))<span class="hljs-comment">// 查找密文中的该字符在base64字符集中的位置</span><br>         - <span class="hljs-string">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=&quot;</span>;<span class="hljs-comment">// 然后减去基地址得到偏移</span><br>    &#125;<br></code></pre></td></tr></table></figure>
+                <h2 id="md5简介"><a href="#md5简介" class="headerlink" title="md5简介"></a>md5简介</h2><p>md5就是信息摘要、有损压缩；</p>
+<h2 id="具体算法"><a href="#具体算法" class="headerlink" title="具体算法"></a>具体算法</h2><p><img src="/images/1733224986037.png"></p>
+<p>因为md5是超损压缩，不可逆的，所以只有撞击；</p>
+<h2 id="例题1"><a href="#例题1" class="headerlink" title="例题1"></a>例题1</h2><p>比较算法如下，先在v10中构造幻数，然后将之前用户输入的v8进行md5加密，随后结果和s1进行比较：</p>
+<p><img src="/images/1733225217261.png"></p>
+<p>md5的幻数示例如下：</p>
+<p><img src="/images/1733225151934.png"></p>
+<p>s1的第三个字节是00，所以只需要比较前两个字符：</p>
+<p><img src="/images/1733225191470.png"></p>
+<p>爆破脚本如下：（同时要注意第一个字符必须是’A’）</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> hashlib<br><span class="hljs-keyword">import</span> itertools<br><span class="hljs-keyword">import</span> string<br><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br><br><span class="hljs-comment"># 目标 MD5 哈希值</span><br>target_hash = <span class="hljs-string">&#x27;1d6c00&#x27;</span><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">strcmp</span>(<span class="hljs-params">str1:<span class="hljs-built_in">str</span>, str2:<span class="hljs-built_in">str</span></span>): <span class="hljs-comment"># str1::target, str2::hashed</span><br>    length = <span class="hljs-built_in">len</span>(str1)<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(length):<br>        <span class="hljs-keyword">if</span> str1[i] != str2[i]:<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span><br><br><span class="hljs-comment"># 扩展字符集：包括小写字母、大写字母、数字、符号和空格</span><br>charset = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation + <span class="hljs-string">&#x27; &#x27;</span><br><br><span class="hljs-comment"># 生成所有可能的字符组合</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">brute_force</span>(<span class="hljs-params">target_hash</span>):<br>    <span class="hljs-keyword">for</span> length <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">6</span>):  <span class="hljs-comment"># 尝试长度为1到5的字符串</span><br>        <span class="hljs-keyword">for</span> guess <span class="hljs-keyword">in</span> itertools.product(charset, repeat=length):<br>            guess_str = <span class="hljs-string">&#x27;&#x27;</span>.join(guess)<br>            hashed = hashlib.md5(guess_str.encode()).hexdigest()<br>            <span class="hljs-keyword">if</span> strcmp(target_hash, hashed):<br>                <span class="hljs-built_in">print</span>(hashed, guess_str)<br>                <span class="hljs-comment">#return guess_str</span><br>            <br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span><br><br>result = brute_force(target_hash)<br><span class="hljs-keyword">if</span> result:<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;破解成功: <span class="hljs-subst">&#123;result&#125;</span>&#x27;</span>)<br><span class="hljs-keyword">else</span>:<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;未找到匹配&#x27;</span>)<br><br></code></pre></td></tr></table></figure>
 
 
                 
@@ -427,7 +438,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="/about" rel="external nofollow noreferrer">John Doe</a>
+                    <a href="/about" rel="external nofollow noreferrer">q1ming</a>
                 </span>
             </div>
             <div class="reprint__type">
@@ -437,7 +448,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2025/01/15/base64/">http://example.com/2025/01/15/base64/</a>
+                    <a href="http://example.com/2025/01/16/md5/">http://example.com/2025/01/16/md5/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -450,7 +461,7 @@
                     All articles in this blog are used except for special statements
                     <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
                     reprint policy. If reproduced, please indicate source
-                    <a href="/about" target="_blank">John Doe</a>
+                    <a href="/about" target="_blank">q1ming</a>
                     !
                 </span>
             </div>
@@ -559,13 +570,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2025/01/15/qwb2024-heap2/">
+                <a href="/2025/01/16/pcb_2024_vm/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="qwb2024-heap2">
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="pcb_2024_vm">
                         
-                        <span class="card-title">qwb2024-heap2</span>
+                        <span class="card-title">pcb_2024_vm</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -576,12 +587,12 @@
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2025-01-15
+                            <i class="far fa-clock fa-fw icon-date"></i>2025-01-16
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            John Doe
+                            q1ming
                             
                         </span>
                     </div>
@@ -589,8 +600,16 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Crypto/">
-                        <span class="chip bg-color">Crypto</span>
+                    <a href="/tags/CTF/">
+                        <span class="chip bg-color">CTF</span>
+                    </a>
+                    
+                    <a href="/tags/VM/">
+                        <span class="chip bg-color">VM</span>
+                    </a>
+                    
+                    <a href="/tags/SandBox/">
+                        <span class="chip bg-color">SandBox</span>
                     </a>
                     
                 </div>
@@ -604,13 +623,13 @@
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2025/01/15/md5/">
+                <a href="/2025/01/16/largebin_attack/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="md5">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="largebin-attack">
                         
-                        <span class="card-title">md5</span>
+                        <span class="card-title">largebin-attack</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -621,12 +640,12 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-15
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-16
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            John Doe
+                            q1ming
                             
                         </span>
                     </div>
@@ -634,8 +653,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Crypto/">
-                        <span class="chip bg-color">Crypto</span>
+                    <a href="/tags/Heap/">
+                        <span class="chip bg-color">Heap</span>
                     </a>
                     
                 </div>
@@ -826,7 +845,7 @@
             
                 <span id="year">2019-2025</span>
             
-            <a href="/about" target="_blank">John Doe</a>
+            <a href="/about" target="_blank">q1ming</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
             |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
             

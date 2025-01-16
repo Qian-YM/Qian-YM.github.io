@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="KEPLER, Hexo">
+    <meta name="keywords" content="KEPLER, q1ming">
     <meta name="description" content="paper
 摘要本论文的主要工作是根据用户提供的一个RIP劫持的poc来生成ROP链；
 主要面临以下三个挑战：
@@ -27,7 +27,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>KEPLER | Hexo</title>
+    <title>KEPLER | q1ming</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -74,7 +74,7 @@
                     
                     <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
-                    <span class="logo-span">Hexo</span>
+                    <span class="logo-span">q1ming</span>
                 </a>
             </div>
             
@@ -178,7 +178,7 @@
         
         <img src="/medias/logo.png" class="logo-img circle responsive-img">
         
-        <div class="logo-name">Hexo</div>
+        <div class="logo-name">q1ming</div>
         <div class="logo-desc">
             
             Never really desperate, only the lost of the soul.
@@ -448,14 +448,14 @@
 <li>且当前不知道栈地址和任意线程的canary；</li>
 </ol>
 <h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p>CVE-2017-8890，ip_mc_socklist结构体的UAF；</p>
-<p><img src="/images/1729511287311.png" alt="1729511287311"></p>
+<p><img src="/images/1729511287311.png"></p>
 <p>使用堆喷技术导致无法控制第一个成员；</p>
-<p><img src="/images/1729511426809.png" alt="1729511426809"></p>
+<p><img src="/images/1729511426809.png"></p>
 <p>inet-&gt;mc_list的uaf；</p>
-<h2 id="overview"><a href="#overview" class="headerlink" title="overview"></a>overview</h2><p><img src="/images/1729512886296.png" alt="1729512886296"></p>
+<h2 id="overview"><a href="#overview" class="headerlink" title="overview"></a>overview</h2><p><img src="/images/1729512886296.png"></p>
 <h3 id="single-shot"><a href="#single-shot" class="headerlink" title="single-shot"></a>single-shot</h3><p>类似于用户态中的ogg，但是没那么厉害，不可能一步到位直接提取；</p>
-<p><img src="/images/1729513145512.png" alt="1729513145512"></p>
-<p><img src="/images/1729513242973.png" alt="1729513242973"></p>
+<p><img src="/images/1729513145512.png"></p>
+<p><img src="/images/1729513242973.png"></p>
 <p>避免多次系统调用而导致的内核崩溃，能够自己创造出栈溢出；</p>
 <h2 id="design"><a href="#design" class="headerlink" title="design"></a>design</h2><p>两大原则：</p>
 <blockquote>
@@ -475,7 +475,7 @@
 </ol>
 </blockquote>
 <p>大多数的copy_from_user的dst都是基于栈地址的（这里应该就是基于rbp或者rsp间接寻址）；</p>
-<h4 id="选择short-return-path"><a href="#选择short-return-path" class="headerlink" title="选择short return path"></a>选择short return path</h4><p><img src="/images/1729514332312.png" alt="1729514332312"></p>
+<h4 id="选择short-return-path"><a href="#选择short-return-path" class="headerlink" title="选择short return path"></a>选择short return path</h4><p><img src="/images/1729514332312.png"></p>
 <p>copy_from_user存在三种快速返回的情况：</p>
 <ol>
 <li>src+length发生了整数溢出；</li>
@@ -483,17 +483,17 @@
 <li>发生PF；</li>
 </ol>
 <p>前两种情况不做任何copy，第三种情况则实际发生了copy；</p>
-<h4 id="触发缺页"><a href="#触发缺页" class="headerlink" title="触发缺页"></a>触发缺页</h4><p><img src="/images/1729514534000.png" alt="1729514534000"></p>
+<h4 id="触发缺页"><a href="#触发缺页" class="headerlink" title="触发缺页"></a>触发缺页</h4><p><img src="/images/1729514534000.png"></p>
 <h3 id="绕过canary"><a href="#绕过canary" class="headerlink" title="绕过canary"></a>绕过canary</h3><p>辅助函数：</p>
 <p>function prologue：</p>
-<p><img src="/images/1729516943834.png" alt="1729516943834"></p>
+<p><img src="/images/1729516943834.png"></p>
 <p>辅助函数需要有canary，并且在其prologue执行完之后会有一个间接调用，这个间接调用会建立新的栈帧，它的栈帧布局会和一个栈信息泄露的gadget配对，形成一个完整的栈帧；</p>
-<p><img src="/images/1729517824249.png" alt="1729517824249"></p>
+<p><img src="/images/1729517824249.png"></p>
 <p>这里前提是控制RIP+控制参数rdi；所以才有间接调用；</p>
 <p>看不懂为什么如此重视canary，canary不影响在ROPgadget中其他函数的调用啊，并且内核中的ROP完全可以从canary检查之后截断。。。</p>
-<h3 id="ROP缝合"><a href="#ROP缝合" class="headerlink" title="ROP缝合"></a>ROP缝合</h3><h4 id="blooming-gadget"><a href="#blooming-gadget" class="headerlink" title="blooming gadget"></a>blooming gadget</h4><p><img src="/images/1729518436522.png" alt="1729518436522"></p>
+<h3 id="ROP缝合"><a href="#ROP缝合" class="headerlink" title="ROP缝合"></a>ROP缝合</h3><h4 id="blooming-gadget"><a href="#blooming-gadget" class="headerlink" title="blooming gadget"></a>blooming gadget</h4><p><img src="/images/1729518436522.png"></p>
 <p>基于间接调用中，往往会对第一个结构体进行解引用，来作为后续函数指针以及参数；如果找不到潜在的可控寄存器（这里其条件定义是，&#x3D;&#x3D;至少存在一个潜在的可以控制的寄存器，或者这个寄存器指向一个可控的堆空间&#x3D;&#x3D;）（那么这个条件是否可以对比pt_regs方法中栈迁移呢？此外我觉得栈迁移的ROPgadget其实非常好找），那么就想办法寻找可控的连续栈，add rsp, 0x68; pop rdi; ret; 感觉这还不如pt_regs。。。</p>
-<h4 id="bridge-gadget"><a href="#bridge-gadget" class="headerlink" title="bridge gadget"></a>bridge gadget</h4><p><img src="/images/1729518925484.png" alt="1729518925484"></p>
+<h4 id="bridge-gadget"><a href="#bridge-gadget" class="headerlink" title="bridge gadget"></a>bridge gadget</h4><p><img src="/images/1729518925484.png"></p>
 <p>基于多重间接调用；</p>
 <p>这里还提到了用线性映射区的方式来伪造结构；</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本论文就是开启了除了CFI之外的所有保护的前提下，仅有一个RIP劫持的poc，不能栈溢出直接ROP，然后已经泄露了内核代码段和堆区地址，可以控制rdi寄存器，（且存在可控内核地址、或者线性映射区）；</p>
@@ -529,7 +529,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="/about" rel="external nofollow noreferrer">John Doe</a>
+                    <a href="/about" rel="external nofollow noreferrer">q1ming</a>
                 </span>
             </div>
             <div class="reprint__type">
@@ -552,7 +552,7 @@
                     All articles in this blog are used except for special statements
                     <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
                     reprint policy. If reproduced, please indicate source
-                    <a href="/about" target="_blank">John Doe</a>
+                    <a href="/about" target="_blank">q1ming</a>
                     !
                 </span>
             </div>
@@ -661,13 +661,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2025/01/14/CVE-2023-4569/">
+                <a href="/2025/01/14/CVE-2023-0461/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="CVE-2023-4569">
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="CVE-2023-0461">
                         
-                        <span class="card-title">CVE-2023-4569</span>
+                        <span class="card-title">CVE-2023-0461</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -683,7 +683,7 @@
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            John Doe
+                            q1ming
                             
                         </span>
                     </div>
@@ -710,13 +710,13 @@
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2025/01/14/SU_text/">
+                <a href="/2025/01/14/SU_JIT/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="SUctf-Text">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="SUctf-JIT16">
                         
-                        <span class="card-title">SUctf-Text</span>
+                        <span class="card-title">SUctf-JIT16</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -732,7 +732,7 @@
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            John Doe
+                            q1ming
                             
                         </span>
                     </div>
@@ -744,8 +744,8 @@
                         <span class="chip bg-color">CTF</span>
                     </a>
                     
-                    <a href="/tags/Heap/">
-                        <span class="chip bg-color">Heap</span>
+                    <a href="/tags/VM/">
+                        <span class="chip bg-color">VM</span>
                     </a>
                     
                 </div>
@@ -936,7 +936,7 @@
             
                 <span id="year">2019-2025</span>
             
-            <a href="/about" target="_blank">John Doe</a>
+            <a href="/about" target="_blank">q1ming</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
             |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
             

