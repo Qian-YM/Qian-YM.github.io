@@ -1,0 +1,1190 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="eBPF-verifier源码分析, Hexo">
+    <meta name="description" content="bpf_check在bpf_check函数中，会按照顺序依次做如下check：
+
+check_subprogs先看check_subprogs：
+static int check_subprogs(struct bpf_verifier_e">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>eBPF-verifier源码分析 | Hexo</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Hexo</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>Index</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>Tags</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>Categories</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>Archives</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>About</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>Contact</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>Friends</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="Search" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Hexo</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			Index
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			Tags
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			Categories
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			Archives
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			About
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			Contact
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			Friends
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">eBPF-verifier源码分析</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/kernel/">
+                                <span class="chip bg-color">kernel</span>
+                            </a>
+                        
+                            <a href="/tags/eBPF/">
+                                <span class="chip bg-color">eBPF</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2025-01-14
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="bpf-check"><a href="#bpf-check" class="headerlink" title="bpf_check"></a>bpf_check</h2><p>在bpf_check函数中，会按照顺序依次做如下check：</p>
+<p><img src="/images/1735451684725.png" alt="1735451684725"></p>
+<h2 id="check-subprogs"><a href="#check-subprogs" class="headerlink" title="check_subprogs"></a>check_subprogs</h2><p>先看check_subprogs：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-type">static</span> <span class="hljs-type">int</span> <span class="hljs-title function_">check_subprogs</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> bpf_verifier_env *env)</span><br>&#123;<br>	<span class="hljs-type">int</span> i, ret, subprog_start, subprog_end, off, cur_subprog = <span class="hljs-number">0</span>;<br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">bpf_subprog_info</span> *<span class="hljs-title">subprog</span> =</span> env-&gt;subprog_info;<br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">bpf_insn</span> *<span class="hljs-title">insn</span> =</span> env-&gt;prog-&gt;insnsi;<br>	<span class="hljs-type">int</span> insn_cnt = env-&gt;prog-&gt;len;<br><br>	<span class="hljs-comment">/* Add entry function. */</span><br>	ret = add_subprog(env, <span class="hljs-number">0</span>);<br>	<span class="hljs-keyword">if</span> (ret &lt; <span class="hljs-number">0</span>)<br>		<span class="hljs-keyword">return</span> ret;<br><br>	<span class="hljs-comment">/* determine subprog starts. The end is one before the next starts */</span><br>	<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; insn_cnt; i++) &#123;<br>		<span class="hljs-keyword">if</span> (insn[i].code != (BPF_JMP | BPF_CALL))<br>			<span class="hljs-keyword">continue</span>;<br>		<span class="hljs-keyword">if</span> (insn[i].src_reg != BPF_PSEUDO_CALL)<br>			<span class="hljs-keyword">continue</span>;<br>		<span class="hljs-keyword">if</span> (!env-&gt;bpf_capable) &#123;<br>			verbose(env,<br>				<span class="hljs-string">&quot;function calls to other bpf functions are allowed for CAP_BPF and CAP_SYS_ADMIN\n&quot;</span>);<br>			<span class="hljs-keyword">return</span> -EPERM;<br>		&#125;<br>		ret = add_subprog(env, i + insn[i].imm + <span class="hljs-number">1</span>); <span class="hljs-comment">//所以说如果多个点对同一个函数进行调用，那么就会多次检查这个函数，为了提升效率就有必要进行prune的判断；</span><br>		<span class="hljs-keyword">if</span> (ret &lt; <span class="hljs-number">0</span>)<br>			<span class="hljs-keyword">return</span> ret;<br>	&#125;<br><br>	<span class="hljs-comment">/* Add a fake &#x27;exit&#x27; subprog which could simplify subprog iteration</span><br><span class="hljs-comment">	 * logic. &#x27;subprog_cnt&#x27; should not be increased.</span><br><span class="hljs-comment">	 */</span><br>	subprog[env-&gt;subprog_cnt].start = insn_cnt;<br><br>	<span class="hljs-keyword">if</span> (env-&gt;<span class="hljs-built_in">log</span>.level &amp; BPF_LOG_LEVEL2)<br>		<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; env-&gt;subprog_cnt; i++)<br>			verbose(env, <span class="hljs-string">&quot;func#%d @%d\n&quot;</span>, i, subprog[i].start);<br><br>	<span class="hljs-comment">/* now check that all jumps are within the same subprog */</span><br>	subprog_start = subprog[cur_subprog].start;<br>	subprog_end = subprog[cur_subprog + <span class="hljs-number">1</span>].start;<br>	<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; insn_cnt; i++) &#123;<br>		u8 code = insn[i].code;<br><br>		<span class="hljs-keyword">if</span> (BPF_CLASS(code) != BPF_JMP &amp;&amp; BPF_CLASS(code) != BPF_JMP32)<br>			<span class="hljs-keyword">goto</span> next;<br>		<span class="hljs-keyword">if</span> (BPF_OP(code) == BPF_EXIT || BPF_OP(code) == BPF_CALL)<br>			<span class="hljs-keyword">goto</span> next;<br>		off = i + insn[i].off + <span class="hljs-number">1</span>;<br>		<span class="hljs-keyword">if</span> (off &lt; subprog_start || off &gt;= subprog_end) &#123;<br>			verbose(env, <span class="hljs-string">&quot;jump out of range from insn %d to %d\n&quot;</span>, i, off);<br>			<span class="hljs-keyword">return</span> -EINVAL;<br>		&#125;<br>next:<br>		<span class="hljs-keyword">if</span> (i == subprog_end - <span class="hljs-number">1</span>) &#123;<br>			<span class="hljs-comment">/* to avoid fall-through from one subprog into another</span><br><span class="hljs-comment">			 * the last insn of the subprog should be either exit</span><br><span class="hljs-comment">			 * or unconditional jump back</span><br><span class="hljs-comment">			 */</span><br>			<span class="hljs-keyword">if</span> (code != (BPF_JMP | BPF_EXIT) &amp;&amp;<br>			    code != (BPF_JMP | BPF_JA)) &#123;<br>				verbose(env, <span class="hljs-string">&quot;last insn is not an exit or jmp\n&quot;</span>);<br>				<span class="hljs-keyword">return</span> -EINVAL;<br>			&#125;<br>			subprog_start = subprog_end;<br>			cur_subprog++;<br>			<span class="hljs-keyword">if</span> (cur_subprog &lt; env-&gt;subprog_cnt)<br>				subprog_end = subprog[cur_subprog + <span class="hljs-number">1</span>].start;<br>		&#125;<br>	&#125;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>先是对整个程序进行逐条指令检查，遇到 <code>jmp|call</code> 之后就要add_subprog；（注意最开始把主程序入口0add进去了）具体来看，感觉就是根据<code>jmp|call</code>划分基本块；</p>
+<p>然后针对每一个subprog（基本块）为一个基本单位，逐条指令进行分析，如果不是跳转类指令（jmp、call）就跳过，分析下一条指令；</p>
+<p>如果是，则判断目标地址有没有超出当前基本块的范围；</p>
+<p>最后在每个subprog的结尾处判断其结尾指令是否是exit或者跳转；</p>
+<h2 id="check-cfg"><a href="#check-cfg" class="headerlink" title="check_cfg"></a>check_cfg</h2><p>从头开始分析指令，维护一个insn_stack用于DFS搜索，维护一个insn_state用于表示每一条指令的状态；然后开始DFS搜索，每次取栈顶元素进行分析，每一类跳转指令都要考虑将后续的点进行push_insn，然后如果之前discover过，那么就要标记这个地方是可考虑prune的。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/* non-recursive depth-first-search to detect loops in BPF program</span><br><span class="hljs-comment"> * loop == back-edge in directed graph</span><br><span class="hljs-comment"> */</span><br><span class="hljs-type">static</span> <span class="hljs-type">int</span> <span class="hljs-title function_">check_cfg</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> bpf_verifier_env *env)</span><br>&#123;<br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">bpf_insn</span> *<span class="hljs-title">insns</span> =</span> env-&gt;prog-&gt;insnsi;<br>	<span class="hljs-type">int</span> insn_cnt = env-&gt;prog-&gt;len;<br>	<span class="hljs-type">int</span> *insn_stack, *insn_state;<br>	<span class="hljs-type">int</span> ret = <span class="hljs-number">0</span>;<br>	<span class="hljs-type">int</span> i, t;<br><br>	insn_state = env-&gt;cfg.insn_state = kvcalloc(insn_cnt, <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>), GFP_KERNEL);<br>	<span class="hljs-keyword">if</span> (!insn_state)<br>		<span class="hljs-keyword">return</span> -ENOMEM;<br><br>	insn_stack = env-&gt;cfg.insn_stack = kvcalloc(insn_cnt, <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>), GFP_KERNEL);<br>	<span class="hljs-keyword">if</span> (!insn_stack) &#123;<br>		kvfree(insn_state);<br>		<span class="hljs-keyword">return</span> -ENOMEM;<br>	&#125;<br><br>	insn_state[<span class="hljs-number">0</span>] = DISCOVERED; <span class="hljs-comment">/* mark 1st insn as discovered */</span><br>	insn_stack[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>; <span class="hljs-comment">/* 0 is the first instruction */</span><br>	env-&gt;cfg.cur_stack = <span class="hljs-number">1</span>;<br><br>peek_stack:<br>	<span class="hljs-keyword">if</span> (env-&gt;cfg.cur_stack == <span class="hljs-number">0</span>) <span class="hljs-comment">//如果栈为空，就去检查所有的state是否都被探索过了</span><br>		<span class="hljs-keyword">goto</span> check_state;<br>	t = insn_stack[env-&gt;cfg.cur_stack - <span class="hljs-number">1</span>];<span class="hljs-comment">//取栈顶元素</span><br><br>	<span class="hljs-keyword">if</span> (BPF_CLASS(insns[t].code) == BPF_JMP ||<br>	    BPF_CLASS(insns[t].code) == BPF_JMP32) &#123;<br>		u8 opcode = BPF_OP(insns[t].code);<br><br>		<span class="hljs-keyword">if</span> (opcode == BPF_EXIT) &#123;<br>			<span class="hljs-keyword">goto</span> mark_explored;  <span class="hljs-comment">//将当前指令状态标记为 EXPLORED</span><br>		&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (opcode == BPF_CALL) &#123;<br>			ret = push_insn(t, t + <span class="hljs-number">1</span>, FALLTHROUGH, env, <span class="hljs-literal">false</span>);<br>			<span class="hljs-keyword">if</span> (ret == <span class="hljs-number">1</span>)<br>				<span class="hljs-keyword">goto</span> peek_stack;<br>			<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (ret &lt; <span class="hljs-number">0</span>)<br>				<span class="hljs-keyword">goto</span> err_free;<br>			<span class="hljs-keyword">if</span> (t + <span class="hljs-number">1</span> &lt; insn_cnt) <span class="hljs-comment">//ret == 0 说明call了一个已经discover过的函数，所以要标记一下这个点可以考虑优化掉</span><br>				init_explored_state(env, t + <span class="hljs-number">1</span>);<br>			<span class="hljs-keyword">if</span> (insns[t].src_reg == BPF_PSEUDO_CALL) &#123;<br>				init_explored_state(env, t);<br>				ret = push_insn(t, t + insns[t].imm + <span class="hljs-number">1</span>, BRANCH,<br>						env, <span class="hljs-literal">false</span>);<br>				<span class="hljs-keyword">if</span> (ret == <span class="hljs-number">1</span>)<br>					<span class="hljs-keyword">goto</span> peek_stack;<br>				<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (ret &lt; <span class="hljs-number">0</span>)<br>					<span class="hljs-keyword">goto</span> err_free;<br>			&#125;<br>		&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (opcode == BPF_JA) &#123;<br>			<span class="hljs-keyword">if</span> (BPF_SRC(insns[t].code) != BPF_K) &#123;<br>				ret = -EINVAL;<br>				<span class="hljs-keyword">goto</span> err_free;<br>			&#125;<br>			<span class="hljs-comment">/* unconditional jump with single edge */</span><br>			ret = push_insn(t, t + insns[t].off + <span class="hljs-number">1</span>,<br>					FALLTHROUGH, env, <span class="hljs-literal">true</span>);<br>			<span class="hljs-keyword">if</span> (ret == <span class="hljs-number">1</span>)<br>				<span class="hljs-keyword">goto</span> peek_stack;<br>			<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (ret &lt; <span class="hljs-number">0</span>)<br>				<span class="hljs-keyword">goto</span> err_free;<br>			<span class="hljs-comment">/* unconditional jmp is not a good pruning point,</span><br><span class="hljs-comment">			 * but it&#x27;s marked, since backtracking needs</span><br><span class="hljs-comment">			 * to record jmp history in is_state_visited().</span><br><span class="hljs-comment">			 */</span><br>			init_explored_state(env, t + insns[t].off + <span class="hljs-number">1</span>);<br>			<span class="hljs-comment">/* tell verifier to check for equivalent states</span><br><span class="hljs-comment">			 * after every call and jump</span><br><span class="hljs-comment">			 */</span><br>			<span class="hljs-keyword">if</span> (t + <span class="hljs-number">1</span> &lt; insn_cnt)<br>				init_explored_state(env, t + <span class="hljs-number">1</span>);<br>		&#125; <span class="hljs-keyword">else</span> &#123;<br>			<span class="hljs-comment">/* conditional jump with two edges */</span><br>			init_explored_state(env, t);  <span class="hljs-comment">//为什么直接调用？</span><br>			ret = push_insn(t, t + <span class="hljs-number">1</span>, FALLTHROUGH, env, <span class="hljs-literal">true</span>); <span class="hljs-comment">//失败的情况</span><br>			<span class="hljs-keyword">if</span> (ret == <span class="hljs-number">1</span>)<br>				<span class="hljs-keyword">goto</span> peek_stack;<br>			<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (ret &lt; <span class="hljs-number">0</span>)<br>				<span class="hljs-keyword">goto</span> err_free;<br><br>			ret = push_insn(t, t + insns[t].off + <span class="hljs-number">1</span>, BRANCH, env, <span class="hljs-literal">true</span>); <span class="hljs-comment">//成功的情况</span><br>			<span class="hljs-keyword">if</span> (ret == <span class="hljs-number">1</span>)<br>				<span class="hljs-keyword">goto</span> peek_stack;<br>			<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (ret &lt; <span class="hljs-number">0</span>)<br>				<span class="hljs-keyword">goto</span> err_free;<br>		&#125;<br>	&#125; <span class="hljs-keyword">else</span> &#123;<br>		<span class="hljs-comment">/* all other non-branch instructions with single</span><br><span class="hljs-comment">		 * fall-through edge</span><br><span class="hljs-comment">		 */</span><br>		ret = push_insn(t, t + <span class="hljs-number">1</span>, FALLTHROUGH, env, <span class="hljs-literal">false</span>); <span class="hljs-comment">//非跳转指令直接push进去；</span><br>		<span class="hljs-keyword">if</span> (ret == <span class="hljs-number">1</span>)<br>			<span class="hljs-keyword">goto</span> peek_stack;<br>		<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (ret &lt; <span class="hljs-number">0</span>)<br>			<span class="hljs-keyword">goto</span> err_free;<br>	&#125;<br><br>mark_explored:<br>	insn_state[t] = EXPLORED;<br>	<span class="hljs-keyword">if</span> (env-&gt;cfg.cur_stack-- &lt;= <span class="hljs-number">0</span>) &#123;<br>		verbose(env, <span class="hljs-string">&quot;pop stack internal bug\n&quot;</span>);<br>		ret = -EFAULT;<br>		<span class="hljs-keyword">goto</span> err_free;<br>	&#125;<br>	<span class="hljs-keyword">goto</span> peek_stack;<br><br>check_state:<br>	<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; insn_cnt; i++) &#123;<br>		<span class="hljs-keyword">if</span> (insn_state[i] != EXPLORED) &#123;<br>			verbose(env, <span class="hljs-string">&quot;unreachable insn %d\n&quot;</span>, i);<br>			ret = -EINVAL;<br>			<span class="hljs-keyword">goto</span> err_free;<br>		&#125;<br>	&#125;<br>	ret = <span class="hljs-number">0</span>; <span class="hljs-comment">/* cfg looks good */</span><br><br>err_free:<br>	kvfree(insn_state);<br>	kvfree(insn_stack);<br>	env-&gt;cfg.insn_state = env-&gt;cfg.insn_stack = <span class="hljs-literal">NULL</span>;<br>	<span class="hljs-keyword">return</span> ret;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>调用push_insn如果返回0，表示遇到了一个DISCOVERED的地址，那么就要调用init_explored_state，标记为可考虑优化；</p>
+<h2 id="do-check-subprogs"><a href="#do-check-subprogs" class="headerlink" title="do_check_subprogs"></a>do_check_subprogs</h2><figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-type">static</span> <span class="hljs-type">int</span> <span class="hljs-title function_">do_check_subprogs</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> bpf_verifier_env *env)</span><br>&#123;<br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">bpf_prog_aux</span> *<span class="hljs-title">aux</span> =</span> env-&gt;prog-&gt;aux;<br>	<span class="hljs-type">int</span> i, ret;<br><br>	<span class="hljs-keyword">if</span> (!aux-&gt;func_info)<br>		<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br><br>	<span class="hljs-keyword">for</span> (i = <span class="hljs-number">1</span>; i &lt; env-&gt;subprog_cnt; i++) &#123;<br>		<span class="hljs-keyword">if</span> (aux-&gt;func_info_aux[i].linkage != BTF_FUNC_GLOBAL)<br>			<span class="hljs-keyword">continue</span>;<br>		env-&gt;insn_idx = env-&gt;subprog_info[i].start;<br>		WARN_ON_ONCE(env-&gt;insn_idx == <span class="hljs-number">0</span>);<br>		ret = do_check_common(env, i);<br>		<span class="hljs-keyword">if</span> (ret) &#123;<br>			<span class="hljs-keyword">return</span> ret;<br>		&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (env-&gt;<span class="hljs-built_in">log</span>.level &amp; BPF_LOG_LEVEL) &#123;<br>			verbose(env,<br>				<span class="hljs-string">&quot;Func#%d is safe for any args that match its prototype\n&quot;</span>,<br>				i);<br>		&#125;<br>	&#125;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="do-check-common"><a href="#do-check-common" class="headerlink" title="do_check_common"></a>do_check_common</h3><p>遍历所有的subprog，然后调用do_check_common：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-type">static</span> <span class="hljs-type">int</span> <span class="hljs-title function_">do_check_common</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> bpf_verifier_env *env, <span class="hljs-type">int</span> subprog)</span><br>&#123;<br>	<span class="hljs-type">bool</span> pop_log = !(env-&gt;<span class="hljs-built_in">log</span>.level &amp; BPF_LOG_LEVEL2);<br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">bpf_verifier_state</span> *<span class="hljs-title">state</span>;</span><br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">bpf_reg_state</span> *<span class="hljs-title">regs</span>;</span><br>	<span class="hljs-type">int</span> ret, i;<br><br>	env-&gt;prev_linfo = <span class="hljs-literal">NULL</span>;<br>	env-&gt;pass_cnt++;<br><br>	state = kzalloc(<span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> bpf_verifier_state), GFP_KERNEL);<br>	<span class="hljs-keyword">if</span> (!state)<br>		<span class="hljs-keyword">return</span> -ENOMEM;<br>	state-&gt;curframe = <span class="hljs-number">0</span>;<br>	state-&gt;speculative = <span class="hljs-literal">false</span>;<br>	state-&gt;branches = <span class="hljs-number">1</span>;<br>	state-&gt;frame[<span class="hljs-number">0</span>] = kzalloc(<span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> bpf_func_state), GFP_KERNEL);<br>	<span class="hljs-keyword">if</span> (!state-&gt;frame[<span class="hljs-number">0</span>]) &#123;<br>		kfree(state);<br>		<span class="hljs-keyword">return</span> -ENOMEM;<br>	&#125;<br>	env-&gt;cur_state = state;<br>	init_func_state(env, state-&gt;frame[<span class="hljs-number">0</span>],<br>			BPF_MAIN_FUNC <span class="hljs-comment">/* callsite */</span>,<br>			<span class="hljs-number">0</span> <span class="hljs-comment">/* frameno */</span>,<br>			subprog);<br><br>	regs = state-&gt;frame[state-&gt;curframe]-&gt;regs;<br>	<span class="hljs-keyword">if</span> (subprog || env-&gt;prog-&gt;type == BPF_PROG_TYPE_EXT) &#123;<br>		ret = btf_prepare_func_args(env, subprog, regs);<br>		<span class="hljs-keyword">if</span> (ret)<br>			<span class="hljs-keyword">goto</span> out;<br>		<span class="hljs-keyword">for</span> (i = BPF_REG_1; i &lt;= BPF_REG_5; i++) &#123;<br>			<span class="hljs-keyword">if</span> (regs[i].type == PTR_TO_CTX)<br>				mark_reg_known_zero(env, regs, i);<br>			<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (regs[i].type == SCALAR_VALUE)<br>				mark_reg_unknown(env, regs, i);  <span class="hljs-comment">//参数传递，什么都有可能</span><br>		&#125;<br>	&#125; <span class="hljs-keyword">else</span> &#123;<br>		<span class="hljs-comment">/* 1st arg to a function */</span><br>		regs[BPF_REG_1].type = PTR_TO_CTX;<br>		mark_reg_known_zero(env, regs, BPF_REG_1);<br>		ret = btf_check_func_arg_match(env, subprog, regs);<br>		<span class="hljs-keyword">if</span> (ret == -EFAULT)<br>			<span class="hljs-comment">/* unlikely verifier bug. abort.</span><br><span class="hljs-comment">			 * ret == 0 and ret &lt; 0 are sadly acceptable for</span><br><span class="hljs-comment">			 * main() function due to backward compatibility.</span><br><span class="hljs-comment">			 * Like socket filter program may be written as:</span><br><span class="hljs-comment">			 * int bpf_prog(struct pt_regs *ctx)</span><br><span class="hljs-comment">			 * and never dereference that ctx in the program.</span><br><span class="hljs-comment">			 * &#x27;struct pt_regs&#x27; is a type mismatch for socket</span><br><span class="hljs-comment">			 * filter that should be using &#x27;struct __sk_buff&#x27;.</span><br><span class="hljs-comment">			 */</span><br>			<span class="hljs-keyword">goto</span> out;<br>	&#125;<br><br>	ret = do_check(env);<br>out:<br>	<span class="hljs-comment">/* check for NULL is necessary, since cur_state can be freed inside</span><br><span class="hljs-comment">	 * do_check() under memory pressure.</span><br><span class="hljs-comment">	 */</span><br>	<span class="hljs-keyword">if</span> (env-&gt;cur_state) &#123;<br>		free_verifier_state(env-&gt;cur_state, <span class="hljs-literal">true</span>);<br>		env-&gt;cur_state = <span class="hljs-literal">NULL</span>;<br>	&#125;<br>	<span class="hljs-keyword">while</span> (!pop_stack(env, <span class="hljs-literal">NULL</span>, <span class="hljs-literal">NULL</span>, <span class="hljs-literal">false</span>));<br>	<span class="hljs-keyword">if</span> (!ret &amp;&amp; pop_log)<br>		bpf_vlog_reset(&amp;env-&gt;<span class="hljs-built_in">log</span>, <span class="hljs-number">0</span>);<br>	free_states(env);<br>	<span class="hljs-keyword">if</span> (ret)<br>		<span class="hljs-comment">/* clean aux data in case subprog was rejected */</span><br>		sanitize_insn_aux_data(env);<br>	<span class="hljs-keyword">return</span> ret;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>首先准备一个state；然后根据函数类型和参数类型设置reg；</p>
+<h3 id="do-check"><a href="#do-check" class="headerlink" title="do_check"></a>do_check</h3><p>之后调用do_check：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-type">static</span> <span class="hljs-type">int</span> <span class="hljs-title function_">do_check</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> bpf_verifier_env *env)</span><br>&#123;<br>	<span class="hljs-type">bool</span> pop_log = !(env-&gt;<span class="hljs-built_in">log</span>.level &amp; BPF_LOG_LEVEL2);<br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">bpf_verifier_state</span> *<span class="hljs-title">state</span> =</span> env-&gt;cur_state;<br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">bpf_insn</span> *<span class="hljs-title">insns</span> =</span> env-&gt;prog-&gt;insnsi;<br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">bpf_reg_state</span> *<span class="hljs-title">regs</span>;</span><br>	<span class="hljs-type">int</span> insn_cnt = env-&gt;prog-&gt;len;<br>	<span class="hljs-type">bool</span> do_print_state = <span class="hljs-literal">false</span>;<br>	<span class="hljs-type">int</span> prev_insn_idx = <span class="hljs-number">-1</span>;<br><br>	<span class="hljs-keyword">for</span> (;;) &#123;<br>		<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">bpf_insn</span> *<span class="hljs-title">insn</span>;</span><br>		u8 <span class="hljs-class"><span class="hljs-keyword">class</span>;</span><br>		<span class="hljs-type">int</span> err;<br><br>		env-&gt;prev_insn_idx = prev_insn_idx;<br>		<span class="hljs-keyword">if</span> (env-&gt;insn_idx &gt;= insn_cnt) &#123;<br>			verbose(env, <span class="hljs-string">&quot;invalid insn idx %d insn_cnt %d\n&quot;</span>,<br>				env-&gt;insn_idx, insn_cnt);<br>			<span class="hljs-keyword">return</span> -EFAULT;<br>		&#125;<br><br>		insn = &amp;insns[env-&gt;insn_idx];<br>		<span class="hljs-class"><span class="hljs-keyword">class</span> =</span> BPF_CLASS(insn-&gt;code);<br><br>		<span class="hljs-keyword">if</span> (++env-&gt;insn_processed &gt; BPF_COMPLEXITY_LIMIT_INSNS) &#123;<br>			verbose(env,<br>				<span class="hljs-string">&quot;BPF program is too large. Processed %d insn\n&quot;</span>,<br>				env-&gt;insn_processed);<br>			<span class="hljs-keyword">return</span> -E2BIG;<br>		&#125;<br><br>		err = is_state_visited(env, env-&gt;insn_idx); <span class="hljs-comment">/////  如果这个state是visited，就直接prune掉</span><br>		<span class="hljs-keyword">if</span> (err &lt; <span class="hljs-number">0</span>)<br>			<span class="hljs-keyword">return</span> err;<br>		<span class="hljs-keyword">if</span> (err == <span class="hljs-number">1</span>) &#123;<br>			<span class="hljs-comment">/* found equivalent state, can prune the search */</span><br>			<span class="hljs-keyword">if</span> (env-&gt;<span class="hljs-built_in">log</span>.level &amp; BPF_LOG_LEVEL) &#123;<br>				<span class="hljs-keyword">if</span> (do_print_state)<br>					verbose(env, <span class="hljs-string">&quot;\nfrom %d to %d%s: safe\n&quot;</span>,<br>						env-&gt;prev_insn_idx, env-&gt;insn_idx,<br>						env-&gt;cur_state-&gt;speculative ?<br>						<span class="hljs-string">&quot; (speculative execution)&quot;</span> : <span class="hljs-string">&quot;&quot;</span>);<br>				<span class="hljs-keyword">else</span><br>					verbose(env, <span class="hljs-string">&quot;%d: safe\n&quot;</span>, env-&gt;insn_idx); <span class="hljs-comment">/////</span><br>			&#125;<br>			<span class="hljs-keyword">goto</span> process_bpf_exit;<br>		&#125;<br><br>		<span class="hljs-keyword">if</span> (signal_pending(current))<br>			<span class="hljs-keyword">return</span> -EAGAIN;<br><br>		<span class="hljs-keyword">if</span> (need_resched())<br>			cond_resched();<br><br>		<span class="hljs-keyword">if</span> (env-&gt;<span class="hljs-built_in">log</span>.level &amp; BPF_LOG_LEVEL2 ||<br>		    (env-&gt;<span class="hljs-built_in">log</span>.level &amp; BPF_LOG_LEVEL &amp;&amp; do_print_state)) &#123;<br>			<span class="hljs-keyword">if</span> (env-&gt;<span class="hljs-built_in">log</span>.level &amp; BPF_LOG_LEVEL2)<br>				verbose(env, <span class="hljs-string">&quot;%d:&quot;</span>, env-&gt;insn_idx);<br>			<span class="hljs-keyword">else</span><br>				verbose(env, <span class="hljs-string">&quot;\nfrom %d to %d%s:&quot;</span>,<br>					env-&gt;prev_insn_idx, env-&gt;insn_idx,<br>					env-&gt;cur_state-&gt;speculative ?<br>					<span class="hljs-string">&quot; (speculative execution)&quot;</span> : <span class="hljs-string">&quot;&quot;</span>);<br>			print_verifier_state(env, state-&gt;frame[state-&gt;curframe]);<br>			do_print_state = <span class="hljs-literal">false</span>;<br>		&#125;<br><br>		<span class="hljs-keyword">if</span> (env-&gt;<span class="hljs-built_in">log</span>.level &amp; BPF_LOG_LEVEL) &#123;<br>			<span class="hljs-type">const</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">bpf_insn_cbs</span> <span class="hljs-title">cbs</span> =</span> &#123;<br>				.cb_print	= verbose,<br>				.private_data	= env,<br>			&#125;;<br><br>			verbose_linfo(env, env-&gt;insn_idx, <span class="hljs-string">&quot;; &quot;</span>);<br>			verbose(env, <span class="hljs-string">&quot;%d: &quot;</span>, env-&gt;insn_idx);<br>			print_bpf_insn(&amp;cbs, insn, env-&gt;allow_ptr_leaks);<br>		&#125;<br><br>		<span class="hljs-keyword">if</span> (bpf_prog_is_dev_bound(env-&gt;prog-&gt;aux)) &#123;<br>			err = bpf_prog_offload_verify_insn(env, env-&gt;insn_idx,<br>							   env-&gt;prev_insn_idx);<br>			<span class="hljs-keyword">if</span> (err)<br>				<span class="hljs-keyword">return</span> err;<br>		&#125;<br><br>		regs = cur_regs(env);<br>		env-&gt;insn_aux_data[env-&gt;insn_idx].seen = env-&gt;pass_cnt;<br>		prev_insn_idx = env-&gt;insn_idx;<br><br>		<span class="hljs-keyword">if</span> (class == BPF_ALU || class == BPF_ALU64) &#123;<br>			err = check_alu_op(env, insn);<br>			<span class="hljs-keyword">if</span> (err)<br>				<span class="hljs-keyword">return</span> err;<br><br>		&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (class == BPF_LDX) &#123;<br>			<span class="hljs-keyword">enum</span> bpf_reg_type *prev_src_type, src_reg_type;<br><br>			<span class="hljs-comment">/* check for reserved fields is already done */</span><br><br>			<span class="hljs-comment">/* check src operand */</span><br>			err = check_reg_arg(env, insn-&gt;src_reg, SRC_OP);<br>			<span class="hljs-keyword">if</span> (err)<br>				<span class="hljs-keyword">return</span> err;<br><br>			err = check_reg_arg(env, insn-&gt;dst_reg, DST_OP_NO_MARK);<br>			<span class="hljs-keyword">if</span> (err)<br>				<span class="hljs-keyword">return</span> err;<br><br>			src_reg_type = regs[insn-&gt;src_reg].type;<br><br>			<span class="hljs-comment">/* check that memory (src_reg + off) is readable,</span><br><span class="hljs-comment">			 * the state of dst_reg will be updated by this func</span><br><span class="hljs-comment">			 */</span><br>			err = check_mem_access(env, env-&gt;insn_idx, insn-&gt;src_reg,<br>					       insn-&gt;off, BPF_SIZE(insn-&gt;code),<br>					       BPF_READ, insn-&gt;dst_reg, <span class="hljs-literal">false</span>);<br>			<span class="hljs-keyword">if</span> (err)<br>				<span class="hljs-keyword">return</span> err;<br><br>			prev_src_type = &amp;env-&gt;insn_aux_data[env-&gt;insn_idx].ptr_type;<br><br>			<span class="hljs-keyword">if</span> (*prev_src_type == NOT_INIT) &#123;<br>				<span class="hljs-comment">/* saw a valid insn</span><br><span class="hljs-comment">				 * dst_reg = *(u32 *)(src_reg + off)</span><br><span class="hljs-comment">				 * save type to validate intersecting paths</span><br><span class="hljs-comment">				 */</span><br>				*prev_src_type = src_reg_type;<br><br>			&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (reg_type_mismatch(src_reg_type, *prev_src_type)) &#123;<br>				<span class="hljs-comment">/* ABuser program is trying to use the same insn</span><br><span class="hljs-comment">				 * dst_reg = *(u32*) (src_reg + off)</span><br><span class="hljs-comment">				 * with different pointer types:</span><br><span class="hljs-comment">				 * src_reg == ctx in one branch and</span><br><span class="hljs-comment">				 * src_reg == stack|map in some other branch.</span><br><span class="hljs-comment">				 * Reject it.</span><br><span class="hljs-comment">				 */</span><br>				verbose(env, <span class="hljs-string">&quot;same insn cannot be used with different pointers\n&quot;</span>);<br>				<span class="hljs-keyword">return</span> -EINVAL;<br>			&#125;<br><br>		&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (class == BPF_STX) &#123;<br>			<span class="hljs-keyword">enum</span> bpf_reg_type *prev_dst_type, dst_reg_type;<br><br>			<span class="hljs-keyword">if</span> (BPF_MODE(insn-&gt;code) == BPF_XADD) &#123;<br>				err = check_xadd(env, env-&gt;insn_idx, insn);<br>				<span class="hljs-keyword">if</span> (err)<br>					<span class="hljs-keyword">return</span> err;<br>				env-&gt;insn_idx++;<br>				<span class="hljs-keyword">continue</span>;<br>			&#125;<br><br>			<span class="hljs-comment">/* check src1 operand */</span><br>			err = check_reg_arg(env, insn-&gt;src_reg, SRC_OP);<br>			<span class="hljs-keyword">if</span> (err)<br>				<span class="hljs-keyword">return</span> err;<br>			<span class="hljs-comment">/* check src2 operand */</span><br>			err = check_reg_arg(env, insn-&gt;dst_reg, SRC_OP);<br>			<span class="hljs-keyword">if</span> (err)<br>				<span class="hljs-keyword">return</span> err;<br><br>			dst_reg_type = regs[insn-&gt;dst_reg].type;<br><br>			<span class="hljs-comment">/* check that memory (dst_reg + off) is writeable */</span><br>			err = check_mem_access(env, env-&gt;insn_idx, insn-&gt;dst_reg,<br>					       insn-&gt;off, BPF_SIZE(insn-&gt;code),<br>					       BPF_WRITE, insn-&gt;src_reg, <span class="hljs-literal">false</span>);<br>			<span class="hljs-keyword">if</span> (err)<br>				<span class="hljs-keyword">return</span> err;<br><br>			prev_dst_type = &amp;env-&gt;insn_aux_data[env-&gt;insn_idx].ptr_type;<br><br>			<span class="hljs-keyword">if</span> (*prev_dst_type == NOT_INIT) &#123;<br>				*prev_dst_type = dst_reg_type;<br>			&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (reg_type_mismatch(dst_reg_type, *prev_dst_type)) &#123;<br>				verbose(env, <span class="hljs-string">&quot;same insn cannot be used with different pointers\n&quot;</span>);<br>				<span class="hljs-keyword">return</span> -EINVAL;<br>			&#125;<br><br>		&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (class == BPF_ST) &#123;<br>			<span class="hljs-keyword">if</span> (BPF_MODE(insn-&gt;code) != BPF_MEM ||<br>			    insn-&gt;src_reg != BPF_REG_0) &#123;<br>				verbose(env, <span class="hljs-string">&quot;BPF_ST uses reserved fields\n&quot;</span>);<br>				<span class="hljs-keyword">return</span> -EINVAL;<br>			&#125;<br>			<span class="hljs-comment">/* check src operand */</span><br>			err = check_reg_arg(env, insn-&gt;dst_reg, SRC_OP);<br>			<span class="hljs-keyword">if</span> (err)<br>				<span class="hljs-keyword">return</span> err;<br><br>			<span class="hljs-keyword">if</span> (is_ctx_reg(env, insn-&gt;dst_reg)) &#123;<br>				verbose(env, <span class="hljs-string">&quot;BPF_ST stores into R%d %s is not allowed\n&quot;</span>,<br>					insn-&gt;dst_reg,<br>					reg_type_str[reg_state(env, insn-&gt;dst_reg)-&gt;type]);<br>				<span class="hljs-keyword">return</span> -EACCES;<br>			&#125;<br><br>			<span class="hljs-comment">/* check that memory (dst_reg + off) is writeable */</span><br>			err = check_mem_access(env, env-&gt;insn_idx, insn-&gt;dst_reg,<br>					       insn-&gt;off, BPF_SIZE(insn-&gt;code),<br>					       BPF_WRITE, <span class="hljs-number">-1</span>, <span class="hljs-literal">false</span>);<br>			<span class="hljs-keyword">if</span> (err)<br>				<span class="hljs-keyword">return</span> err;<br><br>		&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (class == BPF_JMP || class == BPF_JMP32) &#123;<br>			u8 opcode = BPF_OP(insn-&gt;code);<br><br>			env-&gt;jmps_processed++;<br>			<span class="hljs-keyword">if</span> (opcode == BPF_CALL) &#123;<br>				<span class="hljs-keyword">if</span> (BPF_SRC(insn-&gt;code) != BPF_K ||<br>				    insn-&gt;off != <span class="hljs-number">0</span> ||<br>				    (insn-&gt;src_reg != BPF_REG_0 &amp;&amp;<br>				     insn-&gt;src_reg != BPF_PSEUDO_CALL) ||<br>				    insn-&gt;dst_reg != BPF_REG_0 ||<br>				    class == BPF_JMP32) &#123;<br>					verbose(env, <span class="hljs-string">&quot;BPF_CALL uses reserved fields\n&quot;</span>);<br>					<span class="hljs-keyword">return</span> -EINVAL;<br>				&#125;<br><br>				<span class="hljs-keyword">if</span> (env-&gt;cur_state-&gt;active_spin_lock &amp;&amp;<br>				    (insn-&gt;src_reg == BPF_PSEUDO_CALL ||<br>				     insn-&gt;imm != BPF_FUNC_spin_unlock)) &#123;<br>					verbose(env, <span class="hljs-string">&quot;function calls are not allowed while holding a lock\n&quot;</span>);<br>					<span class="hljs-keyword">return</span> -EINVAL;<br>				&#125;<br>				<span class="hljs-keyword">if</span> (insn-&gt;src_reg == BPF_PSEUDO_CALL)<br>					err = check_func_call(env, insn, &amp;env-&gt;insn_idx);<br>				<span class="hljs-keyword">else</span><br>					err = check_helper_call(env, insn-&gt;imm, env-&gt;insn_idx);<br>				<span class="hljs-keyword">if</span> (err)<br>					<span class="hljs-keyword">return</span> err;<br><br>			&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (opcode == BPF_JA) &#123;<br>				<span class="hljs-keyword">if</span> (BPF_SRC(insn-&gt;code) != BPF_K ||<br>				    insn-&gt;imm != <span class="hljs-number">0</span> ||<br>				    insn-&gt;src_reg != BPF_REG_0 ||<br>				    insn-&gt;dst_reg != BPF_REG_0 ||<br>				    class == BPF_JMP32) &#123;<br>					verbose(env, <span class="hljs-string">&quot;BPF_JA uses reserved fields\n&quot;</span>);<br>					<span class="hljs-keyword">return</span> -EINVAL;<br>				&#125;<br><br>				env-&gt;insn_idx += insn-&gt;off + <span class="hljs-number">1</span>;<br>				<span class="hljs-keyword">continue</span>;<br><br>			&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (opcode == BPF_EXIT) &#123;<br>				<span class="hljs-keyword">if</span> (BPF_SRC(insn-&gt;code) != BPF_K ||<br>				    insn-&gt;imm != <span class="hljs-number">0</span> ||<br>				    insn-&gt;src_reg != BPF_REG_0 ||<br>				    insn-&gt;dst_reg != BPF_REG_0 ||<br>				    class == BPF_JMP32) &#123;<br>					verbose(env, <span class="hljs-string">&quot;BPF_EXIT uses reserved fields\n&quot;</span>);<br>					<span class="hljs-keyword">return</span> -EINVAL;<br>				&#125;<br><br>				<span class="hljs-keyword">if</span> (env-&gt;cur_state-&gt;active_spin_lock) &#123;<br>					verbose(env, <span class="hljs-string">&quot;bpf_spin_unlock is missing\n&quot;</span>);<br>					<span class="hljs-keyword">return</span> -EINVAL;<br>				&#125;<br><br>				<span class="hljs-keyword">if</span> (state-&gt;curframe) &#123;<br>					<span class="hljs-comment">/* exit from nested function */</span><br>					err = prepare_func_exit(env, &amp;env-&gt;insn_idx);<br>					<span class="hljs-keyword">if</span> (err)<br>						<span class="hljs-keyword">return</span> err;<br>					do_print_state = <span class="hljs-literal">true</span>;<br>					<span class="hljs-keyword">continue</span>;<br>				&#125;<br><br>				err = check_reference_leak(env);<br>				<span class="hljs-keyword">if</span> (err)<br>					<span class="hljs-keyword">return</span> err;<br><br>				err = check_return_code(env);<br>				<span class="hljs-keyword">if</span> (err)<br>					<span class="hljs-keyword">return</span> err;<br>process_bpf_exit:<br>				update_branch_counts(env, env-&gt;cur_state);<br>				err = pop_stack(env, &amp;prev_insn_idx,<br>						&amp;env-&gt;insn_idx, pop_log);<br>				<span class="hljs-keyword">if</span> (err &lt; <span class="hljs-number">0</span>) &#123;<br>					<span class="hljs-keyword">if</span> (err != -ENOENT)<br>						<span class="hljs-keyword">return</span> err;<br>					<span class="hljs-keyword">break</span>;<br>				&#125; <span class="hljs-keyword">else</span> &#123;<br>					do_print_state = <span class="hljs-literal">true</span>;<br>					<span class="hljs-keyword">continue</span>;<br>				&#125;<br>			&#125; <span class="hljs-keyword">else</span> &#123;<br>				err = check_cond_jmp_op(env, insn, &amp;env-&gt;insn_idx);<br>				<span class="hljs-keyword">if</span> (err)<br>					<span class="hljs-keyword">return</span> err;<br>			&#125;<br>		&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (class == BPF_LD) &#123;<br>			u8 mode = BPF_MODE(insn-&gt;code);<br><br>			<span class="hljs-keyword">if</span> (mode == BPF_ABS || mode == BPF_IND) &#123;<br>				err = check_ld_abs(env, insn);<br>				<span class="hljs-keyword">if</span> (err)<br>					<span class="hljs-keyword">return</span> err;<br><br>			&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (mode == BPF_IMM) &#123;<br>				err = check_ld_imm(env, insn);<br>				<span class="hljs-keyword">if</span> (err)<br>					<span class="hljs-keyword">return</span> err;<br><br>				env-&gt;insn_idx++;<br>				env-&gt;insn_aux_data[env-&gt;insn_idx].seen = env-&gt;pass_cnt;<br>			&#125; <span class="hljs-keyword">else</span> &#123;<br>				verbose(env, <span class="hljs-string">&quot;invalid BPF_LD mode\n&quot;</span>);<br>				<span class="hljs-keyword">return</span> -EINVAL;<br>			&#125;<br>		&#125; <span class="hljs-keyword">else</span> &#123;<br>			verbose(env, <span class="hljs-string">&quot;unknown insn class %d\n&quot;</span>, class);<br>			<span class="hljs-keyword">return</span> -EINVAL;<br>		&#125;<br><br>		env-&gt;insn_idx++;<br>	&#125;<br><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>do_check_common是针对每个subprog只调用一次的，但后在do_check_common中调用了do_check，即do_check也是对于每个subprog都只调用一次的；</p>
+<p>在do_check内部，会从头开始遍历依次所有指令，首先进入is_state_visited函数，这个函数仅对prune_point有效，不是prune_point的会立即退出；然后这里的遍历指令不是简单的顺序遍历就完事了，这要充分考虑多种情况：条件跳转、直接跳转、exit；</p>
+<p>在env中会维护一个stack，然后通过env-&gt;stack_size表示栈中元素的个数，env-&gt;head表示栈头，然后通过单链表的形式组织elem们进入栈；</p>
+<p>当do_check遇到了条件跳转会进入到check_cond_jmp_op函数中，如果确定两个分支都会走到，则会先通过mark_chain_precision函数来修改precise标记，然后将true分支压入栈中，</p>
+<p><img src="/images/1735631646480.png" alt="1735631646480"></p>
+<p>上面这段代码，走到exit时会走下来，出栈一个指令继续分析；比如is_state_visited返回为true，那么就调到这里，直接分析下一个；同样，如果是条件跳转的false分支分析完了，进入到exit了，那么下面pop出来的就是true分支了；</p>
+<h3 id="is-state-visited"><a href="#is-state-visited" class="headerlink" title="is_state_visited"></a>is_state_visited</h3><figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-type">static</span> <span class="hljs-type">int</span> <span class="hljs-title function_">is_state_visited</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> bpf_verifier_env *env, <span class="hljs-type">int</span> insn_idx)</span><br>&#123;<br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">bpf_verifier_state_list</span> *<span class="hljs-title">new_sl</span>;</span><br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">bpf_verifier_state_list</span> *<span class="hljs-title">sl</span>, **<span class="hljs-title">pprev</span>;</span><br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">bpf_verifier_state</span> *<span class="hljs-title">cur</span> =</span> env-&gt;cur_state, *new;<br>	<span class="hljs-type">int</span> i, j, err, states_cnt = <span class="hljs-number">0</span>;<br>	<span class="hljs-type">bool</span> add_new_state = env-&gt;test_state_freq ? <span class="hljs-literal">true</span> : <span class="hljs-literal">false</span>;<br><br>	cur-&gt;last_insn_idx = env-&gt;prev_insn_idx;<br>	<span class="hljs-keyword">if</span> (!env-&gt;insn_aux_data[insn_idx].prune_point) <span class="hljs-comment">//必须是可prune的点才可以继续分析</span><br>		<span class="hljs-comment">/* this &#x27;insn_idx&#x27; instruction wasn&#x27;t marked, so we will not</span><br><span class="hljs-comment">		 * be doing state search here</span><br><span class="hljs-comment">		 */</span><br>		<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br><br>	<span class="hljs-comment">/* bpf progs typically have pruning point every 4 instructions</span><br><span class="hljs-comment">	 * http://vger.kernel.org/bpfconf2019.html#session-1</span><br><span class="hljs-comment">	 * Do not add new state for future pruning if the verifier hasn&#x27;t seen</span><br><span class="hljs-comment">	 * at least 2 jumps and at least 8 instructions.</span><br><span class="hljs-comment">	 * This heuristics helps decrease &#x27;total_states&#x27; and &#x27;peak_states&#x27; metric.</span><br><span class="hljs-comment">	 * In tests that amounts to up to 50% reduction into total verifier</span><br><span class="hljs-comment">	 * memory consumption and 20% verifier time speedup.</span><br><span class="hljs-comment">	 */</span><br>	<span class="hljs-keyword">if</span> (env-&gt;jmps_processed - env-&gt;prev_jmps_processed &gt;= <span class="hljs-number">2</span> &amp;&amp;<br>	    env-&gt;insn_processed - env-&gt;prev_insn_processed &gt;= <span class="hljs-number">8</span>)<br>		add_new_state = <span class="hljs-literal">true</span>;<br><br>	pprev = explored_state(env, insn_idx); <span class="hljs-comment">//直接拿到一个链表，最开始可能直接就是空的；</span><br>	sl = *pprev;<br><br>	clean_live_states(env, insn_idx, cur);<br>	<br>	<span class="hljs-keyword">while</span> (sl) &#123;<br>		states_cnt++;<br>		<span class="hljs-keyword">if</span> (sl-&gt;state.insn_idx != insn_idx)<br>			<span class="hljs-keyword">goto</span> next;<br>		<span class="hljs-keyword">if</span> (sl-&gt;state.branches) &#123;<br>			<span class="hljs-keyword">if</span> (states_maybe_looping(&amp;sl-&gt;state, cur) &amp;&amp;<br>			    states_equal(env, &amp;sl-&gt;state, cur)) &#123;<br>				verbose_linfo(env, insn_idx, <span class="hljs-string">&quot;; &quot;</span>);<br>				verbose(env, <span class="hljs-string">&quot;infinite loop detected at insn %d\n&quot;</span>, insn_idx);<br>				<span class="hljs-keyword">return</span> -EINVAL;<br>			&#125;<br>			<span class="hljs-comment">/* if the verifier is processing a loop, avoid adding new state</span><br><span class="hljs-comment">			 * too often, since different loop iterations have distinct</span><br><span class="hljs-comment">			 * states and may not help future pruning.</span><br><span class="hljs-comment">			 * This threshold shouldn&#x27;t be too low to make sure that</span><br><span class="hljs-comment">			 * a loop with large bound will be rejected quickly.</span><br><span class="hljs-comment">			 * The most abusive loop will be:</span><br><span class="hljs-comment">			 * r1 += 1</span><br><span class="hljs-comment">			 * if r1 &lt; 1000000 goto pc-2</span><br><span class="hljs-comment">			 * 1M insn_procssed limit / 100 == 10k peak states.</span><br><span class="hljs-comment">			 * This threshold shouldn&#x27;t be too high either, since states</span><br><span class="hljs-comment">			 * at the end of the loop are likely to be useful in pruning.</span><br><span class="hljs-comment">			 */</span><br>			<span class="hljs-keyword">if</span> (env-&gt;jmps_processed - env-&gt;prev_jmps_processed &lt; <span class="hljs-number">20</span> &amp;&amp;<br>			    env-&gt;insn_processed - env-&gt;prev_insn_processed &lt; <span class="hljs-number">100</span>)<br>				add_new_state = <span class="hljs-literal">false</span>;<br>			<span class="hljs-keyword">goto</span> miss;<br>		&#125;<br>		<span class="hljs-keyword">if</span> (states_equal(env, &amp;sl-&gt;state, cur)) &#123;<br>			sl-&gt;hit_cnt++;<br>			<span class="hljs-comment">/* reached equivalent register/stack state,</span><br><span class="hljs-comment">			 * prune the search.</span><br><span class="hljs-comment">			 * Registers read by the continuation are read by us.</span><br><span class="hljs-comment">			 * If we have any write marks in env-&gt;cur_state, they</span><br><span class="hljs-comment">			 * will prevent corresponding reads in the continuation</span><br><span class="hljs-comment">			 * from reaching our parent (an explored_state).  Our</span><br><span class="hljs-comment">			 * own state will get the read marks recorded, but</span><br><span class="hljs-comment">			 * they&#x27;ll be immediately forgotten as we&#x27;re pruning</span><br><span class="hljs-comment">			 * this state and will pop a new one.</span><br><span class="hljs-comment">			 */</span><br>			err = propagate_liveness(env, &amp;sl-&gt;state, cur);<br><br>			<span class="hljs-comment">/* if previous state reached the exit with precision and</span><br><span class="hljs-comment">			 * current state is equivalent to it (except precsion marks)</span><br><span class="hljs-comment">			 * the precision needs to be propagated back in</span><br><span class="hljs-comment">			 * the current state.</span><br><span class="hljs-comment">			 */</span><br>			err = err ? : push_jmp_history(env, cur);<br>			err = err ? : propagate_precision(env, &amp;sl-&gt;state);<br>			<span class="hljs-keyword">if</span> (err)<br>				<span class="hljs-keyword">return</span> err;<br>			<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>		&#125;<br>miss:<br>		<span class="hljs-comment">/* when new state is not going to be added do not increase miss count.</span><br><span class="hljs-comment">		 * Otherwise several loop iterations will remove the state</span><br><span class="hljs-comment">		 * recorded earlier. The goal of these heuristics is to have</span><br><span class="hljs-comment">		 * states from some iterations of the loop (some in the beginning</span><br><span class="hljs-comment">		 * and some at the end) to help pruning.</span><br><span class="hljs-comment">		 */</span><br>		<span class="hljs-keyword">if</span> (add_new_state)<br>			sl-&gt;miss_cnt++;<br>		<span class="hljs-comment">/* heuristic to determine whether this state is beneficial</span><br><span class="hljs-comment">		 * to keep checking from state equivalence point of view.</span><br><span class="hljs-comment">		 * Higher numbers increase max_states_per_insn and verification time,</span><br><span class="hljs-comment">		 * but do not meaningfully decrease insn_processed.</span><br><span class="hljs-comment">		 */</span><br>		<span class="hljs-keyword">if</span> (sl-&gt;miss_cnt &gt; sl-&gt;hit_cnt * <span class="hljs-number">3</span> + <span class="hljs-number">3</span>) &#123;<br>			<span class="hljs-comment">/* the state is unlikely to be useful. Remove it to</span><br><span class="hljs-comment">			 * speed up verification</span><br><span class="hljs-comment">			 */</span><br>			*pprev = sl-&gt;next;<br>			<span class="hljs-keyword">if</span> (sl-&gt;state.frame[<span class="hljs-number">0</span>]-&gt;regs[<span class="hljs-number">0</span>].live &amp; REG_LIVE_DONE) &#123;<br>				u32 br = sl-&gt;state.branches;<br><br>				WARN_ONCE(br,<br>					  <span class="hljs-string">&quot;BUG live_done but branches_to_explore %d\n&quot;</span>,<br>					  br);<br>				free_verifier_state(&amp;sl-&gt;state, <span class="hljs-literal">false</span>);<br>				kfree(sl);<br>				env-&gt;peak_states--;<br>			&#125; <span class="hljs-keyword">else</span> &#123;<br>				<span class="hljs-comment">/* cannot free this state, since parentage chain may</span><br><span class="hljs-comment">				 * walk it later. Add it for free_list instead to</span><br><span class="hljs-comment">				 * be freed at the end of verification</span><br><span class="hljs-comment">				 */</span><br>				sl-&gt;next = env-&gt;free_list;<br>				env-&gt;free_list = sl;<br>			&#125;<br>			sl = *pprev;<br>			<span class="hljs-keyword">continue</span>;<br>		&#125;<br>next:<br>		pprev = &amp;sl-&gt;next;<br>		sl = *pprev;<br>	&#125;<br><br>	<span class="hljs-keyword">if</span> (env-&gt;max_states_per_insn &lt; states_cnt)<br>		env-&gt;max_states_per_insn = states_cnt;<br><br>	<span class="hljs-keyword">if</span> (!env-&gt;bpf_capable &amp;&amp; states_cnt &gt; BPF_COMPLEXITY_LIMIT_STATES)<br>		<span class="hljs-keyword">return</span> push_jmp_history(env, cur);<br><br>	<span class="hljs-keyword">if</span> (!add_new_state)<br>		<span class="hljs-keyword">return</span> push_jmp_history(env, cur);<br><br>	<span class="hljs-comment">/* There were no equivalent states, remember the current one.</span><br><span class="hljs-comment">	 * Technically the current state is not proven to be safe yet,</span><br><span class="hljs-comment">	 * but it will either reach outer most bpf_exit (which means it&#x27;s safe)</span><br><span class="hljs-comment">	 * or it will be rejected. When there are no loops the verifier won&#x27;t be</span><br><span class="hljs-comment">	 * seeing this tuple (frame[0].callsite, frame[1].callsite, .. insn_idx)</span><br><span class="hljs-comment">	 * again on the way to bpf_exit.</span><br><span class="hljs-comment">	 * When looping the sl-&gt;state.branches will be &gt; 0 and this state</span><br><span class="hljs-comment">	 * will not be considered for equivalence until branches == 0.</span><br><span class="hljs-comment">	 */</span><br>	new_sl = kzalloc(<span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> bpf_verifier_state_list), GFP_KERNEL);<br>	<span class="hljs-keyword">if</span> (!new_sl)<br>		<span class="hljs-keyword">return</span> -ENOMEM;<br>	env-&gt;total_states++;<br>	env-&gt;peak_states++;<br>	env-&gt;prev_jmps_processed = env-&gt;jmps_processed;<br>	env-&gt;prev_insn_processed = env-&gt;insn_processed;<br><br>	<span class="hljs-comment">/* add new state to the head of linked list */</span><br>	new = &amp;new_sl-&gt;state;<br>	err = copy_verifier_state(new, cur);  <span class="hljs-comment">//创建一个只有当前state的state_list</span><br>	<span class="hljs-keyword">if</span> (err) &#123;<br>		free_verifier_state(new, <span class="hljs-literal">false</span>);<br>		kfree(new_sl);<br>		<span class="hljs-keyword">return</span> err;<br>	&#125;<br>	new-&gt;insn_idx = insn_idx;<br>	WARN_ONCE(new-&gt;branches != <span class="hljs-number">1</span>,<br>		  <span class="hljs-string">&quot;BUG is_state_visited:branches_to_explore=%d insn %d\n&quot;</span>, new-&gt;branches, insn_idx);<br><br>	cur-&gt;parent = new;<br>	cur-&gt;first_insn_idx = insn_idx;<br>	clear_jmp_history(cur);<br>	new_sl-&gt;next = *explored_state(env, insn_idx); <span class="hljs-comment">//再次获取这个链表，并采用头插法链接进去</span><br>	*explored_state(env, insn_idx) = new_sl;<br>	<span class="hljs-comment">/* connect new state to parentage chain. Current frame needs all</span><br><span class="hljs-comment">	 * registers connected. Only r6 - r9 of the callers are alive (pushed</span><br><span class="hljs-comment">	 * to the stack implicitly by JITs) so in callers&#x27; frames connect just</span><br><span class="hljs-comment">	 * r6 - r9 as an optimization. Callers will have r1 - r5 connected to</span><br><span class="hljs-comment">	 * the state of the call instruction (with WRITTEN set), and r0 comes</span><br><span class="hljs-comment">	 * from callee with its full parentage chain, anyway.</span><br><span class="hljs-comment">	 */</span><br>	<span class="hljs-comment">/* clear write marks in current state: the writes we did are not writes</span><br><span class="hljs-comment">	 * our child did, so they don&#x27;t screen off its reads from us.</span><br><span class="hljs-comment">	 * (There are no read marks in current state, because reads always mark</span><br><span class="hljs-comment">	 * their parent and current state never has children yet.  Only</span><br><span class="hljs-comment">	 * explored_states can get read marks.)</span><br><span class="hljs-comment">	 */</span><br>	<span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt;= cur-&gt;curframe; j++) &#123;<br>		<span class="hljs-keyword">for</span> (i = j &lt; cur-&gt;curframe ? BPF_REG_6 : <span class="hljs-number">0</span>; i &lt; BPF_REG_FP; i++)<br>			cur-&gt;frame[j]-&gt;regs[i].parent = &amp;new-&gt;frame[j]-&gt;regs[i];<br>		<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; BPF_REG_FP; i++)<br>			cur-&gt;frame[j]-&gt;regs[i].live = REG_LIVE_NONE;<br>	&#125;<br><br>	<span class="hljs-comment">/* all stack frames are accessible from callee, clear them all */</span><br>	<span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt;= cur-&gt;curframe; j++) &#123;<br>		<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">bpf_func_state</span> *<span class="hljs-title">frame</span> =</span> cur-&gt;frame[j];<br>		<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">bpf_func_state</span> *<span class="hljs-title">newframe</span> =</span> new-&gt;frame[j];<br><br>		<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; frame-&gt;allocated_stack / BPF_REG_SIZE; i++) &#123;<br>			frame-&gt;<span class="hljs-built_in">stack</span>[i].spilled_ptr.live = REG_LIVE_NONE;<br>			frame-&gt;<span class="hljs-built_in">stack</span>[i].spilled_ptr.parent =<br>						&amp;newframe-&gt;<span class="hljs-built_in">stack</span>[i].spilled_ptr;<br>		&#125;<br>	&#125;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><img src="/images/1735455192413.png" alt="1735455192413"></p>
+<p><img src="/images/1735456172035.png" alt="1735456172035"></p>
+<p>对于is_state_visited这个函数的理解，重点在于bpf_verifier_state_list这个结构，首先在env中存在一个名为explored_states的bpf_verifier_state_list类型数组，该数组的每一项要对应一个调用者和一个被调用者，因此搜索空间非常巨大，所以要采用哈希表的形式来存储；</p>
+<p>在最开始的情况下，获取到一个空链表项，直接跳过前面的代码，看add_new，先分配一个新的链表项new_sl，然后将当前的state情况copy进去，链进链表中：</p>
+<p><img src="/images/1735456525443.png" alt="1735456525443"></p>
+<p>进入到is_state_visited函数中，首先就要获取这样一个链表，（当然它可能为空），然后开始遍历其中的每一个state，因为这些state其实都是相同的调用者和相同的被调用者了；</p>
+<h3 id="copy"><a href="#copy" class="headerlink" title="copy"></a>copy</h3><p>看一下这个new_sl是如何创建与初始化的：</p>
+<p><img src="/images/1735465415312.png" alt="1735465415312"></p>
+<p>传递new进去copy：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-type">static</span> <span class="hljs-type">int</span> <span class="hljs-title function_">copy_verifier_state</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> bpf_verifier_state *dst_state,</span><br><span class="hljs-params">			       <span class="hljs-type">const</span> <span class="hljs-keyword">struct</span> bpf_verifier_state *src)</span><br>&#123;<br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">bpf_func_state</span> *<span class="hljs-title">dst</span>;</span><br>	u32 jmp_sz = <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> bpf_idx_pair) * src-&gt;jmp_history_cnt;<br>	<span class="hljs-type">int</span> i, err;<br><br>	<span class="hljs-keyword">if</span> (dst_state-&gt;jmp_history_cnt &lt; src-&gt;jmp_history_cnt) &#123;<br>		kfree(dst_state-&gt;jmp_history);<br>		dst_state-&gt;jmp_history = kmalloc(jmp_sz, GFP_USER);<br>		<span class="hljs-keyword">if</span> (!dst_state-&gt;jmp_history)<br>			<span class="hljs-keyword">return</span> -ENOMEM;<br>	&#125;<br>	<span class="hljs-built_in">memcpy</span>(dst_state-&gt;jmp_history, src-&gt;jmp_history, jmp_sz);<br>	dst_state-&gt;jmp_history_cnt = src-&gt;jmp_history_cnt;<br><br>	<span class="hljs-comment">/* if dst has more stack frames then src frame, free them */</span><br>	<span class="hljs-keyword">for</span> (i = src-&gt;curframe + <span class="hljs-number">1</span>; i &lt;= dst_state-&gt;curframe; i++) &#123;<br>		free_func_state(dst_state-&gt;frame[i]);<br>		dst_state-&gt;frame[i] = <span class="hljs-literal">NULL</span>;<br>	&#125;<br>	dst_state-&gt;speculative = src-&gt;speculative;<br>	dst_state-&gt;curframe = src-&gt;curframe;<br>	dst_state-&gt;active_spin_lock = src-&gt;active_spin_lock;<br>	dst_state-&gt;branches = src-&gt;branches;<br>	dst_state-&gt;parent = src-&gt;parent;<br>	dst_state-&gt;first_insn_idx = src-&gt;first_insn_idx;<br>	dst_state-&gt;last_insn_idx = src-&gt;last_insn_idx;<br>	<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt;= src-&gt;curframe; i++) &#123;<br>		dst = dst_state-&gt;frame[i];<br>		<span class="hljs-keyword">if</span> (!dst) &#123;<br>			dst = kzalloc(<span class="hljs-keyword">sizeof</span>(*dst), GFP_KERNEL);<br>			<span class="hljs-keyword">if</span> (!dst)<br>				<span class="hljs-keyword">return</span> -ENOMEM;<br>			dst_state-&gt;frame[i] = dst;<br>		&#125;<br>		err = copy_func_state(dst, src-&gt;frame[i]);<br>		<span class="hljs-keyword">if</span> (err)<br>			<span class="hljs-keyword">return</span> err;<br>	&#125;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>之后回来继续：</p>
+<p><img src="/images/1735465737671.png" alt="1735465737671"></p>
+<p>关于frame的定义如下：</p>
+<p><img src="/images/1735465830554.png" alt="1735465830554"></p>
+<p><img src="/images/1735471841238.png" alt="1735471841238"></p>
+<h3 id="states-equal"><a href="#states-equal" class="headerlink" title="states_equal"></a>states_equal</h3><p>好下面看如何判断两个state相同：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-type">static</span> <span class="hljs-type">int</span> <span class="hljs-title function_">is_state_visited</span><span class="hljs-params">(env, env-&gt;insn_idx)</span>&#123;<br>    pprev = explored_state(env, insn_idx);<br>	sl = *pprev;<br>    <span class="hljs-comment">//sl 遍历每一个相同的调用者和被调用者的state_list</span><br>	states_equal(env, &amp;sl-&gt;state, cur)&#123;<br>        <span class="hljs-comment">//old = sl-&gt;state, cur = cur</span><br>        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt;= old-&gt;curframe; i++) &#123;<br>			func_states_equal(old-&gt;frame[i], cur-&gt;frame[i])&#123;<br>                <span class="hljs-comment">//old = old-frame[i], cur = cur-&gt;frame[i]</span><br>                regsafe(&amp;old-&gt;regs[i], &amp;cur-&gt;regs[i], idmap)&#123;<br>                    <span class="hljs-comment">//rold = old-&gt;regs[i], rcur = &amp;cur-&gt;regs[i]</span><br>                    <span class="hljs-keyword">switch</span> (rold-&gt;type) &#123;<br>						<span class="hljs-keyword">case</span> SCALAR_VALUE:<br>                            <span class="hljs-keyword">if</span> (!rold-&gt;precise &amp;&amp; !rcur-&gt;precise)<br>								<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>                &#125;<br>            &#125;<br>			<br>		&#125;<br>    &#125;<br>	<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c">bpf_check()&#123;<br>	check_subprogs();<span class="hljs-comment">//根据jmp|call划分基本块，加入到subprog数组中</span><br>	check_cfg();<span class="hljs-comment">//对所有指令DFS搜索，探索不可达指令，标记prune_point</span><br>	do_check_common()&#123;<span class="hljs-comment">//检查某一个subprog是否可以优化掉</span><br>		do_check()&#123;<br>            pprev = explored_state(env, insn_idx);<br>			sl = *pprev;<br>			is_state_visited()&#123;<span class="hljs-comment">//遍历pprev链表，检查是否是visit过，</span><br>                <span class="hljs-comment">//先获取state_list，callsite^callee-&gt;hashtab</span><br>                <span class="hljs-comment">//逐个state进行比较</span><br>                <span class="hljs-keyword">while</span>()&#123;<br>                    states_equal(env, &amp;sl-&gt;state, cur)&#123;<br>        			<span class="hljs-comment">//old = sl-&gt;state, cur = cur</span><br>        			<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt;= old-&gt;curframe; i++) &#123;<br>						func_states_equal(old-&gt;frame[i], cur-&gt;frame[i])&#123;<br>                			<span class="hljs-comment">//old = old-frame[i], cur = cur-&gt;frame[i]</span><br>                			regsafe(&amp;old-&gt;regs[i], &amp;cur-&gt;regs[i], idmap)&#123;<br>                    			<span class="hljs-comment">//rold = old-&gt;regs[i], rcur = &amp;cur-&gt;regs[i]</span><br>                    			<span class="hljs-keyword">switch</span> (rold-&gt;type) &#123;<br>									<span class="hljs-keyword">case</span> SCALAR_VALUE:<br>                                        <span class="hljs-comment">//sl-&gt;state-&gt;frame[i]-&gt;regs-&gt;precise</span><br>                            			<span class="hljs-keyword">if</span> (!rold-&gt;precise &amp;&amp; !rcur-&gt;precise)<br>											<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>                				&#125;<br>            				&#125;<br>			<br>						&#125;<br>    				&#125;<br>                &#125;<br>				<span class="hljs-comment">//添加新的sl到链表中 copy</span><br>                new = &amp;new_sl-&gt;state;<br>				err = copy_verifier_state(new, cur)&#123;<br>                    <span class="hljs-comment">//dst_state=new, src=cur</span><br>                    dst = dst_state-&gt;frame[i];<br>					<span class="hljs-keyword">if</span> (!dst) &#123;<br>						dst = kzalloc(<span class="hljs-keyword">sizeof</span>(*dst), GFP_KERNEL);<br>						<span class="hljs-keyword">if</span> (!dst)<br>							<span class="hljs-keyword">return</span> -ENOMEM;<br>						dst_state-&gt;frame[i] = dst;<br>					&#125;<br>                    err = copy_func_state(dst, src-&gt;frame[i])&#123;<br>                        <span class="hljs-comment">//...</span><br>                        <span class="hljs-built_in">memcpy</span>(dst, src, offsetof(<span class="hljs-keyword">struct</span> bpf_func_state, acquired_refs));<br>                        <span class="hljs-comment">//...</span><br>                    &#125;<br>                &#125;<br>                <br>			&#125;<br>            <span class="hljs-comment">//对所有指令进行switch，逐个检查：</span><br>            <span class="hljs-keyword">switch</span>(op)&#123;<br>                <span class="hljs-keyword">case</span> JMP:<br>                    <span class="hljs-comment">//各种情况处理</span><br>                    check_cond_jmp_op()&#123;<span class="hljs-comment">//条件跳转，会对寄存器的precise进行标记</span><br>                        <span class="hljs-keyword">if</span>()&#123;<span class="hljs-comment">//如果存在分支</span><br>                            mark_chain_precision(env, insn-&gt;dst_reg);<span class="hljs-comment">//当前env的cur_state，然后找到curframe，将其regs[regno]设置为相应的precision等；后需要回溯的</span><br>                            <span class="hljs-comment">//env-&gt;cur_state-&gt;frame[st-&gt;curframe]-&gt;reg[regno]</span><br>                            <span class="hljs-comment">//...</span><br>                            mark_chain_precision(env, insn-&gt;src_reg);<br>                        &#125;<br>                    &#125;<br>            &#125;<br>		&#125;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="precise的理解"><a href="#precise的理解" class="headerlink" title="precise的理解"></a>precise的理解</h2><p>首先在regsafe的检查中是先看reg的所有估计值和var_off的，如果完全一样直接认为是safe的（除了stack还要再检查一个frameno）；如果存在不一样的地方，则检查type，这个precise是只针对标量有检查意义的；（因此，可以将precise理解为一个分支优化时对scalar的检查标准，如果是precise&#x3D;false说明不必较真）</p>
+<p>执行do_check_common-&gt;do_check-&gt;is_state_visited发现没有visit过，就要将当前state加入到链表中，这个时候就有了这次跳转（刚jmp，还没有执行任何新的指令）时的状态（可以理解为拍了一个快照一样保存到了sl中）；</p>
+<p>至于在对具体的指令进行分析，例如在条件跳转时要给src_reg标注精确，这个时候到了跳转进新的基本块的时候，这个标注就会带来，然后就会对src_reg的值进行严格检查，不精确就不让优化掉；</p>
+<h2 id="对于frame的理解"><a href="#对于frame的理解" class="headerlink" title="对于frame的理解"></a>对于frame的理解</h2><p>首先看eBPF的官方文档：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">https://www.kernel.org/doc/html/latest/bpf/verifier.html<br></code></pre></td></tr></table></figure>
+
+<p>主要就是说了一个state，如果call一个函数了，那么就会创建一个新的frame，通常frame0都是给自己的，然后新的frame1给被调用者，此时复制frame0的r1<del>r5给frame1作为参数传递，r0&#x2F;r6</del>r9对frame1来说是null，</p>
+<p>看check_func_call函数：</p>
+<p><img src="/images/1735548376954.png" alt="1735548376954"></p>
+<p><img src="/images/1735548425230.png" alt="1735548425230"></p>
+<p>可以看到创建一个新的frame之后，将state的curframe切换到新的栈中，PC也到了被调用函数中了；</p>
+<p>state只有subprog才会创建新的（在do_check_common函数中切换env-&gt;cur_state）;</p>
+<p>而subprog的标准是<code>call | jmp32</code> 以及<code>src_reg == BPF_PSEUDO_CALL</code>; 即eBPF到eBPF的函数调用，区别于辅助函数；所以只有内部的call才会被切分成subprog；</p>
+<p>再看prune：而所有的跳转分支则也会标记为prune_point，所以prune_point是subprog的超集；</p>
+<p><img src="/images/1735549019124.png" alt="1735549019124"></p>
+<p>所以就明朗了，其实 is_state_visited 中的比较、失败后的new_sl的copy、以及__mark_chain_precision都是围绕着frame来的！</p>
+<p>只有func_state中才会有regs，bpf_verifier_state中包s含func_state，但是没有regs；</p>
+<h2 id="mark-chain-precision调用情况总结"><a href="#mark-chain-precision调用情况总结" class="headerlink" title="mark_chain_precision调用情况总结"></a>mark_chain_precision调用情况总结</h2><p>check_stack_write：写栈上写8字节；</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-type">static</span> <span class="hljs-type">int</span> __mark_chain_precision(<span class="hljs-keyword">struct</span> bpf_verifier_env *env, <span class="hljs-type">int</span> regno,<br>				  <span class="hljs-type">int</span> spi)<br>&#123;<br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">bpf_verifier_state</span> *<span class="hljs-title">st</span> =</span> env-&gt;cur_state;<br>	<span class="hljs-type">int</span> first_idx = st-&gt;first_insn_idx;<br>	<span class="hljs-type">int</span> last_idx = env-&gt;insn_idx;<br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">bpf_func_state</span> *<span class="hljs-title">func</span>;</span><br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">bpf_reg_state</span> *<span class="hljs-title">reg</span>;</span><br>	u32 reg_mask = regno &gt;= <span class="hljs-number">0</span> ? <span class="hljs-number">1u</span> &lt;&lt; regno : <span class="hljs-number">0</span>;<br>	u64 stack_mask = spi &gt;= <span class="hljs-number">0</span> ? <span class="hljs-number">1ull</span> &lt;&lt; spi : <span class="hljs-number">0</span>;<br>	<span class="hljs-type">bool</span> skip_first = <span class="hljs-literal">true</span>;<br>	<span class="hljs-type">bool</span> new_marks = <span class="hljs-literal">false</span>;<br>	<span class="hljs-type">int</span> i, err;<br><br>	<span class="hljs-keyword">if</span> (!env-&gt;bpf_capable)<br>		<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br><span class="hljs-comment">///===============找出当前func frame，找出需要标记的reg==================================</span><br>	func = st-&gt;frame[st-&gt;curframe];<br>	<span class="hljs-keyword">if</span> (regno &gt;= <span class="hljs-number">0</span>) &#123;<br>		reg = &amp;func-&gt;regs[regno];<br>		<span class="hljs-keyword">if</span> (reg-&gt;type != SCALAR_VALUE) &#123;<br>			WARN_ONCE(<span class="hljs-number">1</span>, <span class="hljs-string">&quot;backtracing misuse&quot;</span>);<br>			<span class="hljs-keyword">return</span> -EFAULT;<br>		&#125;<br>		<span class="hljs-keyword">if</span> (!reg-&gt;precise)<br>			new_marks = <span class="hljs-literal">true</span>;<br>		<span class="hljs-keyword">else</span><br>			reg_mask = <span class="hljs-number">0</span>;<br>		reg-&gt;precise = <span class="hljs-literal">true</span>;<br>	&#125;<br><span class="hljs-comment">///=============设置堆栈precise的情况==================================================</span><br>	<span class="hljs-keyword">while</span> (spi &gt;= <span class="hljs-number">0</span>) &#123;<br>		<span class="hljs-keyword">if</span> (func-&gt;<span class="hljs-built_in">stack</span>[spi].slot_type[<span class="hljs-number">0</span>] != STACK_SPILL) &#123;<br>			stack_mask = <span class="hljs-number">0</span>;<br>			<span class="hljs-keyword">break</span>;<br>		&#125;<br>		reg = &amp;func-&gt;<span class="hljs-built_in">stack</span>[spi].spilled_ptr;<br>		<span class="hljs-keyword">if</span> (reg-&gt;type != SCALAR_VALUE) &#123;<br>			stack_mask = <span class="hljs-number">0</span>;<br>			<span class="hljs-keyword">break</span>;<br>		&#125;<br>		<span class="hljs-keyword">if</span> (!reg-&gt;precise)<br>			new_marks = <span class="hljs-literal">true</span>;<br>		<span class="hljs-keyword">else</span><br>			stack_mask = <span class="hljs-number">0</span>;<br>		reg-&gt;precise = <span class="hljs-literal">true</span>;<br>		<span class="hljs-keyword">break</span>;<br>	&#125;<br><br>	<span class="hljs-keyword">if</span> (!new_marks)<br>		<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>	<span class="hljs-keyword">if</span> (!reg_mask &amp;&amp; !stack_mask)<br>		<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br><span class="hljs-comment">//===============================开始回溯================================================</span><br>	<span class="hljs-keyword">for</span> (;;) &#123;<br>		DECLARE_BITMAP(mask, <span class="hljs-number">64</span>);<br>		u32 history = st-&gt;jmp_history_cnt;<br><br>		<span class="hljs-keyword">if</span> (env-&gt;<span class="hljs-built_in">log</span>.level &amp; BPF_LOG_LEVEL)<br>			verbose(env, <span class="hljs-string">&quot;last_idx %d first_idx %d\n&quot;</span>, last_idx, first_idx);<br>		<span class="hljs-keyword">for</span> (i = last_idx;;) &#123;<br>			<span class="hljs-keyword">if</span> (skip_first) &#123;<br>				err = <span class="hljs-number">0</span>;<br>				skip_first = <span class="hljs-literal">false</span>; <span class="hljs-comment">//跳过第一条指令</span><br>			&#125; <span class="hljs-keyword">else</span> &#123;<br>				err = backtrack_insn(env, i, &amp;reg_mask, &amp;stack_mask);<span class="hljs-comment">//回溯一条指令，就是我现在加了一个precise=true，可能会对前面其他的指令有影响，所以要回溯</span><br>			&#125;<br>			<span class="hljs-keyword">if</span> (err == -ENOTSUPP) &#123;<br>				mark_all_scalars_precise(env, st);<br>				<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>			&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (err) &#123;<br>				<span class="hljs-keyword">return</span> err;<br>			&#125;<br>			<span class="hljs-keyword">if</span> (!reg_mask &amp;&amp; !stack_mask)<br>				<span class="hljs-comment">/* Found assignment(s) into tracked register in this state.</span><br><span class="hljs-comment">				 * Since this state is already marked, just return.</span><br><span class="hljs-comment">				 * Nothing to be tracked further in the parent state.</span><br><span class="hljs-comment">				 */</span><br>				<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>			<span class="hljs-keyword">if</span> (i == first_idx)<br>				<span class="hljs-keyword">break</span>;<br>			i = get_prev_insn_idx(st, i, &amp;history);<span class="hljs-comment">//向前回溯一条指令</span><br>			<span class="hljs-keyword">if</span> (i &gt;= env-&gt;prog-&gt;len) &#123;<br>				<span class="hljs-comment">/* This can happen if backtracking reached insn 0</span><br><span class="hljs-comment">				 * and there are still reg_mask or stack_mask</span><br><span class="hljs-comment">				 * to backtrack.</span><br><span class="hljs-comment">				 * It means the backtracking missed the spot where</span><br><span class="hljs-comment">				 * particular register was initialized with a constant.</span><br><span class="hljs-comment">				 */</span><br>				verbose(env, <span class="hljs-string">&quot;BUG backtracking idx %d\n&quot;</span>, i);<br>				WARN_ONCE(<span class="hljs-number">1</span>, <span class="hljs-string">&quot;verifier backtracking bug&quot;</span>);<br>				<span class="hljs-keyword">return</span> -EFAULT;<br>			&#125;<br>		&#125;<span class="hljs-comment">//一个state的</span><br>		st = st-&gt;parent; <span class="hljs-comment">//向前一个状态</span><br>		<span class="hljs-keyword">if</span> (!st)<br>			<span class="hljs-keyword">break</span>;<br><br>		new_marks = <span class="hljs-literal">false</span>;<br>		func = st-&gt;frame[st-&gt;curframe];<br>		bitmap_from_u64(mask, reg_mask);<br>		for_each_set_bit(i, mask, <span class="hljs-number">32</span>) &#123;<br>			reg = &amp;func-&gt;regs[i];<br>			<span class="hljs-keyword">if</span> (reg-&gt;type != SCALAR_VALUE) &#123;<br>				reg_mask &amp;= ~(<span class="hljs-number">1u</span> &lt;&lt; i);<br>				<span class="hljs-keyword">continue</span>;<br>			&#125;<br>			<span class="hljs-keyword">if</span> (!reg-&gt;precise)<br>				new_marks = <span class="hljs-literal">true</span>;<br>			reg-&gt;precise = <span class="hljs-literal">true</span>;<br>		&#125;<br><br>		bitmap_from_u64(mask, stack_mask);<br>		for_each_set_bit(i, mask, <span class="hljs-number">64</span>) &#123;<br>			<span class="hljs-keyword">if</span> (i &gt;= func-&gt;allocated_stack / BPF_REG_SIZE) &#123;<br>				<span class="hljs-comment">/* the sequence of instructions:</span><br><span class="hljs-comment">				 * 2: (bf) r3 = r10</span><br><span class="hljs-comment">				 * 3: (7b) *(u64 *)(r3 -8) = r0</span><br><span class="hljs-comment">				 * 4: (79) r4 = *(u64 *)(r10 -8)</span><br><span class="hljs-comment">				 * doesn&#x27;t contain jmps. It&#x27;s backtracked</span><br><span class="hljs-comment">				 * as a single block.</span><br><span class="hljs-comment">				 * During backtracking insn 3 is not recognized as</span><br><span class="hljs-comment">				 * stack access, so at the end of backtracking</span><br><span class="hljs-comment">				 * stack slot fp-8 is still marked in stack_mask.</span><br><span class="hljs-comment">				 * However the parent state may not have accessed</span><br><span class="hljs-comment">				 * fp-8 and it&#x27;s &quot;unallocated&quot; stack space.</span><br><span class="hljs-comment">				 * In such case fallback to conservative.</span><br><span class="hljs-comment">				 */</span><br>				mark_all_scalars_precise(env, st);<br>				<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>			&#125;<br><br>			<span class="hljs-keyword">if</span> (func-&gt;<span class="hljs-built_in">stack</span>[i].slot_type[<span class="hljs-number">0</span>] != STACK_SPILL) &#123;<br>				stack_mask &amp;= ~(<span class="hljs-number">1ull</span> &lt;&lt; i);<br>				<span class="hljs-keyword">continue</span>;<br>			&#125;<br>			reg = &amp;func-&gt;<span class="hljs-built_in">stack</span>[i].spilled_ptr;<br>			<span class="hljs-keyword">if</span> (reg-&gt;type != SCALAR_VALUE) &#123;<br>				stack_mask &amp;= ~(<span class="hljs-number">1ull</span> &lt;&lt; i);<br>				<span class="hljs-keyword">continue</span>;<br>			&#125;<br>			<span class="hljs-keyword">if</span> (!reg-&gt;precise)<br>				new_marks = <span class="hljs-literal">true</span>;<br>			reg-&gt;precise = <span class="hljs-literal">true</span>;<br>		&#125;<br>		<span class="hljs-keyword">if</span> (env-&gt;<span class="hljs-built_in">log</span>.level &amp; BPF_LOG_LEVEL) &#123;<br>			print_verifier_state(env, func);<br>			verbose(env, <span class="hljs-string">&quot;parent %s regs=%x stack=%llx marks\n&quot;</span>,<br>				new_marks ? <span class="hljs-string">&quot;didn&#x27;t have&quot;</span> : <span class="hljs-string">&quot;already had&quot;</span>,<br>				reg_mask, stack_mask);<br>		&#125;<br><br>		<span class="hljs-keyword">if</span> (!reg_mask &amp;&amp; !stack_mask)<br>			<span class="hljs-keyword">break</span>;<br>		<span class="hljs-keyword">if</span> (!new_marks)<br>			<span class="hljs-keyword">break</span>;<br><br>		last_idx = st-&gt;last_insn_idx;<br>		first_idx = st-&gt;first_insn_idx;<br>	&#125;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<span class="hljs-comment">//就是不断的回溯，只要reg_mask和stack_mask不为0就要继续向上回溯，</span><br></code></pre></td></tr></table></figure>
+
+<p>在当前state中先回溯，到第一条指令后对reg们进行标记，reg_mask和stack_mask还不为0，就得继续向上回溯parent；</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        Author:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">John Doe</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        Link:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://example.com/2025/01/14/subprog/">http://example.com/2025/01/14/subprog/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        Reprint policy:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    All articles in this blog are used except for special statements
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    reprint policy. If reproduced, please indicate source
+                    <a href="/about" target="_blank">John Doe</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/kernel/">
+                                    <span class="chip bg-color">kernel</span>
+                                </a>
+                            
+                                <a href="/tags/eBPF/">
+                                    <span class="chip bg-color">eBPF</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="/2025/01/14/sk_buff/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="eBPF与sk_buff">
+                        
+                        <span class="card-title">eBPF与sk_buff</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2025-01-14
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            John Doe
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/kernel/">
+                        <span class="chip bg-color">kernel</span>
+                    </a>
+                    
+                    <a href="/tags/eBPF/">
+                        <span class="chip bg-color">eBPF</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Current&nbsp;<i class="far fa-dot-circle"></i>
+            </div>
+            <div class="card">
+                <a href="/2025/01/14/subprog/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="eBPF-verifier源码分析">
+                        
+                        <span class="card-title">eBPF-verifier源码分析</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-14
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            John Doe
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/kernel/">
+                        <span class="chip bg-color">kernel</span>
+                    </a>
+                    
+                    <a href="/tags/eBPF/">
+                        <span class="chip bg-color">eBPF</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2025</span>
+            
+            <a href="/about" target="_blank">John Doe</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;Total visits:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;Total visitors:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/Qian-YM" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:yimingqian591@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1643771613" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 1643771613" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

