@@ -364,10 +364,6 @@ func#0 @00: R1&amp;#x3D;ctx(id&amp;#x3D;0,off&amp;#x3D;0,imm&amp;#x3D;0) R10&amp
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/kernel/">
-                                <span class="chip bg-color">kernel</span>
-                            </a>
-                        
                             <a href="/tags/eBPF/">
                                 <span class="chip bg-color">eBPF</span>
                             </a>
@@ -413,7 +409,7 @@ func#0 @00: R1&amp;#x3D;ctx(id&amp;#x3D;0,off&amp;#x3D;0,imm&amp;#x3D;0) R10&amp
 </blockquote>
 <p>刚进入eBPF程序时，r1寄存器指向ctx；</p>
 <p>skb_load调用接口如下：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c">BPF_RAW_INSN(BPF_JMP|BPF_CALL, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, BPF_FUNC_skb_load_bytes), <span class="hljs-comment">// args: r1 = ctx, r2 = 0, r3 = fp -8, r4 = 10 [verifier 8]</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">BPF_RAW_INSN(BPF_JMP|BPF_CALL, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, BPF_FUNC_skb_load_bytes), <span class="comment">// args: r1 = ctx, r2 = 0, r3 = fp -8, r4 = 10 [verifier 8]</span></span><br></pre></td></tr></table></figure>
 
 <p>函数原型如下：</p>
 <blockquote>
@@ -452,7 +448,7 @@ func#0 @00: R1&amp;#x3D;ctx(id&amp;#x3D;0,off&amp;#x3D;0,imm&amp;#x3D;0) R10&amp
 <p>这里还需要注意堆栈的一个好处，map的空间是用户可读的，所以正常情况下是不能存入指针类型的数据的，但是堆栈却没有这个问题；</p>
 <p>现在可以确定的是，<strong>堆栈中可以存入指针，并且这个值收到保护，之后可以取出来用于访存操作</strong>；</p>
 <h2 id="相关调试技巧"><a href="#相关调试技巧" class="headerlink" title="相关调试技巧"></a>相关调试技巧</h2><p>如果我们用如下代码分配bpf_map：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> expmap_fd = bpf_map_create(BPF_MAP_TYPE_ARRAY, <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>), <span class="hljs-number">0x2000</span>, <span class="hljs-number">1</span>);<br><span class="hljs-keyword">if</span> (expmap_fd &lt; <span class="hljs-number">0</span>) perror(<span class="hljs-string">&quot;BPF_MAP_CREATE&quot;</span>);<span class="hljs-comment">//, err_exit(&quot;BPF_MAP_CREATE&quot;);</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> expmap_fd = bpf_map_create(BPF_MAP_TYPE_ARRAY, <span class="keyword">sizeof</span>(<span class="type">int</span>), <span class="number">0x2000</span>, <span class="number">1</span>);</span><br><span class="line"><span class="keyword">if</span> (expmap_fd &lt; <span class="number">0</span>) perror(<span class="string">&quot;BPF_MAP_CREATE&quot;</span>);<span class="comment">//, err_exit(&quot;BPF_MAP_CREATE&quot;);</span></span><br></pre></td></tr></table></figure>
 
 <p>那么我们可以在array_map_alloc函数下断点，finish之后即可返回相应的bpf_map结构体；</p>
 <p>对于sk_buff的读取，我们可以在bpf_skb_load_bytes函数下断点，其4个参数就是我们在eBPF代码中传递的4个参数，同时可以看到我们eBPF栈的具体地址。</p>
@@ -520,10 +516,6 @@ func#0 @00: R1&amp;#x3D;ctx(id&amp;#x3D;0,off&amp;#x3D;0,imm&amp;#x3D;0) R10&amp
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/kernel/">
-                                    <span class="chip bg-color">kernel</span>
-                                </a>
                             
                                 <a href="/tags/eBPF/">
                                     <span class="chip bg-color">eBPF</span>
@@ -683,10 +675,6 @@ func#0 @00: R1&amp;#x3D;ctx(id&amp;#x3D;0,off&amp;#x3D;0,imm&amp;#x3D;0) R10&amp
                 </div>
                 
                 <div class="card-action article-tags">
-                    
-                    <a href="/tags/kernel/">
-                        <span class="chip bg-color">kernel</span>
-                    </a>
                     
                     <a href="/tags/eBPF/">
                         <span class="chip bg-color">eBPF</span>

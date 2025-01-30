@@ -589,42 +589,27 @@
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2025/01/16/%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91JIT/">
+                    <a href="/2025/01/29/eBPF%E6%BC%8F%E6%B4%9E%E6%B1%87%E6%80%BB/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="西湖论剑2021JIT">
+                            <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="eBPF漏洞汇总">
                             
-                            <span class="card-title">西湖论剑2021JIT</span>
+                            <span class="card-title">eBPF漏洞汇总</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                百无聊赖之中复现一下西湖论剑的JIT
-静态分析
-
-init分配一段可读可写可执行的内存，并写入大量0xcc
-动态调试
-保护全开
-
-
-
-
-这个函数最终具有写那片内存的功能；
-
-似乎都是从bss上取固定的代码；
-
-func6
-
-最后的检查：
-i
+                                漏洞汇总CVE-2021-3489ringbuf的reserve函数没有对size进行检查；
+CVE-2024-41009ringbuf的reserve中检查不当导致chunk重叠；
+CVE-2024-45020verifier中stack
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-29
                             </span>
                             <span class="publish-author">
                                 
@@ -638,12 +623,8 @@ i
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/CTF/">
-                            <span class="chip bg-color">CTF</span>
-                        </a>
-                        
-                        <a href="/tags/VM/">
-                            <span class="chip bg-color">VM</span>
+                        <a href="/tags/eBPF/">
+                            <span class="chip bg-color">eBPF</span>
                         </a>
                         
                     </div>
@@ -655,33 +636,28 @@ i
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2025/01/16/%E5%BC%BA%E7%BD%91%E6%8B%9F%E6%80%81ker/">
+                    <a href="/2025/01/29/canary%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%E7%82%B9/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="强网拟态ker">
+                            <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="canary 相关知识点">
                             
-                            <span class="card-title">强网拟态ker</span>
+                            <span class="card-title">canary 相关知识点</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                CHECKrun.sh
-init
-version
-存在cg隔离
-namespace
-逆向分析add_note
-应该是kmalloc-64；
-edit_note
-动态调试gdb -ex &quot;target remote localhos
+                                在gdb中调试canary的两种方法：（1）在GDB中输入
+print (void)arch_prctl(0x1003,$rsp-8)x/xg $rsp-8 即可查看到 fs 中的值#注意这个调试命令的输入必须保证此时程序还在子线程中；
+
+
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-29
                             </span>
                             <span class="publish-author">
                                 
@@ -695,12 +671,8 @@ edit_note
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/kernel/">
-                            <span class="chip bg-color">kernel</span>
-                        </a>
-                        
-                        <a href="/tags/CTF/">
-                            <span class="chip bg-color">CTF</span>
+                        <a href="/tags/pwn/">
+                            <span class="chip bg-color">pwn</span>
                         </a>
                         
                     </div>
@@ -712,25 +684,30 @@ edit_note
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2025/01/16/rsa/">
+                    <a href="/2025/01/29/io_uring/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="RSA">
+                            <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="io_uring">
                             
-                            <span class="card-title">RSA</span>
+                            <span class="card-title">io_uring</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                ed互推def extended_gcd(a, b):    # 扩展欧几里得算法，返回 (gcd, x, y)，使得 a*x + b*y = gcd    if b == 0:        return a, 1, 0    gcd, 
+                                完整shellcode如下，前提是rdx是一个合法的可写地址：
+
+context.arch &#x3D; ‘amd64’
+shellcode &#x3D; asm(“””
+​                mov rbp, rdx
+​   
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-29
                             </span>
                             <span class="publish-author">
                                 
@@ -743,113 +720,6 @@ edit_note
 
                     
                     <div class="card-action article-tags">
-                        
-                        <a href="/tags/Crypto/">
-                            <span class="chip bg-color">Crypto</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2025/01/16/qwb2024-heap2/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="qwb2024-heap2">
-                            
-                            <span class="card-title">qwb2024-heap2</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-base64：明文3倍数，密文4倍数；
-此时我们输入密文，如果不是4的整倍数，这里malloc分配空间会向下取整，但是到了真正解密的时候：
-
-
-直接一次+4，然后处理4个字节密文，转变成三字节明文，根本不考虑当前剩余字节数目，回想前面me
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-16
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                q1ming
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/Crypto/">
-                            <span class="chip bg-color">Crypto</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2025/01/16/pcb_2024_vm/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="pcb_2024_vm">
-                            
-                            <span class="card-title">pcb_2024_vm</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-
-check_cmd爆破md5：
-pay &#x3D; “LOGIN:root\naaaaa:&amp;&amp;h3r3_1s_y0u2_G1ft!&amp;&amp;An9q\nDONE&amp;EXIT”
-LOGIN:rootaaa
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-16
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                q1ming
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/CTF/">
-                            <span class="chip bg-color">CTF</span>
-                        </a>
-                        
-                        <a href="/tags/VM/">
-                            <span class="chip bg-color">VM</span>
-                        </a>
                         
                         <a href="/tags/SandBox/">
                             <span class="chip bg-color">SandBox</span>
@@ -864,32 +734,35 @@ LOGIN:rootaaa
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2025/01/16/md5/">
+                    <a href="/2025/01/29/openat2/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="md5">
+                            <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="openat2">
                             
-                            <span class="card-title">md5</span>
+                            <span class="card-title">openat2</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                md5简介md5就是信息摘要、有损压缩；
-具体算法
-因为md5是超损压缩，不可逆的，所以只有撞击；
-例题1比较算法如下，先在v10中构造幻数，然后将之前用户输入的v8进行md5加密，随后结果和s1进行比较：
+                                openat2openat2的系统调用号如下：
 
-md5的幻数示例如下：
+使用方法如下：
 
-s1
+运行结果如下：
+
+因此运行openat2系统调用打开flag文件只需要：
+
+rdi &#x3D;&#x3D; 0xffffff9c
+rsi 指向”flag”字符串
+rdx指
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-29
                             </span>
                             <span class="publish-author">
                                 
@@ -903,8 +776,8 @@ s1
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/Crypto/">
-                            <span class="chip bg-color">Crypto</span>
+                        <a href="/tags/SandBox/">
+                            <span class="chip bg-color">SandBox</span>
                         </a>
                         
                     </div>
@@ -916,31 +789,30 @@ s1
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2025/01/16/largebin_attack/">
+                    <a href="/2025/01/29/SROP/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="largebin-attack">
+                            <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="SROP">
                             
-                            <span class="card-title">largebin-attack</span>
+                            <span class="card-title">SROP</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                总结速递
+                                基础知识
 
-注意：
-
-0x4c0和0x4b0不在一个组内！！！
-
-largebin结构分析largebin 共占用 bins 数组中的64个bin，且分为6个组，每个组的公差不一样；可以理解为这64个large bin个管一个范围，但范围的
+简单讲模拟sigreturn的过程；
+sigFrame存在用户态；
+利用系统调用触发sigreturn，然后配合在已经构造好的系统调用
+expfrom pwn import *frame = SigreturnFrame()fr
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-29
                             </span>
                             <span class="publish-author">
                                 
@@ -954,8 +826,8 @@ largebin结构分析largebin 共占用 bins 数组中的64个bin，且分为6个
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/Heap/">
-                            <span class="chip bg-color">Heap</span>
+                        <a href="/tags/pwn/">
+                            <span class="chip bg-color">pwn</span>
                         </a>
                         
                     </div>
@@ -967,28 +839,34 @@ largebin结构分析largebin 共占用 bins 数组中的64个bin，且分为6个
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2025/01/16/house_of_husk/">
+                    <a href="/2025/01/29/KOOBE/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="house_of_husk">
+                            <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="KOOBE">
                             
-                            <span class="card-title">house_of_husk</span>
+                            <span class="card-title">KOOBE</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                基本原理glibc源代码阅读：
-https://codebrowser.dev/glibc/glibc
-printf函数阅读路径：
-https://codebrowser.dev/glibc/glibc/stdio-common/print
+                                paper
+摘要提炼OOB漏洞的能力；
+
+能力（capability）作为引导的fuzz；
+组合这些capabilities去提升利用成功率；
+
+内核exploit是多次交互的，各模块之间相对独立；
+OOB漏洞的定义依据：
+
+能越界写多远；
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-29
                             </span>
                             <span class="publish-author">
                                 
@@ -1002,8 +880,8 @@ https://codebrowser.dev/glibc/glibc/stdio-common/print
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/Heap/">
-                            <span class="chip bg-color">Heap</span>
+                        <a href="/tags/paper/">
+                            <span class="chip bg-color">paper</span>
                         </a>
                         
                     </div>
@@ -1015,27 +893,26 @@ https://codebrowser.dev/glibc/glibc/stdio-common/print
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2025/01/16/house_of_apple2/">
+                    <a href="/2025/01/29/%E6%B1%A1%E7%82%B9%E5%88%86%E6%9E%90%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="house_of_apple2">
+                            <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="污点分析学习笔记">
                             
-                            <span class="card-title">house_of_apple2</span>
+                            <span class="card-title">污点分析学习笔记</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                从main函数退出或exit原理&amp;&amp;源代码分析以后有空再说
-模板_exit变种_exit1.exit() 和 _exit() 都是用来终止进程的；
-2._exit() 执行后立即返回给内核，而 exit() 要先执行一些清楚
+                                （本篇文章有较多文字摘自https://fynch3r.github.io/%E6%B1%A1%E7%82%B9%E5%88%86%E6%9E%90%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D/ 
+综述污点分析常
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-29
                             </span>
                             <span class="publish-author">
                                 
@@ -1049,8 +926,8 @@ https://codebrowser.dev/glibc/glibc/stdio-common/print
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/Heap/">
-                            <span class="chip bg-color">Heap</span>
+                        <a href="/tags/research/">
+                            <span class="chip bg-color">research</span>
                         </a>
                         
                     </div>
@@ -1062,30 +939,30 @@ https://codebrowser.dev/glibc/glibc/stdio-common/print
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2025/01/16/go/">
+                    <a href="/2025/01/27/web%E4%B9%8BPHP%E5%85%A5%E9%97%A81/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="go语言学习笔记">
+                            <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="Web之PHP入门1">
                             
-                            <span class="card-title">go语言学习笔记</span>
+                            <span class="card-title">Web之PHP入门1</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                基本语法定义变量：类似于全局变量
+                                环境访问打开网站就是个这个：
 
-结构体定义：
+F12看源码（ctrl+shift+c）：
 
-通道（chan）用于在不同的 goroutine 之间传递数据，它类似于一个管道，允许你在一个 goroutine 中发送数据，并在另一个 goroutine 中接收这些数据。
-在每一个A
+看到有个这个：
+&lt;body&gt;    &lt;!--source.php--&gt;      	&lt;br&gt;&lt;img src=&quot
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-27
                             </span>
                             <span class="publish-author">
                                 
@@ -1099,8 +976,8 @@ https://codebrowser.dev/glibc/glibc/stdio-common/print
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/Go/">
-                            <span class="chip bg-color">Go</span>
+                        <a href="/tags/Web/">
+                            <span class="chip bg-color">Web</span>
                         </a>
                         
                     </div>
@@ -1112,27 +989,32 @@ https://codebrowser.dev/glibc/glibc/stdio-common/print
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2025/01/16/glibc-2.39-house_of_apple2/">
+                    <a href="/2025/01/27/CVE-2021-3489/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="glibc-2.39:house_of_apple2">
+                            <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="CVE-2021-3489">
                             
-                            <span class="card-title">glibc-2.39:house_of_apple2</span>
+                            <span class="card-title">CVE-2021-3489</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                追一波libc版本~~
+                                漏洞分析对比Linux v5.10和v5.13的源码可以发现，v5.13多了一个关于len和
+rb-&gt;mask+1的比较判断：
 
-在glibc-2.38版本中，笔者测试发现需要在0x88偏移的位置（应该还是_lock字段）照抄_IO_2_1_stderr的偏移0x88的位置的值，如果仅仅是写入一个合法的地址，那么将会陷入到一个死循环中；之后笔
+
+先看第一个宏：RINGBUF_MAX_RECORD_SZ:
+
+
+其实际值就是0xffff_ffff &
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-27
                             </span>
                             <span class="publish-author">
                                 
@@ -1146,12 +1028,12 @@ https://codebrowser.dev/glibc/glibc/stdio-common/print
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/CTF/">
-                            <span class="chip bg-color">CTF</span>
+                        <a href="/tags/CVE/">
+                            <span class="chip bg-color">CVE</span>
                         </a>
                         
-                        <a href="/tags/Heap/">
-                            <span class="chip bg-color">Heap</span>
+                        <a href="/tags/eBPF/">
+                            <span class="chip bg-color">eBPF</span>
                         </a>
                         
                     </div>
@@ -1163,34 +1045,30 @@ https://codebrowser.dev/glibc/glibc/stdio-common/print
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2025/01/16/GitHub/">
+                    <a href="/2025/01/21/CVE-2024-41009/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="Github笔记">
+                            <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="CVE-2024-41009">
                             
-                            <span class="card-title">Github笔记</span>
+                            <span class="card-title">CVE-2024-41009</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                在搭建博客向远程仓库push时遇到如下问题：
+                                漏洞分析漏洞描述
+patch首先新增了一个计数器pending_pos，和producer_pos放在同一个页中：
 
-解决方案是：
-1.首先找到自己博客的仓库；
-2.然后settings-&gt;code security
+漏洞出现在reserve的过程：
 
-
-3.在下面找到push protection关闭：
-
-4.成功push之后再打开。
+上述代码中pend_pos累加了ringbuf中所有的已经reverse但是还没有su
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-21
                             </span>
                             <span class="publish-author">
                                 
@@ -1204,8 +1082,105 @@ https://codebrowser.dev/glibc/glibc/stdio-common/print
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/github/">
-                            <span class="chip bg-color">github</span>
+                        <a href="/tags/CVE/">
+                            <span class="chip bg-color">CVE</span>
+                        </a>
+                        
+                        <a href="/tags/eBPF/">
+                            <span class="chip bg-color">eBPF</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2025/01/20/read0/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="在CTF中让read返回0">
+                            
+                            <span class="card-title">在CTF中让read返回0</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                在CTF pwn中利用pwntools发送EOF标志使得read没有读取任何字符后返回0：
+from pwn import *import ttyfile = &#x27;./test&#x27;sh = process(file, std
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-20
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-user fa-fw"></i>
+                                q1ming
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/pwn/">
+                            <span class="chip bg-color">pwn</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2025/01/20/rand/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="pwn中的随机数">
+                            
+                            <span class="card-title">pwn中的随机数</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                原始的c随机数使用线性同余确实很好破解，但是现在的gcc应该都是使用带有反馈机制的算法，即我们不能够通过上一个随机数来预测下一个随机数了；
+使用python的ctypes库来调用随机数函数，且可以实现时间种子基本一致；
+from ctype
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-20
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-user fa-fw"></i>
+                                q1ming
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/pwn/">
+                            <span class="chip bg-color">pwn</span>
                         </a>
                         
                     </div>
@@ -1230,7 +1205,7 @@ https://codebrowser.dev/glibc/glibc/stdio-common/print
             
         </div>
         <div class="page-info col m4 l4 hide-on-small-only">
-            <div class="center-align b-text-gray">1 / 3</div>
+            <div class="center-align b-text-gray">1 / 5</div>
         </div>
         <div class="col s6 m4 l4">
             

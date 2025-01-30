@@ -1,0 +1,1248 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="KOOBE, q1ming">
+    <meta name="description" content="paper
+摘要提炼OOB漏洞的能力；
+
+能力（capability）作为引导的fuzz；
+组合这些capabilities去提升利用成功率；
+
+内核exploit是多次交互的，各模块之间相对独立；
+OOB漏洞的定义依据：
+
+能越界写多远；">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>KOOBE | q1ming</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">q1ming</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>Index</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>Tags</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>Categories</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>Archives</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>About</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>Contact</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>Friends</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="Search" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">q1ming</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			Index
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			Tags
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			Categories
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			Archives
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			About
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			Contact
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			Friends
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">KOOBE</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/paper/">
+                                <span class="chip bg-color">paper</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2025-01-29
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p><a href="./sec20-chen-weiteng.pdf">paper</a></p>
+<h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>提炼OOB漏洞的能力；</p>
+<ol>
+<li>能力（capability）作为引导的fuzz；</li>
+<li>组合这些capabilities去提升利用成功率；</li>
+</ol>
+<p>内核exploit是多次交互的，各模块之间相对独立；</p>
+<p>OOB漏洞的定义依据：</p>
+<ol>
+<li>能越界写多远；</li>
+<li>能越界写多少字节；</li>
+<li>能越界写什么样子的字节；</li>
+</ol>
+<h1 id="背景与动机"><a href="#背景与动机" class="headerlink" title="背景与动机"></a>背景与动机</h1><h2 id="额外能力"><a href="#额外能力" class="headerlink" title="额外能力"></a>额外能力</h2><p><img src="/images/1728526769183.png"></p>
+<p>在代码的11行类型混淆，12行实现越界写，看起来是写固定值0x08080000000000，但是其实这个gsock-&gt;option的值是可以被系统调用sys_setsockopt来修改，但是原始的poc缺并没有发现这个；</p>
+<p>:star::star:漏洞​能力的建模+额外能力的发现</p>
+<h2 id="漏洞攻击步骤"><a href="#漏洞攻击步骤" class="headerlink" title="漏洞攻击步骤"></a>漏洞攻击步骤</h2><p><img src="/images/1728527477672.png"></p>
+<p><img src="/images/1728527620114.png"></p>
+<p>这个图就是展示了oob一个同kmem_cache的obj的过程；</p>
+<h2 id="功能提取"><a href="#功能提取" class="headerlink" title="功能提取"></a>功能提取</h2><p>现在很多poc并不能直接到可利用状态，需要安全研究员去分析相应代码上下文、添加系统调用等；</p>
+<h2 id="堆风水"><a href="#堆风水" class="headerlink" title="堆风水"></a>堆风水</h2><p>一个slab的obj耗尽以后会向buddy system申请新的物理页并切割，此时新的obj的分配往往是从低地址到高地址按顺序分配的，这样有利于溢出的顺利进行；（其实我觉得可以通过大量喷射来解决）</p>
+<p>通用结构体的使用：msg_buf；</p>
+<h2 id="目标选择"><a href="#目标选择" class="headerlink" title="目标选择"></a>目标选择</h2><p>目标结构的归类：</p>
+<ol>
+<li>函数指针</li>
+<li>数据指针</li>
+<li>非指针（uid、refcount等也很重要）</li>
+</ol>
+<p><img src="/images/1728528491773.png"></p>
+<p>继续看这个图，Typee2中包含了一个Type1，所以类型混淆后写option其实就是越界后的前8个字节；</p>
+<p>越界写的能力是有限制的，所以需要收集各类包含重要域的obj；</p>
+<p>例如：CVE-2016-6187只能越界写一个字节的0，就只能攻击引用计数在首部的obj；</p>
+<h2 id="EXP的合成"><a href="#EXP的合成" class="headerlink" title="EXP的合成"></a>EXP的合成</h2><h2 id="绕过防御-劫持控制流"><a href="#绕过防御-劫持控制流" class="headerlink" title="绕过防御+劫持控制流"></a>绕过防御+劫持控制流</h2><p>KASLR：独立的信息泄露漏洞、CPU侧信道攻击；</p>
+<p>SMEP：ROP、JOP；</p>
+<p>SMAP：ret2dir&#x2F;内核线性映射区；</p>
+<h1 id="设计"><a href="#设计" class="headerlink" title="设计"></a>设计</h1><p>首先进行能力提取，然后评估所有潜在的target object；</p>
+<p>简化状态寻找的过程，值判断target object是否满足需求；（在已知的堆布局中）</p>
+<p>模块化的工作不同于以往的工作（只考虑一次性输入的漏洞或者通过探索不同的UAF漏洞隐式地考虑能力；）</p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><img src="/images/1728529688149.png"></p>
+<ol>
+<li>符号跟踪的poc去分析一个poc的能力；</li>
+<li>通过使用一个或者多个target obj来判断是否可利用；</li>
+<li>如果没有发现合适的，就触发能力发现的其他步骤去发现新的能力；（这种情况下，如果一个漏洞允许反复触发OOb write去写同一个vulnerable object，它结合了来自不同攻击路径的不同能力）</li>
+<li>如果发现了合适的target object，就合成exp；</li>
+</ol>
+<h2 id="4-1-漏洞分析"><a href="#4-1-漏洞分析" class="headerlink" title="4.1 漏洞分析"></a>4.1 漏洞分析</h2><p>给定一个poc，首先尝试发现<strong>所有的漏洞点</strong>，并且识别对应的<strong>vulnerable object</strong>；</p>
+<blockquote>
+<p>KASAN：</p>
+<p>基于影子内存和红区</p>
+<p>影子内存：</p>
+</blockquote>
+<p><img src="/images/1728530451520.png"></p>
+<p><img src="/images/1728530562096.png"></p>
+<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/feelabclihu/article/details/109685476">https://blog.csdn.net/feelabclihu/article/details/109685476</a></p>
+<p>建立影子内存，记录可访问的长度，编译内核时插桩，判断是否为非法访问：</p>
+<p><img src="/images/1728530746861.png"></p>
+<p><img src="/images/1728531967259.png"></p>
+<h3 id="符号跟踪"><a href="#符号跟踪" class="headerlink" title="符号跟踪"></a>符号跟踪</h3><p>&#x3D;&#x3D;<strong>构建符号跟踪来辅助KASAN</strong>&#x3D;&#x3D;	</p>
+<p>监控更加细粒度的内存操作：例如kmalloc，<strong>当每一个object被分配的时候，就创建一个独一无二的符号值，</strong>因此对于每次内存访问如果它包含一个符号表达式，我们可以直接提取目标对象；（通过查询指针的符号表达式的可能范围，还能探测到潜在的溢出漏洞）</p>
+<p><img src="/images/1728526769183.png"></p>
+<p>例如，Line9分配的到一个obj，在Line12得到如下表达式：</p>
+<p><img src="/images/1728531071531.png"></p>
+<p>其中vul是我们分配的符号值；</p>
+<p><img src="/images/1728531179616.png"></p>
+<p><img src="/images/1728531208138.png"></p>
+<h2 id="4-2-能力总结"><a href="#4-2-能力总结" class="headerlink" title="4.2 能力总结"></a>4.2 能力总结</h2><p>定义一：<strong>OOB write set</strong>：</p>
+<blockquote>
+<p>E 表示符号执行引擎所支持的所有符号表达式的集合；</p>
+<p>P 表示所有路径的集合；</p>
+<p>$N_p$ 每一个漏洞点的路径p$\in$P，它们的集合即为$N_p$;</p>
+<p>&#x3D;&#x3D;<strong>$T_p$ 对应OOB write 漏洞的集合，$T_p &#x3D; {(off_{pi}, len_{pi}, val_{pi}) | i \in N_p \and off, len, val \in E }$</strong>&#x3D;&#x3D;</p>
+<p>这里的 i 属于每一个漏洞点的路径，然后off、len、val都能被 E 表示，然后 $Tp$ 则是每一个漏洞点，用off、len、val三个关键参数描述；off是越界写的偏移，len是写的长度，val是写的值；因此，OOb write在 $T_p$ 的第 i 个漏洞点表示为 $T_{pi}$</p>
+<p>要注意OOB write写入的顺序，后边的更重要，因为会有覆盖；循环；</p>
+</blockquote>
+<p><strong>总结：</strong>一个漏洞（代码写的不好）可能导致多个不同的漏洞点（后续执行到了越界写的位置），然后每一个漏洞点可能是不同的情况（这可能就取决于攻击者的参数了），所以这里的$T_p$就是针对一个漏洞的所有漏洞点而言的，那么就是多种情况的集合了；</p>
+<p>定义二：<strong>Capability</strong>：</p>
+<blockquote>
+<p>&#x3D;&#x3D;<strong>$C_p &#x3D; {size_p, T_p, f(p) | size_p \in E}$</strong>&#x3D;&#x3D;</p>
+<p>$size_p$代表vulnerable object的size，f(p)代表执行到路径p时收集到的路径约束；</p>
+<p>obj的可变size也被我们视为是一种能力；</p>
+<p>符号公式 + size + 路径约束 功能组成我们的能力；</p>
+</blockquote>
+<p>定义三：<strong>Capability Comparision</strong></p>
+<p><img src="/images/1728630935830.png"></p>
+<p>任意e1 e2两个属于E的符号表达式，e1小于等于e2的定义是：e1等价于e2或者e1是一个常量，它的值可以被e2提取出来；</p>
+<p><strong>能力分类</strong></p>
+<p>将能力归为两类：函数调用和内存访问；</p>
+<p>对memcpy等函数的建模可以简化能力的提取；</p>
+<h2 id="4-3-能力探索"><a href="#4-3-能力探索" class="headerlink" title="4.3 能力探索"></a>4.3 能力探索</h2><p>一个漏洞可能导致多个不同的利用路径，也就展现出了多种不同的能力；但是一个poc往往只能代表一个路径；</p>
+<p>如果不能找到一个合适的目标结构体，就继续去发现新的poc或者能力；</p>
+<h3 id="能力引导的fuzz"><a href="#能力引导的fuzz" class="headerlink" title="能力引导的fuzz"></a>能力引导的fuzz</h3><p>给定一个poc和它的OOB write的能力，我们对它进行变异，并将收集到的能力和覆盖率一起反馈回去；最终将这些能力喂给符号跟踪引擎进行新的分析；新提取出来的C2，如果严格优于原来的能力C1，则C2被视为是新的能力；</p>
+<p>特别地，当一个程序被执行的时候，我们收集OOB write能力的具体值作为反馈值；</p>
+<p>在fuzz中使用轻量的动态指令收集OOB write的能力；妥协则是可能会重复；（例如，如果我们知道了OOB write的value可以是任意值，那么后续仅value不同的case都是多余的）缓解方法：建立集合，不仅仅比较值、海比较范围；</p>
+<p>提高覆盖率比发现新的能力要容易很多，所以语料库中可能会大量保存提高覆盖率的test program，使用两个队列，分别给提高覆盖率和发现总结能力，然后以相同概率使用它们。</p>
+<h2 id="4-4-可利用性评估"><a href="#4-4-可利用性评估" class="headerlink" title="4.4 可利用性评估"></a>4.4 可利用性评估</h2><p>目标约束：描述了一个目标结构体被利用的条件；</p>
+<p><img src="/images/1728634775606.png"></p>
+<h3 id="内存模型"><a href="#内存模型" class="headerlink" title="内存模型"></a>内存模型</h3><p>构建了&#x3D;&#x3D;<strong>内存模型M，</strong>&#x3D;&#x3D;符号化的index、size、value；先通过能力初始化该内存模型的参数，然后通过将候选的目标对象的约束加进来，来判断是否符合；</p>
+<p><img src="/images/1728635815934.png"></p>
+<p><strong>对漏洞对象构建一个内存模型，然后尝试匹配候选目标对象；</strong></p>
+<p>首先候选对象的size必需和漏洞对象的size保持一致；</p>
+<p>用offset、length、value等更新内存模型M；</p>
+<p>最后约束求解；</p>
+<h3 id="能力组合"><a href="#能力组合" class="headerlink" title="能力组合"></a>能力组合</h3><p>可能一次OOB write只能篡改一个bit，造成部分写，所以需要组合能力；</p>
+<p>使用贪心算法进行组合评估：</p>
+<p>为了使关键字段更接近目标值，设计了一个<strong>距离函数</strong>，在迭代中知道选择最近的capability；</p>
+<p>每一个选择将其结果写回内存对象，以便下一次迭代可以继续减少距离；</p>
+<p>下面是各类距离函数：</p>
+<p><img src="/images/1728636960681.png"></p>
+<p>理解：本身应该是一个搜索问题，判断路径是否存在（组合各种capabilities）；</p>
+<h2 id="4-5-EXP原语的合成"><a href="#4-5-EXP原语的合成" class="headerlink" title="4.5 EXP原语的合成"></a>4.5 EXP原语的合成</h2><h3 id="堆风水-1"><a href="#堆风水-1" class="headerlink" title="堆风水"></a>堆风水</h3><p>使用add_key、msgsnd、send_msg等耗尽kmem_cache；</p>
+<p>搜集exp总结使用、构建数据集：</p>
+<p><img src="/images/1728637902549.png"></p>
+<p>这个的实现仅仅是劫持RIP、并没有完整的利用链；</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>漏洞分析的亮点在于在KASAN的基础上提升，对于每次内存分配都给一个<strong>符号值</strong>，然后在内存访问的时候给出相应的<strong>符号表达式</strong>；</li>
+<li>能力总结，则是定义了一些<strong>符号以及关系的比较</strong>；</li>
+<li>能力探索，<strong>能力引导变异的fuzz</strong>，添加了一种反馈机制；</li>
+<li>可利用性评估，构建了一种<strong>内存模型</strong>，给漏洞对象设计一个内存模型，然后尝试匹配候选目标对象；$\Rightarrow$ 能力组合：使用<strong>贪心算法</strong>，构造<strong>距离函数</strong>；</li>
+<li>EXP原语的合成；</li>
+</ol>
+<h1 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h1><h2 id="动态Instrumentation支持能力指导的fuzz"><a href="#动态Instrumentation支持能力指导的fuzz" class="headerlink" title="动态Instrumentation支持能力指导的fuzz"></a>动态Instrumentation支持能力指导的fuzz</h2><p>S2E：</p>
+<p><img src="/images/1728818474013.png"></p>
+<p>使用S2E配合syzkaller，可以检查内核的内部状态，从而避免崩溃，提高fuzz的效率：</p>
+<p>具体做法是让内核跳过那些导致panic的OOB write指令，避免任何KASAN的警告；但是会带类副作用：导致内核进入到错误的状态（或许这个状态根本就不对）；</p>
+<h2 id="支持符号化的长度"><a href="#支持符号化的长度" class="headerlink" title="支持符号化的长度"></a>支持符号化的长度</h2><p>符号化的length不好表示，相比于符号化的index和value；</p>
+<p>给定一个漏洞OOB write(off, len, val)   此时我们指导这个漏洞操作的起始偏移、能写的长度以及能写的值的范围，具体的长度是10，</p>
+<p>基于枚举的思想：</p>
+<p><img src="/images/1728820133128.png"></p>
+<p>从前向后枚举，这里基于一个假设，前面的byte和后边的byte无关，</p>
+<h2 id="循环中的能力提取"><a href="#循环中的能力提取" class="headerlink" title="循环中的能力提取"></a>循环中的能力提取</h2><p><img src="/images/1728820764630.png"></p>
+<p>越界写的字节数目受输入n的影响，但是常规的符号执行引擎中n的符号是不会传递到迭代变量 i 中，借鉴SAGE的思路，使用简单的循环保护&amp;&amp;模式匹配规则自动的推测循环中的迭代变量的表达式，（这里又给予一个简单的假设，迭代变量和边界变量是线性关系），因此只需要关注包含我们的漏洞点的特定的循环，使用Angr进行静态分析；</p>
+<h2 id="解决符号化索引和循环边界-解决路径冲突"><a href="#解决符号化索引和循环边界-解决路径冲突" class="headerlink" title="解决符号化索引和循环边界&amp;&amp;解决路径冲突"></a>解决符号化索引和循环边界&amp;&amp;解决路径冲突</h2><p>对于我们的漏洞点，可能开始总结出来的路径限制过于严格了，比如后来我们想少溢出一个字节，但是这不符合我们开始总结出来的路径限制，前人有类似工作，<strong>path kneading</strong>，用来识别一个路径暂时转移路径然后再合并到用一个关键点上，但是这个方法消耗太大了；</p>
+<p>本论文的想法是，</p>
+<blockquote>
+<p>我们的观察是，由于数组索引和循环边界的具体化而产生的这种过度约束可以通过简单地删除它们的约束来很容易地处理。</p>
+<p>潜在的理由是，内存索引从运行到运行动态分配对象的地址不太可能保持不变，因此具体的符号索引在内存访问操作通过添加一个约束限制索引的索引禁止求解器改变索引和不必要的过度限制搜索空间。</p>
+</blockquote>
+<p><img src="/images/1728822701689.png"></p>
+<p><img src="/images/1728820764630.png"></p>
+<p>在这个例子中，n 被输入为64，导致了65个限制条件：0&lt;n,1&lt;n,2&lt;n,…,64&gt;&#x3D;0；这些限制是不必要的，所以<strong>直接删除</strong>，这就是个放松处理；</p>
+<h2 id="消除不必要的限制条件"><a href="#消除不必要的限制条件" class="headerlink" title="消除不必要的限制条件"></a>消除不必要的限制条件</h2><p>有时候会收集到过于复杂的路径限制：一方面是类似于printk这种和我们的目标无关的限制可以直接去掉；另一方面是类似于条件竞争这类的输入，多次反复使用同样参数的syscall，导致了条件的积累，<strong>识别多个线程中重复的限制，然后只保留最后一个（触发OOB）；</strong>通过注释提醒？</p>
+<h2 id="目标收集"><a href="#目标收集" class="headerlink" title="目标收集"></a>目标收集</h2><p>target constrains是由关键字段的offset、size、type（什么结构体含有关键字段）；</p>
+<p>相关信息：如何分配、如何触发解引用；</p>
+<p>使用<strong>LLVM pass构建整个kernel的调用图</strong>，依赖于它，我们可以找到相应的分配和解引用的点；</p>
+<p>这是静态分析而来，调用图不是很精确，且没有具体的输入，因此只能用这个调用图排出来一个优先级；</p>
+<p>此外，还从exp中收集常用结构体；</p>
+<p> <strong>SLAKE</strong>：该工具使用fuzz自动且系统地生成分配和解引用的目标输入；</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        Author:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">q1ming</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        Link:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://example.com/2025/01/29/KOOBE/">http://example.com/2025/01/29/KOOBE/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        Reprint policy:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    All articles in this blog are used except for special statements
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    reprint policy. If reproduced, please indicate source
+                    <a href="/about" target="_blank">q1ming</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/paper/">
+                                    <span class="chip bg-color">paper</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="/2025/01/29/SROP/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="SROP">
+                        
+                        <span class="card-title">SROP</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2025-01-29
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            q1ming
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/pwn/">
+                        <span class="chip bg-color">pwn</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2025/01/29/%E6%B1%A1%E7%82%B9%E5%88%86%E6%9E%90%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="污点分析学习笔记">
+                        
+                        <span class="card-title">污点分析学习笔记</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-29
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            q1ming
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/research/">
+                        <span class="chip bg-color">research</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2025</span>
+            
+            <a href="/about" target="_blank">q1ming</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;Total visits:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;Total visitors:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/Qian-YM" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:yimingqian591@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1643771613" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 1643771613" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
