@@ -416,6 +416,12 @@ always_inline定义：这是一个">
 <p><img src="/images/1738156106438.png"></p>
 <p>查看b的定义位置：</p>
 <p><img src="/images/1738156120638.png"></p>
+<h2 id="per-cpu"><a href="#per-cpu" class="headerlink" title="__per_cpu"></a>__per_cpu</h2><p>Per-cpu变量是在 linux 内核 2.6 版本时加入的特征。顾名思义，对于任何Per-cpu变量，内核会为每一个cpu分配独立的内存空间，用来保存该变量的副本。</p>
+<p>在对称多处理器（SMP-Symmetry Multi Processing）系统中，当多个cpu并发访问同一个资源时，需要使用锁机制及缓存一致性协议来保证数据一致性。但是，访问Per-cpu变量时，由于每个cpu都只访问自己副本中的变量，所以<strong>不需要使用锁机制</strong>；同时，避免了共享内存时因缓存一致性带来的缓存行失效问题，<strong>提高了缓存命中率</strong>。所以，使用Per-cpu变量能够有效的提升性能，是典型的以空间换时间的技术。</p>
+<p>另外，进程在访问Per-cpu变量时，需要禁止抢占，以免该进程被切换到其它cpu执行，导致数据错误。</p>
+<blockquote>
+<p>作者：CoderHeart<br>链接：<a target="_blank" rel="noopener" href="https://juejin.cn/post/7332067091368263732">https://juejin.cn/post/7332067091368263732</a><br>来源：稀土掘金<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+</blockquote>
 
                 
             </div>
