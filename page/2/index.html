@@ -396,28 +396,82 @@
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2025/02/05/EINSTEIN/">
+                    <a href="/2025/03/21/smart_door_lock/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="EINSTEIN">
+                            <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="smart_door_lock">
                             
-                            <span class="card-title">EINSTEIN</span>
+                            <span class="card-title">smart_door_lock</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                paper:
-https://www.usenix.org/system/files/usenixsecurity24-johannesmeyer.pdf
-paper
-introducedata-only attack 研究现状许多基于数据
+                                CHECK
+
+
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-02-05
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-03-21
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-user fa-fw"></i>
+                                q1ming
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/kernel-CTF/">
+                            <span class="chip bg-color">kernel-CTF</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2025/03/21/SLAKE/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="SLEAK">
+                            
+                            <span class="card-title">SLEAK</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                摘要工作：
+
+使用静态分析和动态分析来识别内核object以及对应的syscall；
+
+建模常见的exp方法，开发一种方法简化slab的布局；
+
+
+（具有一定的发现新的可用object的能力）
+问题假设：
+
+有一个仅能让内核panic的po
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-03-21
                             </span>
                             <span class="publish-author">
                                 
@@ -444,366 +498,26 @@ introducedata-only attack 研究现状许多基于数据
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2025/02/05/kmem_cache/">
+                    <a href="/2025/03/21/ringbuf/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="内存分配学习笔记1">
+                            <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="eBPF之ringbuf学习笔记">
                             
-                            <span class="card-title">内存分配学习笔记1</span>
+                            <span class="card-title">eBPF之ringbuf学习笔记</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                kmem_cachekmem_cache定义如下：https://elixir.bootlin.com/linux/v6.13.1/source/mm/slab.h#L258
-
-
-
-
-cpu_slabcpu_slab是一个__per_cpu
+                                介绍BPF的ringbuf被实现为2的指数大小的环形缓冲区，它有两个总是递增的计数器：consumer_pos、producer_pos；
+producer_pos是生产者计数器，每当一个record被成功存储，producer_pos就会
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-02-05
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                q1ming
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/kernel/">
-                            <span class="chip bg-color">kernel</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2025/02/04/page-spray/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="page-spray">
-                            
-                            <span class="card-title">page-spray</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                paper : https://arxiv.org/pdf/2406.02624
-paper
-摘要问题描述：在以往的页面喷射环境中，一共就只有几百MB的内存，LinuxOS会在用户态进程出现内存压力时分配内核释放的物理页给该用户态进程；但是
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-02-04
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                q1ming
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/paper/">
-                            <span class="chip bg-color">paper</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2025/02/03/CPU-freelist%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="为什么要bindCore？">
-                            
-                            <span class="card-title">为什么要bindCore？</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                芝士per-CPU 和 task迁移在运行时每一个CPU在不同的slab上操作以避免争用；被一个CPU使用的slab的freelist通常被指为一个per-CPU freelist；当一个CPU分配object的时候会首先从它的per-CP
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-02-03
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                q1ming
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/kernel/">
-                            <span class="chip bg-color">kernel</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2025/02/03/latex%E7%AC%94%E8%AE%B0/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="latex笔记">
-                            
-                            <span class="card-title">latex笔记</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                数学符号
-
-参考https://blog.csdn.net/LCCFlccf/article/details/89643585
-
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-02-03
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                q1ming
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/latex/">
-                            <span class="chip bg-color">latex</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2025/01/31/HOEE/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="HOEE">
-                            
-                            <span class="card-title">HOEE</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                综述paper: https://link.springer.com/content/pdf/10.1186/s42400-024-00244-6.pdf
-论文解决的问题：对于一个堆溢出漏洞，评估poc的可利用性；
-现实中遇到的问题：有时候
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-31
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                q1ming
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/paper/">
-                            <span class="chip bg-color">paper</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2025/01/31/python-class/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="如何用Python写一个类">
-                            
-                            <span class="card-title">如何用Python写一个类</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                class
-
-
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-31
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                q1ming
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/python/">
-                            <span class="chip bg-color">python</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2025/01/30/%E7%AC%A6%E5%8F%B7%E6%89%A7%E8%A1%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="符号执行学习笔记">
-                            
-                            <span class="card-title">符号执行学习笔记</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                混合执行angrangr使用了混合符号执行；
-
-安装：pip install angr
-
-导入库并加载：
-
-import angr
-p &#x3D; angr.Project(“.&#x2F;test”)
-
-获取程序入口点的基本块的代码：
-
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-30
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                q1ming
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/research/">
-                            <span class="chip bg-color">research</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2025/01/29/eBPF%E6%BC%8F%E6%B4%9E%E6%B1%87%E6%80%BB/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="eBPF漏洞汇总">
-                            
-                            <span class="card-title">eBPF漏洞汇总</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                漏洞汇总CVE-2021-3489ringbuf的reserve函数没有对size进行检查；
-CVE-2024-41009ringbuf的reserve中检查不当导致chunk重叠；
-CVE-2024-45020verifier中stack
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-29
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-03-21
                             </span>
                             <span class="publish-author">
                                 
@@ -830,28 +544,122 @@ CVE-2024-45020verifier中stack
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2025/01/29/canary%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%E7%82%B9/">
+                    <a href="/2025/03/21/rsa/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="canary 相关知识点">
+                            <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="RSA">
                             
-                            <span class="card-title">canary 相关知识点</span>
+                            <span class="card-title">RSA</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                在gdb中调试canary的两种方法：（1）在GDB中输入
-print (void)arch_prctl(0x1003,$rsp-8)x/xg $rsp-8 即可查看到 fs 中的值#注意这个调试命令的输入必须保证此时程序还在子线程中；
-
-
+                                ed互推def extended_gcd(a, b):    # 扩展欧几里得算法，返回 (gcd, x, y)，使得 a*x + b*y = gcd    if b == 0:        return a, 1, 0    gcd, 
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-29
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-03-21
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-user fa-fw"></i>
+                                q1ming
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Crypto/">
+                            <span class="chip bg-color">Crypto</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2025/03/21/qwb2024-heap2/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="qwb2024-heap2">
+                            
+                            <span class="card-title">qwb2024-heap2</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+base64：明文3倍数，密文4倍数；
+此时我们输入密文，如果不是4的整倍数，这里malloc分配空间会向下取整，但是到了真正解密的时候：
+
+
+直接一次+4，然后处理4个字节密文，转变成三字节明文，根本不考虑当前剩余字节数目，回想前面me
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-03-21
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-user fa-fw"></i>
+                                q1ming
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Crypto/">
+                            <span class="chip bg-color">Crypto</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2025/03/21/rand/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="pwn中的随机数">
+                            
+                            <span class="card-title">pwn中的随机数</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                原始的c随机数使用线性同余确实很好破解，但是现在的gcc应该都是使用带有反馈机制的算法，即我们不能够通过上一个随机数来预测下一个随机数了；
+使用python的ctypes库来调用随机数函数，且可以实现时间种子基本一致；
+from ctype
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-03-21
                             </span>
                             <span class="publish-author">
                                 
@@ -878,30 +686,26 @@ print (void)arch_prctl(0x1003,$rsp-8)x/xg $rsp-8 即可查看到 fs 中的值#�
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2025/01/29/io_uring/">
+                    <a href="/2025/03/21/read0/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="io_uring">
+                            <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="在CTF中让read返回0">
                             
-                            <span class="card-title">io_uring</span>
+                            <span class="card-title">在CTF中让read返回0</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                完整shellcode如下，前提是rdx是一个合法的可写地址：
-
-context.arch &#x3D; ‘amd64’
-shellcode &#x3D; asm(“””
-​                mov rbp, rdx
-​   
+                                在CTF pwn中利用pwntools发送EOF标志使得read没有读取任何字符后返回0：
+from pwn import *import ttyfile = &#x27;./test&#x27;sh = process(file, std
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-29
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-03-21
                             </span>
                             <span class="publish-author">
                                 
@@ -914,6 +718,207 @@ shellcode &#x3D; asm(“””
 
                     
                     <div class="card-action article-tags">
+                        
+                        <a href="/tags/pwn/">
+                            <span class="chip bg-color">pwn</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2025/03/21/python-class/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="如何用Python写一个类">
+                            
+                            <span class="card-title">如何用Python写一个类</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                class
+
+
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-03-21
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-user fa-fw"></i>
+                                q1ming
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/python/">
+                            <span class="chip bg-color">python</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2025/03/21/pid_namespace%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="pid_namespace深入学习">
+                            
+                            <span class="card-title">pid_namespace深入学习</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                基数树看这篇文章：https://zhuanlan.zhihu.com/p/643699822
+节点的基本结构如下：
+
+上述结构体中：
+shift表示位移量，其实也就是和层级正相关的；
+slots用于指向下一个节点，如果没有相应的子节点就可
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-03-21
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-user fa-fw"></i>
+                                q1ming
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/kernel/">
+                            <span class="chip bg-color">kernel</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2025/03/21/pipe-set-size/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="pipe可以通过wqueue来set-szie吗？">
+                            
+                            <span class="card-title">pipe可以通过wqueue来set-szie吗？</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                源码定位https://elixir.bootlin.com/linux/v5.10/source/fs/pipe.c#L624
+
+首先可以看到pipe的ioctl接口，如果cmd是IOC_WATCH_QUEUE_SET_SIZE的话，会走
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-03-21
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-user fa-fw"></i>
+                                q1ming
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/kernel/">
+                            <span class="chip bg-color">kernel</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2025/03/21/pcb_2024_vm/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="pcb_2024_vm">
+                            
+                            <span class="card-title">pcb_2024_vm</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                
+
+check_cmd爆破md5：
+pay &#x3D; “LOGIN:root\naaaaa:&amp;&amp;h3r3_1s_y0u2_G1ft!&amp;&amp;An9q\nDONE&amp;EXIT”
+LOGIN:rootaaa
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-03-21
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-user fa-fw"></i>
+                                q1ming
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/CTF/">
+                            <span class="chip bg-color">CTF</span>
+                        </a>
+                        
+                        <a href="/tags/VM/">
+                            <span class="chip bg-color">VM</span>
+                        </a>
                         
                         <a href="/tags/SandBox/">
                             <span class="chip bg-color">SandBox</span>
@@ -928,35 +933,28 @@ shellcode &#x3D; asm(“””
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2025/01/29/openat2/">
+                    <a href="/2025/03/21/pid_namespace%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="openat2">
+                            <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="pid_namespace学习笔记">
                             
-                            <span class="card-title">openat2</span>
+                            <span class="card-title">pid_namespace学习笔记</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                openat2openat2的系统调用号如下：
+                                PID命名空间隔离的意义PID 命名空间的隔离作用非常关键，主要体现在以下几个方面：
 
-使用方法如下：
-
-运行结果如下：
-
-因此运行openat2系统调用打开flag文件只需要：
-
-rdi &#x3D;&#x3D; 0xffffff9c
-rsi 指向”flag”字符串
-rdx指
+进程树的独立性：每个容器或命名空间有独立的进程 ID，从 1 开始，确保进程间互不干扰。
+安全性和隔离性：通过进程 PID 隔离，确保容器和宿主机之间的
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-29
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-03-21
                             </span>
                             <span class="publish-author">
                                 
@@ -970,8 +968,8 @@ rdx指
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/SandBox/">
-                            <span class="chip bg-color">SandBox</span>
+                        <a href="/tags/kernel/">
+                            <span class="chip bg-color">kernel</span>
                         </a>
                         
                     </div>
@@ -997,7 +995,7 @@ rdx指
             
         </div>
         <div class="page-info col m4 l4 hide-on-small-only">
-            <div class="center-align b-text-gray">2 / 7</div>
+            <div class="center-align b-text-gray">2 / 8</div>
         </div>
         <div class="col s6 m4 l4">
             
