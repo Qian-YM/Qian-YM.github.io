@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en">
+<html lang="zh-CN">
 
 
 <head>
@@ -74,7 +74,7 @@
       
       <i class="fas fa-home" style="zoom: 0.6;"></i>
       
-      <span>Index</span>
+      <span>首页</span>
     </a>
     
   </li>
@@ -85,7 +85,7 @@
       
       <i class="fas fa-tags" style="zoom: 0.6;"></i>
       
-      <span>Tags</span>
+      <span>标签</span>
     </a>
     
   </li>
@@ -96,7 +96,7 @@
       
       <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
       
-      <span>Categories</span>
+      <span>分类</span>
     </a>
     
   </li>
@@ -107,7 +107,7 @@
       
       <i class="fas fa-archive" style="zoom: 0.6;"></i>
       
-      <span>Archives</span>
+      <span>归档</span>
     </a>
     
   </li>
@@ -118,7 +118,7 @@
       
       <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
       
-      <span>About</span>
+      <span>关于</span>
     </a>
     
   </li>
@@ -129,7 +129,7 @@
       
       <i class="fas fa-comments" style="zoom: 0.6;"></i>
       
-      <span>Contact</span>
+      <span>留言板</span>
     </a>
     
   </li>
@@ -140,14 +140,14 @@
       
       <i class="fas fa-address-book" style="zoom: 0.6;"></i>
       
-      <span>Friends</span>
+      <span>友情链接</span>
     </a>
     
   </li>
   
   <li>
     <a href="#searchModal" class="modal-trigger waves-effect waves-light">
-      <i id="searchIcon" class="fas fa-search" title="Search" style="zoom: 0.85;"></i>
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
     </a>
   </li>
   <li>
@@ -180,7 +180,7 @@
 			
 			    <i class="fa-fw fas fa-home"></i>
 			
-			Index
+			首页
 		</a>
           
         </li>
@@ -191,7 +191,7 @@
 			
 			    <i class="fa-fw fas fa-tags"></i>
 			
-			Tags
+			标签
 		</a>
           
         </li>
@@ -202,7 +202,7 @@
 			
 			    <i class="fa-fw fas fa-bookmark"></i>
 			
-			Categories
+			分类
 		</a>
           
         </li>
@@ -213,7 +213,7 @@
 			
 			    <i class="fa-fw fas fa-archive"></i>
 			
-			Archives
+			归档
 		</a>
           
         </li>
@@ -224,7 +224,7 @@
 			
 			    <i class="fa-fw fas fa-user-circle"></i>
 			
-			About
+			关于
 		</a>
           
         </li>
@@ -235,7 +235,7 @@
 			
 			    <i class="fa-fw fas fa-comments"></i>
 			
-			Contact
+			留言板
 		</a>
           
         </li>
@@ -246,7 +246,7 @@
 			
 			    <i class="fa-fw fas fa-address-book"></i>
 			
-			Friends
+			友情链接
 		</a>
           
         </li>
@@ -396,30 +396,30 @@
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2025/03/21/apache-webpwn/">
+                    <a href="/2025/04/01/kfree-df/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="apache-webpwn">
+                            <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="kfree源码分析2(slab何时被buddy-system回收)">
                             
-                            <span class="card-title">apache-webpwn</span>
+                            <span class="card-title">kfree源码分析2(slab何时被buddy-system回收)</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                CHECK调试安装gdbserver：
-apt update
-apt install gdbserver
+                                kfree机制
+1是快路径，其余的2、3、4、5都是慢路径的不同情况；
+源码解析slub中有如下成员：
 
-
-
+counters是inuse、objects、frozen的联合体，便于一次性将三个值一起赋值、拷贝；
+inuse表示slub中已经分
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-03-21
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-04-01
                             </span>
                             <span class="publish-author">
                                 
@@ -433,8 +433,8 @@ apt install gdbserver
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/pwn/">
-                            <span class="chip bg-color">pwn</span>
+                        <a href="/tags/kernel/">
+                            <span class="chip bg-color">kernel</span>
                         </a>
                         
                     </div>
@@ -446,28 +446,30 @@ apt install gdbserver
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2025/03/21/base64/">
+                    <a href="/2025/04/01/subprocess_info/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="base64">
+                            <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="subprocess_info 结构体">
                             
-                            <span class="card-title">base64</span>
+                            <span class="card-title">subprocess_info 结构体</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                模板import base64code = base64.b64decode(b&#x27;aaaaaa&#x27;)
+                                背景分析下面分析 以下modeprobe_path的作用：
+执行一个错误文件头的时候，调用链如下：
 
-例题qwb-heap2
-&#125;    v14 = v5;    if ( *(_BYTE *)(text + i
+直接看exec_binprm函数，在一个depth的循环中迭代，调用到search_binary_handler：
+
+进入到searchP
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-03-21
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-04-01
                             </span>
                             <span class="publish-author">
                                 
@@ -481,8 +483,8 @@ apt install gdbserver
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/Crypto/">
-                            <span class="chip bg-color">Crypto</span>
+                        <a href="/tags/kernel/">
+                            <span class="chip bg-color">kernel</span>
                         </a>
                         
                     </div>
@@ -494,23 +496,31 @@ apt install gdbserver
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2025/03/21/angr%E4%BD%BF%E7%94%A8%E8%BF%9B%E9%98%B6/">
+                    <a href="/2025/03/29/BAGUA/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="angr使用进阶">
+                            <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="BAGUA">
                             
-                            <span class="card-title">angr使用进阶</span>
+                            <span class="card-title">BAGUA</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
+                                paper: https://jiongyichen.github.io/pubs/NDSS_23.pdf
+paper
+NDSS-2023
+overview目标：对普通用户态程序实现精确的堆风水；
+步骤：
+
+识别对操作原语，利用对操作依赖图
+                            
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-03-21
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-03-29
                             </span>
                             <span class="publish-author">
                                 
@@ -524,8 +534,8 @@ apt install gdbserver
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/research/">
-                            <span class="chip bg-color">research</span>
+                        <a href="/tags/paper/">
+                            <span class="chip bg-color">paper</span>
                         </a>
                         
                     </div>
@@ -537,30 +547,319 @@ apt install gdbserver
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2025/01/14/CVE-2021-3493/">
+                    <a href="/2025/03/29/SRH/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="CVE-2023-3493">
+                            <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="SRH">
                             
-                            <span class="card-title">CVE-2023-3493</span>
+                            <span class="card-title">SRH</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                环境搭建
-commit 	bcf876870b95592b52519ed4aafcf9d95999bc9c
-
-总的config：
-defconfig+menuconfig
-CONFIG_CONFIGFS_FS=y  #支持imgCONFIG
+                                paper : https://h0ngkai.github.io/papers/sec25_System_Register_Hijacking.pdf
+paper
+摘要对系统寄存器进行综合分析，从CFHP出发，借助系统寄存器进行后续利用；
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-14
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-03-29
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-user fa-fw"></i>
+                                q1ming
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/paper/">
+                            <span class="chip bg-color">paper</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2025/03/29/retspill/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="retspill">
+                            
+                            <span class="card-title">retspill</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                paper : https://dl.acm.org/doi/pdf/10.1145/3576915.3623220
+paper
+摘要提出了一种部署用户态数据到内核栈的方法辅助CFHP走ROP提权的方法；
+对栈迁移的批判理由：
+
+他们依赖特
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-03-29
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-user fa-fw"></i>
+                                q1ming
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/paper/">
+                            <span class="chip bg-color">paper</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2025/03/27/kerdbg/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="kerdbg">
+                            
+                            <span class="card-title">kerdbg</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                前言笔者自己编写的基于pwndbg的gdb插件，用于调试内核。
+目前需要符号表的支持，预计后续会退出无符号表的😊
+kmem_cachekmallockmalloc [size]：查看kmalloc-[size]这个kmem_cache的相
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-03-27
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-user fa-fw"></i>
+                                q1ming
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/kernel/">
+                            <span class="chip bg-color">kernel</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2025/03/27/%E8%8A%82%E7%82%B9%E5%92%8C%E5%8C%BA/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="节点和区">
+                            
+                            <span class="card-title">节点和区</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                节点基本知识图片来源：https://arttnba3.cn/2021/11/28/OS-0X02-LINUX-KERNEL-MEMORY-5.11-PART-I/#0x03-struct-pglist-data%EF%BC%9A%E8%8
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-03-27
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-user fa-fw"></i>
+                                q1ming
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/kernel/">
+                            <span class="chip bg-color">kernel</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2025/03/27/buddy-system/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="buddy-system [half]">
+                            
+                            <span class="card-title">buddy-system [half]</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                思维导图图片来源：https://arttnba3.cn/2022/06/30/OS-0X03-LINUX-KERNEL-MEMORY-5.11-PART-II/
+
+
+分析调试整个调试只需要从node开始即可，内存节点用的是struct p
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-03-27
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-user fa-fw"></i>
+                                q1ming
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/kernel/">
+                            <span class="chip bg-color">kernel</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2025/03/26/current_task%E8%B0%83%E8%AF%95/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="current_task调试 [half]">
+                            
+                            <span class="card-title">current_task调试 [half]</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                current_task在科研任务中为了判定一个内核状态下当前进程的pid，需要用到current_task，但是gdb调试出现以下结果：
+
+第一反应是这是一个per_cpu变量，到源码中核实：
+
+https://elixir.bootli
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-03-26
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-user fa-fw"></i>
+                                q1ming
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/kernel/">
+                            <span class="chip bg-color">kernel</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2025/03/25/CVE-2022-0185/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="CVE-2022-0185[half]">
+                            
+                            <span class="card-title">CVE-2022-0185[half]</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                环境搭建内核版本：
+
+commit：
+
+8357f6fb3d9a02ac55f0d758b9c79b4647c18bcb
+
+config：
+保证能用fsopen打开9p需要如下配置：
+CONFIG_9P_FS=yCONFIG_NET_9P=
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-03-25
                             </span>
                             <span class="publish-author">
                                 
@@ -587,26 +886,29 @@ CONFIG_CONFIGFS_FS=y  #支持imgCONFIG
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2025/01/14/CVE-2021-4154/">
+                    <a href="/2025/03/25/CVE-2022-0995/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="CVE-2023-4154">
+                            <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="CVE-2022-0995[half]">
                             
-                            <span class="card-title">CVE-2023-4154</span>
+                            <span class="card-title">CVE-2022-0995[half]</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                背景知识fsconfig在Linux系统中，本着一切皆文件的原则，文件系统也是可以被挂载、打开的；
-fsconfig则是对于文件系统挂载配置一些规则，fsconfig 允许用户在挂载文件系统之前设置各种挂载选项和文件系统特定的参数。这个接口
+                                环境搭建漏洞影响范围：~ linux kernel 5.17-rc7
+选择使用Linux-5.10
+看源码确认配置：
+
+CONFIG_CONFIGFS_FS=yCONFIG_SECURITYFS=yCONFIG_NET_SCHED=yCON
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-14
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-03-25
                             </span>
                             <span class="publish-author">
                                 
@@ -633,29 +935,28 @@ fsconfig则是对于文件系统挂载配置一些规则，fsconfig 允许用户
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2025/01/14/CVE-2022-0847/">
+                    <a href="/2025/03/22/kfree%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="CVE-2023-0847">
+                            <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="kfree源码分析(如何确定obj的cache)">
                             
-                            <span class="card-title">CVE-2023-0847</span>
+                            <span class="card-title">kfree源码分析(如何确定obj的cache)</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                环境搭建
-commit：2c85ebc57b3e1817b6ce1a6b703928e113a90442
-总的config：
-defconfig+menuconfig
-CONFIG_CONFIGFS_FS=y  #支持imgCONFIG_S
+                                思维导图
+源码分析先看Linux-5.10的源码：https://elixir.bootlin.com/linux/v5.10/source/mm/slub.c#L4103
+
+这里的page &#x3D; virt_to_head_page
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-14
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-03-22
                             </span>
                             <span class="publish-author">
                                 
@@ -669,307 +970,8 @@ CONFIG_CONFIGFS_FS=y  #支持imgCONFIG_S
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/CVE/">
-                            <span class="chip bg-color">CVE</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2025/01/14/CVE-2022-23222/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="CVE-2022-23222">
-                            
-                            <span class="card-title">CVE-2022-23222</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                环境搭建同cve-202-27194
-分析指针类型在include&#x2F;linux&#x2F;bpf.h文件中定义了所有的寄存器类型：
-enum bpf_reg_type &#123;	NOT_INIT = 0,		 /* nothi
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-14
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                q1ming
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/CVE/">
-                            <span class="chip bg-color">CVE</span>
-                        </a>
-                        
-                        <a href="/tags/eBPF/">
-                            <span class="chip bg-color">eBPF</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2025/01/14/CVE-2023-0461/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="CVE-2023-0461">
-                            
-                            <span class="card-title">CVE-2023-0461</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                环境搭建
-commit：2c85ebc57b3e1817b6ce1a6b703928e113a90442
-总的config：
-defconfig+menuconfig
-CONFIG_CONFIGFS_FS=yCONFIG_SECURITYF
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-14
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                q1ming
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/CVE/">
-                            <span class="chip bg-color">CVE</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2025/01/14/CVE-2023-2008/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="CVE-2023-2008">
-                            
-                            <span class="card-title">CVE-2023-2008</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                环境搭建
-commit：2c85ebc57b3e1817b6ce1a6b703928e113a90442
-总的config：
-defconfig+menuconfig
-
-
-
-
-CONFIG_CONFIGFS_FS=y  #支持imgCONF
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-14
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                q1ming
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/CVE/">
-                            <span class="chip bg-color">CVE</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2025/01/14/CVE-2023-4207/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="CVE-2023-4207">
-                            
-                            <span class="card-title">CVE-2023-4207</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                环境搭建
-commit：2c85ebc57b3e1817b6ce1a6b703928e113a90442
-总的config：
-defconfig+menuconfig
-CONFIG_CONFIGFS_FS=y  #支持imgCONFIG_S
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-14
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                q1ming
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/CVE/">
-                            <span class="chip bg-color">CVE</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2025/01/14/CVE-2023-4208/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="CVE-2023-4208">
-                            
-                            <span class="card-title">CVE-2023-4208</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-commit：2c85ebc57b3e1817b6ce1a6b703928e113a90442
-环境搭建内核源码下载：
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/li
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-14
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                q1ming
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/CVE/">
-                            <span class="chip bg-color">CVE</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2025/01/14/CVE-2023-4569/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="CVE-2023-4569">
-                            
-                            <span class="card-title">CVE-2023-4569</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                环境搭建
-
-commit：a7384f3918756c193e3fcd7e3111fc4bd3686013
-config：defconfig+menuconfig直接保存+如下：
-CONFIG_CONFIGFS_FS=y  #支持imgCO
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-14
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                q1ming
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/CVE/">
-                            <span class="chip bg-color">CVE</span>
+                        <a href="/tags/kernel/">
+                            <span class="chip bg-color">kernel</span>
                         </a>
                         
                     </div>
@@ -995,7 +997,7 @@ CONFIG_CONFIGFS_FS=y  #支持imgCO
             
         </div>
         <div class="page-info col m4 l4 hide-on-small-only">
-            <div class="center-align b-text-gray">6 / 8</div>
+            <div class="center-align b-text-gray">6 / 14</div>
         </div>
         <div class="col s6 m4 l4">
             
@@ -1087,13 +1089,13 @@ CONFIG_CONFIGFS_FS=y  #支持imgCO
             
             
                 <span id="busuanzi_container_site_pv">
-                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;Total visits:&nbsp;
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
                     <span id="busuanzi_value_site_pv" class="white-color"></span>
             </span>
             
             
                 <span id="busuanzi_container_site_uv">
-                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;Total visitors:&nbsp;
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
                     <span id="busuanzi_value_site_uv" class="white-color"></span>
             </span>
             
@@ -1146,8 +1148,8 @@ CONFIG_CONFIGFS_FS=y  #支持imgCO
 <div id="searchModal" class="modal">
     <div class="modal-content">
         <div class="search-header">
-            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;Search</span>
-            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
                    class="search-input">
         </div>
         <div id="searchResult"></div>

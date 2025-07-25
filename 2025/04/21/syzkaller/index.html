@@ -1,0 +1,1199 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="syzkaller, q1ming">
+    <meta name="description" content="环境搭建首先要解决翻墙的问题，翻不出去go就配不成；
+#安装gowget https://go.dev/dl/go1.23.9.linux-amd64.tar.gz  #最好换成最新的版本tar -xf go1.23.9.linux-amd">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>syzkaller | q1ming</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">q1ming</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">q1ming</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">syzkaller</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/research/">
+                                <span class="chip bg-color">research</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2025-04-21
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>首先要解决翻墙的问题，翻不出去go就配不成；</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">安装go</span></span><br><span class="line">wget https://go.dev/dl/go1.23.9.linux-amd64.tar.gz  #最好换成最新的版本</span><br><span class="line">tar -xf go1.23.9.linux-amd64.tar.gz  #解压go包</span><br><span class="line">export GOROOT=/path/to/go #设置环境变量GOROOT，是go包解压的位置，这里边有可执行文件/bin/go</span><br><span class="line">export GOPATH=/path/to/gopath #随便一个空文件，用于存放go配置过程中生成的一些文件</span><br><span class="line">export PATH=GOROOT:$PATH</span><br><span class="line">export PATH=gopath:$PATH	</span><br><span class="line"></span><br><span class="line">git clone https://github.com/google/syzkaller.git</span><br><span class="line">cd syzkaller</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="问题一："><a href="#问题一：" class="headerlink" title="问题一："></a>问题一：</h3><p><img src="/syzcaller.assets/1745211745888.png" alt="1745211745888"></p>
+<p>解决方法：</p>
+<p>直接修改go.mod文件，将版本中的最后一位删掉；</p>
+<h3 id="问题二："><a href="#问题二：" class="headerlink" title="问题二："></a>问题二：</h3><p><img src="/syzcaller.assets/1747983447802.png" alt="1747983447802"></p>
+<p>应该就是前面配置过程中有残留，将goroot删除，重新配一个go就好了；</p>
+<h3 id="问题三："><a href="#问题三：" class="headerlink" title="问题三："></a>问题三：</h3><p><img src="/syzkaller.assets/1748312082276.png" alt="1748312082276"></p>
+<p>就是之前的gopath没清空导致的，记得检查GOPATH环境变量设置的是哪一个；</p>
+<h2 id="Go包被墙"><a href="#Go包被墙" class="headerlink" title="Go包被墙"></a>Go包被墙</h2><h3 id="虚拟机使用主机VPN"><a href="#虚拟机使用主机VPN" class="headerlink" title="虚拟机使用主机VPN"></a>虚拟机使用主机VPN</h3><p><a target="_blank" rel="noopener" href="https://blog.xzr.moe/archives/124/#section-3">https://blog.xzr.moe/archives/124/#section-3</a></p>
+<p><a target="_blank" rel="noopener" href="https://yumi1.top/linux-proxy/index.html#%E8%99%9A%E6%8B%9F%E6%9C%BA%E8%AE%BE%E7%BD%AE">https://yumi1.top/linux-proxy/index.html#%E8%99%9A%E6%8B%9F%E6%9C%BA%E8%AE%BE%E7%BD%AE</a></p>
+<p><img src="/syzcaller.assets/1745213477706.png" alt="1745213477706"></p>
+<h3 id="使用代理"><a href="#使用代理" class="headerlink" title="使用代理"></a>使用代理</h3><p><a target="_blank" rel="noopener" href="https://goproxy.cn/">https://goproxy.cn/</a></p>
+<p><img src="/syzcaller.assets/1745217974678.png" alt="1745217974678"></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">export GO111MODULE=on</span><br><span class="line">export GOPROXY=https://goproxy.cn</span><br></pre></td></tr></table></figure>
+
+<h3 id="最终生效的方法"><a href="#最终生效的方法" class="headerlink" title="最终生效的方法"></a>最终生效的方法</h3><p>首先在clash中打开几个配置：</p>
+<ol>
+<li>Allow LAN</li>
+<li>System Proxy</li>
+<li>固定端口号（我现在是7890）</li>
+</ol>
+<p>然后用ipconfig命令查看本地的WLAN地址：</p>
+<p><img src="/syzkaller.assets/1748068785697.png" alt="1748068785697"></p>
+<p>最后加入环境变量：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">export http_proxy=http://10.201.104.16:7890</span><br><span class="line">export https_proxy=http://10.201.104.16:7890</span><br></pre></td></tr></table></figure>
+
+<h2 id="syzcaller的使用"><a href="#syzcaller的使用" class="headerlink" title="syzcaller的使用"></a>syzcaller的使用</h2><h3 id="编译内核"><a href="#编译内核" class="headerlink" title="编译内核"></a>编译内核</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Coverage collection.</span></span><br><span class="line">CONFIG_KCOV=y         # must</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Debug info <span class="keyword">for</span> symbolization.</span></span><br><span class="line">CONFIG_DEBUG_INFO=y</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Memory bug detector</span></span><br><span class="line">CONFIG_KASAN=y</span><br><span class="line">CONFIG_KASAN_INLINE=y</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Code coverage works better when KASLR Is disabled</span> </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">CONFIG_RANDOMIZE_BASE is not <span class="built_in">set</span></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">可选</span></span><br><span class="line">CONFIG_KCOV_INSTRUMENT_ALL=y</span><br><span class="line">CONFIG_KCOV_ENABLE_COMPARISONS=y</span><br><span class="line">CONFIG_DEBUG_FS=y</span><br><span class="line"></span><br><span class="line">CONFIG_DEBUG_KMEMLEAK=y</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">make olddefconfig</span><br><span class="line">make -j4</span><br></pre></td></tr></table></figure>
+
+<p>fuzz nf_tables的内核编译配置：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Coverage collection.</span></span><br><span class="line">CONFIG_KCOV=y         # must</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Debug info <span class="keyword">for</span> symbolization.</span></span><br><span class="line">CONFIG_DEBUG_INFO=y</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Memory bug detector</span></span><br><span class="line">CONFIG_KASAN=y</span><br><span class="line">CONFIG_KASAN_INLINE=y</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Code coverage works better when KASLR Is disabled</span> </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">CONFIG_RANDOMIZE_BASE is not <span class="built_in">set</span></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">可选</span></span><br><span class="line">CONFIG_KCOV_INSTRUMENT_ALL=y</span><br><span class="line">CONFIG_KCOV_ENABLE_COMPARISONS=y</span><br><span class="line">CONFIG_DEBUG_FS=y</span><br><span class="line"></span><br><span class="line">CONFIG_DEBUG_KMEMLEAK=y</span><br><span class="line"></span><br><span class="line">CONFIG_USER_NS=y</span><br><span class="line">CONFIG_SECURITY_SELINUX_DISABLE=y</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="keyword">for</span> debug</span></span><br><span class="line">CONFIG_KALLSYMS=y</span><br><span class="line">CONFIG_KALLSYMS_ALL=y</span><br><span class="line">CONFIG_DEBUG_INFO_DWARF4=y</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="keyword">for</span> msg_msg copy</span></span><br><span class="line">CONFIG_CHECKPOINT_RESTORE=y</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="keyword">for</span> syzkaller image</span></span><br><span class="line">CONFIG_CONFIGFS_FS=y</span><br><span class="line">CONFIG_SECURITYFS=y</span><br><span class="line"></span><br><span class="line">CONFIG_SLAB_FREELIST_RANDOM=n</span><br><span class="line">CONFIG_SLAB_FREELIST_HARDENED=n</span><br><span class="line">CONFIG_SHUFFLE_PAGE_ALLOCATOR=n</span><br><span class="line">CONFIG_HARDENED_USERCOPY=n</span><br><span class="line">CONFIG_FORTIFY_SOURCE=n</span><br><span class="line">CONFIG_STATIC_USERMODEHELPER=n</span><br><span class="line">CONFIG_DEBUG_INFO_NONE=n</span><br><span class="line">CONFIG_RANDOMIZE_BASE=n</span><br><span class="line"></span><br><span class="line">CONFIG_DEBUG_INFO=y  #调试</span><br><span class="line"></span><br><span class="line">CONFIG_NETFILTER=y</span><br><span class="line">CONFIG_NF_TABLES=y</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="创建img"><a href="#创建img" class="headerlink" title="创建img"></a>创建img</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt-get install debootstrap</span><br><span class="line">mkdir image</span><br><span class="line">cd image</span><br><span class="line">wget https://raw.githubusercontent.com/google/syzkaller/master/tools/create-image.sh -O create-image.sh</span><br><span class="line">chmod +x create-image.sh</span><br><span class="line">./create-image.sh</span><br></pre></td></tr></table></figure>
+
+<p>最终会得到如下文件：</p>
+<p><img src="/syzkaller.assets/1748064314916.png" alt="1748064314916"></p>
+<h3 id="qemu启动内核"><a href="#qemu启动内核" class="headerlink" title="qemu启动内核"></a>qemu启动内核</h3><p>用如下命令启动：（不用输入密码登录，想登录的话也是直接root用户名+无密码即可）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">qemu-system-x86_64 \</span><br><span class="line">        -m 2G \</span><br><span class="line">        -smp 2 \</span><br><span class="line">        -kernel ./bzImage \</span><br><span class="line">        -append &quot;console=ttyS0 root=/dev/sda earlyprintk=serial net.ifnames=0&quot; \</span><br><span class="line">        -drive file=/home/qym/image/bullseye.img,format=raw -net user,hostfwd=tcp:127.0.0.1:10021-:22 \</span><br><span class="line">        -net nic,model=e1000 \</span><br><span class="line">        -enable-kvm \</span><br><span class="line">        -nographic \</span><br><span class="line">        -pidfile vm.pid 2&gt;&amp;1 | tee vm.log</span><br></pre></td></tr></table></figure>
+
+<p>然后利用我们创建镜像时生成的ssh密钥，就可以直接连接了：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh -p 10021 -i ~/image/bullseye.id_rsa root@127.0.0.1</span><br></pre></td></tr></table></figure>
+
+<h3 id="运行syzkaller"><a href="#运行syzkaller" class="headerlink" title="运行syzkaller"></a>运行syzkaller</h3><p>首先在syzkaller目录下，新建一个workdir目录：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mkdir workdir</span><br><span class="line">./bin/syz-manager -config=a.cfg</span><br></pre></td></tr></table></figure>
+
+<p>编写cfg文件如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">        &quot;target&quot;: &quot;linux/amd64&quot;,</span><br><span class="line">        &quot;http&quot;: &quot;127.0.0.1:10021&quot;,</span><br><span class="line">        &quot;workdir&quot;: &quot;/home/qym/syzkaller/workdir&quot;,</span><br><span class="line">        &quot;kernel_obj&quot;: &quot;/home/qym/linux-8bb7eca972ad531c9b149c0a51ab43a417385813&quot;,</span><br><span class="line">        &quot;image&quot;: &quot;/home/qym/image/bullseye.img&quot;,</span><br><span class="line">        &quot;sshkey&quot;: &quot;/home/qym/image/bullseye.id_rsa&quot;,</span><br><span class="line">        &quot;syzkaller&quot;: &quot;/home/qym/syzkaller/&quot;,</span><br><span class="line">        &quot;procs&quot;: 8,</span><br><span class="line">        &quot;type&quot;: &quot;qemu&quot;,</span><br><span class="line">        &quot;vm&quot;: &#123;</span><br><span class="line">                &quot;count&quot;: 4,</span><br><span class="line">                &quot;kernel&quot;: &quot;/mnt/hgfs/kernel/kfuzz/bzImage&quot;,</span><br><span class="line">                &quot;cpu&quot;: 2,</span><br><span class="line">                &quot;mem&quot;: 2048,</span><br><span class="line">                &quot;cmdline&quot;: &quot;net.ifnames=0 noapic&quot;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中kernel_obj是调试符号vmlinux所在的目录；</p>
+<p>运行界面如下：</p>
+<p><img src="/syzkaller.assets/1748078149952.png" alt="1748078149952"></p>
+<p>用浏览器可以访问到：</p>
+<p><img src="/syzkaller.assets/1748078203524.png" alt="1748078203524"></p>
+<p>使用ssh的端口转发：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh -L 10021:127.0.0.1:10021 qym@192.168.186.162</span><br></pre></td></tr></table></figure>
+
+<p><img src="/syzkaller.assets/1748078456480.png" alt="1748078456480"></p>
+<p>即可在本地的浏览器上查看分析结果：</p>
+<p><img src="/syzkaller.assets/1748078505749.png" alt="1748078505749"></p>
+<h2 id="服务器相关"><a href="#服务器相关" class="headerlink" title="服务器相关"></a>服务器相关</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh -p 10021 -i /home/qym/qym/image/bullseye.id_rsa root@127.0.0.1</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;target&quot;</span><span class="punctuation">:</span> <span class="string">&quot;linux/amd64&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;http&quot;</span><span class="punctuation">:</span> <span class="string">&quot;127.0.0.1:10121&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;workdir&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/home/qym/qym/syzkaller/workdir&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;kernel_obj&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/home/qym/qym/source/linux-2c85ebc57b3e1817b6ce1a6b703928e113a90442/&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;image&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/home/qym/qym/image/bullseye.img&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;sshkey&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/home/qym/qym/image/bullseye.id_rsa&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;syzkaller&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/home/qym/qym/syzkaller/&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;procs&quot;</span><span class="punctuation">:</span> <span class="number">8</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;qemu&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;vm&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;count&quot;</span><span class="punctuation">:</span> <span class="number">4</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;kernel&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/home/qym/qym/source/linux-2c85ebc57b3e1817b6ce1a6b703928e113a90442/arch/x86/boot/bzImage&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;cpu&quot;</span><span class="punctuation">:</span> <span class="number">2</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;mem&quot;</span><span class="punctuation">:</span> <span class="number">2048</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">ssh</span> -L <span class="number">10121</span>:<span class="number">127.0.0.1:10121</span> qym<span class="variable">@xxx</span>.xxx.xxx.xxx</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="几个运行时错误"><a href="#几个运行时错误" class="headerlink" title="几个运行时错误"></a>几个运行时错误</h2><h3 id="错误一"><a href="#错误一" class="headerlink" title="错误一"></a>错误一</h3><p><img src="/syzkaller.assets/1748079681005.png" alt="1748079681005"></p>
+<p>这表明虚拟机在启动时遇到了 <strong>内核 panic</strong>，具体原因是 <strong>IO-APIC 和定时器不兼容</strong>。这类问题通常是因为内核与虚拟机配置之间的硬件兼容性问题，尤其是在使用 QEMU&#x2F;KVM 模拟时。</p>
+<p>在 QEMU 的 <code>-append</code> 参数中添加 <code>noapic</code>，这样它就会禁用 APIC。</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;target&quot;</span><span class="punctuation">:</span> <span class="string">&quot;linux/amd64&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;http&quot;</span><span class="punctuation">:</span> <span class="string">&quot;127.0.0.1:10021&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;workdir&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/home/qym/syzkaller/workdir&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;kernel_obj&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/home/qym/linux-8bb7eca972ad531c9b149c0a51ab43a417385813&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;image&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/home/qym/image/bullseye.img&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;sshkey&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/home/qym/image/bullseye.id_rsa&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;syzkaller&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/home/qym/syzkaller/&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;procs&quot;</span><span class="punctuation">:</span> <span class="number">8</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;qemu&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;vm&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;count&quot;</span><span class="punctuation">:</span> <span class="number">4</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;kernel&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/mnt/hgfs/kernel/kfuzz/bzImage&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;cpu&quot;</span><span class="punctuation">:</span> <span class="number">2</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;mem&quot;</span><span class="punctuation">:</span> <span class="number">2048</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;cmdline&quot;</span><span class="punctuation">:</span> <span class="string">&quot;noapic&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="错误二"><a href="#错误二" class="headerlink" title="错误二"></a>错误二</h3><p><img src="/syzkaller.assets/1748080577912.png" alt="1748080577912"></p>
+<p>应该就是有别的进程在用你的端口，kill掉就行了；</p>
+<p>注意syzkaller是会自己启动qemu的；</p>
+<h3 id="错误三"><a href="#错误三" class="headerlink" title="错误三"></a>错误三</h3><p>遇到一个ssh不能连接的错误：</p>
+<p>syzkaller crash: can’t ssh into the instance </p>
+<p>参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/678339489">https://zhuanlan.zhihu.com/p/678339489</a></p>
+<p>加入如下：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="attr">&quot;cmdline&quot;</span><span class="punctuation">:</span> <span class="string">&quot;net.ifnames=0 noapic&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="错误四"><a href="#错误四" class="headerlink" title="错误四"></a>错误四</h3><p>内存不足会导致kill：</p>
+<p><img src="/syzkaller.assets/1748087100906.png" alt="1748087100906"></p>
+<h2 id="编译多个syzkaller"><a href="#编译多个syzkaller" class="headerlink" title="编译多个syzkaller"></a>编译多个syzkaller</h2><p>由于笔者后续想开发属于自己的syzkaller，因此想在机器上同时拥有多个syzkaller，这里记录一下问题；</p>
+<p>首先要记得改一下gcc和g++的版本；</p>
+<p>还有就是go的问题，笔者发现go似乎要重新安装，因此笔者的解决办法是，在当前目录下再重新安装一个go，创建gopath目录，并通过export命令临时修改一个GOROOT和GOPATH两个环境变量，之后即可成功编译；</p>
+<p>最后笔者发现，每次运行新编译的syzkaller的时候不需要export上述两个环境变量；</p>
+<p>另外，如果想要重新编译，最好是删除gopath中的内容，（虽然很多非root删除不掉，但是只要删除掉普通用户能够删除的文件就好了）</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://blingblingxuanxuan.github.io/2019/10/26/syzkaller/">https://blingblingxuanxuan.github.io/2019/10/26/syzkaller/</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.giantbranch.cn/2021/06/25/syzkaller%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E8%BF%90%E8%A1%8C/">https://www.giantbranch.cn/2021/06/25/syzkaller%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E8%BF%90%E8%A1%8C/</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.xzr.moe/archives/124/#section-3">https://blog.xzr.moe/archives/124/#section-3</a></p>
+<p><a target="_blank" rel="noopener" href="https://yumi1.top/linux-proxy/index.html#%E8%99%9A%E6%8B%9F%E6%9C%BA%E8%AE%BE%E7%BD%AE">https://yumi1.top/linux-proxy/index.html#%E8%99%9A%E6%8B%9F%E6%9C%BA%E8%AE%BE%E7%BD%AE</a></p>
+<p><a target="_blank" rel="noopener" href="https://goproxy.cn/">https://goproxy.cn/</a></p>
+<p><a target="_blank" rel="noopener" href="https://v3rdant.cn/Fuzz.Kernel-Fuzz-With-Syzkaller/#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE">https://v3rdant.cn/Fuzz.Kernel-Fuzz-With-Syzkaller/#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE</a></p>
+<p><a target="_blank" rel="noopener" href="https://bbs.kanxue.com/thread-265405.htm">https://bbs.kanxue.com/thread-265405.htm</a></p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">q1ming</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://example.com/2025/04/21/syzkaller/">http://example.com/2025/04/21/syzkaller/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">q1ming</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/research/">
+                                    <span class="chip bg-color">research</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2025/04/24/CVE-2022-25636/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="CVE-2022-25636">
+                        
+                        <span class="card-title">CVE-2022-25636</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2025-04-24
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            q1ming
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/CVE/">
+                        <span class="chip bg-color">CVE</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2025/04/21/BRIDGEROUTER/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="BRIDGEROUTER">
+                        
+                        <span class="card-title">BRIDGEROUTER</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-04-21
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            q1ming
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/paper/">
+                        <span class="chip bg-color">paper</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2025</span>
+            
+            <a href="/about" target="_blank">q1ming</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/Qian-YM" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:yimingqian591@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1643771613" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 1643771613" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

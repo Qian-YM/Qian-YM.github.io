@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en">
+<html lang="zh-CN">
 
 
 <head>
@@ -83,7 +83,7 @@ cpu_slabcpu_slab是一个__per_cpu">
       
       <i class="fas fa-home" style="zoom: 0.6;"></i>
       
-      <span>Index</span>
+      <span>首页</span>
     </a>
     
   </li>
@@ -94,7 +94,7 @@ cpu_slabcpu_slab是一个__per_cpu">
       
       <i class="fas fa-tags" style="zoom: 0.6;"></i>
       
-      <span>Tags</span>
+      <span>标签</span>
     </a>
     
   </li>
@@ -105,7 +105,7 @@ cpu_slabcpu_slab是一个__per_cpu">
       
       <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
       
-      <span>Categories</span>
+      <span>分类</span>
     </a>
     
   </li>
@@ -116,7 +116,7 @@ cpu_slabcpu_slab是一个__per_cpu">
       
       <i class="fas fa-archive" style="zoom: 0.6;"></i>
       
-      <span>Archives</span>
+      <span>归档</span>
     </a>
     
   </li>
@@ -127,7 +127,7 @@ cpu_slabcpu_slab是一个__per_cpu">
       
       <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
       
-      <span>About</span>
+      <span>关于</span>
     </a>
     
   </li>
@@ -138,7 +138,7 @@ cpu_slabcpu_slab是一个__per_cpu">
       
       <i class="fas fa-comments" style="zoom: 0.6;"></i>
       
-      <span>Contact</span>
+      <span>留言板</span>
     </a>
     
   </li>
@@ -149,14 +149,14 @@ cpu_slabcpu_slab是一个__per_cpu">
       
       <i class="fas fa-address-book" style="zoom: 0.6;"></i>
       
-      <span>Friends</span>
+      <span>友情链接</span>
     </a>
     
   </li>
   
   <li>
     <a href="#searchModal" class="modal-trigger waves-effect waves-light">
-      <i id="searchIcon" class="fas fa-search" title="Search" style="zoom: 0.85;"></i>
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
     </a>
   </li>
   <li>
@@ -189,7 +189,7 @@ cpu_slabcpu_slab是一个__per_cpu">
 			
 			    <i class="fa-fw fas fa-home"></i>
 			
-			Index
+			首页
 		</a>
           
         </li>
@@ -200,7 +200,7 @@ cpu_slabcpu_slab是一个__per_cpu">
 			
 			    <i class="fa-fw fas fa-tags"></i>
 			
-			Tags
+			标签
 		</a>
           
         </li>
@@ -211,7 +211,7 @@ cpu_slabcpu_slab是一个__per_cpu">
 			
 			    <i class="fa-fw fas fa-bookmark"></i>
 			
-			Categories
+			分类
 		</a>
           
         </li>
@@ -222,7 +222,7 @@ cpu_slabcpu_slab是一个__per_cpu">
 			
 			    <i class="fa-fw fas fa-archive"></i>
 			
-			Archives
+			归档
 		</a>
           
         </li>
@@ -233,7 +233,7 @@ cpu_slabcpu_slab是一个__per_cpu">
 			
 			    <i class="fa-fw fas fa-user-circle"></i>
 			
-			About
+			关于
 		</a>
           
         </li>
@@ -244,7 +244,7 @@ cpu_slabcpu_slab是一个__per_cpu">
 			
 			    <i class="fa-fw fas fa-comments"></i>
 			
-			Contact
+			留言板
 		</a>
           
         </li>
@@ -255,7 +255,7 @@ cpu_slabcpu_slab是一个__per_cpu">
 			
 			    <i class="fa-fw fas fa-address-book"></i>
 			
-			Friends
+			友情链接
 		</a>
           
         </li>
@@ -383,7 +383,7 @@ cpu_slabcpu_slab是一个__per_cpu">
             <div class="post-info">
                 
                 <div class="post-date info-break-policy">
-                    <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
                     2025-03-21
                 </div>
                 
@@ -420,8 +420,8 @@ cpu_slabcpu_slab是一个__per_cpu">
 <li><code>slab</code>：当前用以进行内存分配的 slab</li>
 <li><code>partial</code>：percpu partial slab 链表，链表上为仍有一定空闲对象的 slab</li>
 </ul>
-<p>slab 的 freelist 仅当其在 partial 链表上时有用，当一张 slab 为当前 CPU 正在使用的 slab 时，其 freelist 为 NULL，由 <code>kmem_cache_cpu.freelist</code> 指向第一个空闲对象</p>
-<p><img src="/images/1742098695432.png"></p>
+<p>slab 的 freelist 仅当其在 partial 链表上时有用，当一张 slab 为当前 CPU 正在使用的 slab 时，其 freelist 为 NULL，由 <code>kmem_cache_cpu.freelist</code> 指向第一个空闲对象：</p>
+<p><img src="/images/1742633292846.png"></p>
 <h3 id="kmem-cache-node"><a href="#kmem-cache-node" class="headerlink" title="kmem_cache_node"></a>kmem_cache_node</h3><p>kmem_cache_node *node[]是一个 <code>kmem_cache_node</code> 数组，对应多个<strong>不同 node 的后备内存池</strong>，这里的node即内存三级结构”页-区-节点“中的节点</p>
 <p><img src="/images/1738727135487.png"></p>
 <p>partial指向一个部分使用的slab的链表；</p>
@@ -477,7 +477,7 @@ cpu_slabcpu_slab是一个__per_cpu">
             <div class="reprint__author">
                 <span class="reprint-meta" style="font-weight: bold;">
                     <i class="fas fa-user">
-                        Author:
+                        文章作者:
                     </i>
                 </span>
                 <span class="reprint-info">
@@ -487,7 +487,7 @@ cpu_slabcpu_slab是一个__per_cpu">
             <div class="reprint__type">
                 <span class="reprint-meta" style="font-weight: bold;">
                     <i class="fas fa-link">
-                        Link:
+                        文章链接:
                     </i>
                 </span>
                 <span class="reprint-info">
@@ -497,13 +497,13 @@ cpu_slabcpu_slab是一个__per_cpu">
             <div class="reprint__notice">
                 <span class="reprint-meta" style="font-weight: bold;">
                     <i class="fas fa-copyright">
-                        Reprint policy:
+                        版权声明:
                     </i>
                 </span>
                 <span class="reprint-info">
-                    All articles in this blog are used except for special statements
+                    本博客所有文章除特別声明外，均采用
                     <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
-                    reprint policy. If reproduced, please indicate source
+                    许可协议。转载请注明来源
                     <a href="/about" target="_blank">q1ming</a>
                     !
                 </span>
@@ -513,7 +513,7 @@ cpu_slabcpu_slab是一个__per_cpu">
 
     <script async defer>
       document.addEventListener("copy", function (e) {
-        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
         M.toast({html: toastHTML})
       });
 
@@ -611,7 +611,7 @@ cpu_slabcpu_slab是一个__per_cpu">
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
                 <a href="/2025/03/21/kill%E4%B8%8Epid_namespace/">
                     <div class="card-image">
@@ -655,7 +655,7 @@ cpu_slabcpu_slab是一个__per_cpu">
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                Next&nbsp;<i class="fas fa-chevron-right"></i>
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
                 <a href="/2025/03/21/JIT-ROP%E6%94%BB%E5%87%BB/">
@@ -731,7 +731,7 @@ cpu_slabcpu_slab是一个__per_cpu">
     </div>
     <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
         <div class="toc-widget card" style="background-color: white;">
-            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
             <div id="toc-content"></div>
         </div>
     </div>
@@ -892,13 +892,13 @@ cpu_slabcpu_slab是一个__per_cpu">
             
             
                 <span id="busuanzi_container_site_pv">
-                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;Total visits:&nbsp;
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
                     <span id="busuanzi_value_site_pv" class="white-color"></span>
             </span>
             
             
                 <span id="busuanzi_container_site_uv">
-                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;Total visitors:&nbsp;
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
                     <span id="busuanzi_value_site_uv" class="white-color"></span>
             </span>
             
@@ -951,8 +951,8 @@ cpu_slabcpu_slab是一个__per_cpu">
 <div id="searchModal" class="modal">
     <div class="modal-content">
         <div class="search-header">
-            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;Search</span>
-            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
                    class="search-input">
         </div>
         <div id="searchResult"></div>
